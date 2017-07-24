@@ -242,7 +242,7 @@
     "title": "Step 2 Configure Property on MA and OTA",
     "name": "Step_2",
     "version": "201707.0.1",
-    "description": "<img src=\"/img/image1.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel Registration Steps:</p> <ol> <li>Customer selects OTA from list of channels on MA, enters hotel id or username, and password (regcode) and this is passed in a SetupProperty</li> <li>MA sends GetRooms and receives a list of Rooms configured on OTA, customer performs Room mapping of MA Room Types to OTA Room Types.</li> <li>Customer finalizes by performing a full refresh of all data to OTA Done!</li> </ol>",
+    "description": "<img src=\"/build2us-apidocs/img/image1.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel Registration Steps:</p> <ol> <li>Customer selects OTA from list of channels on MA, enters hotel id or username, and password (regcode) and this is passed in a SetupProperty</li> <li>MA sends GetRooms and receives a list of Rooms configured on OTA, customer performs Room mapping of MA Room Types to OTA Room Types.</li> <li>Customer finalizes by performing a full refresh of all data to OTA Done!</li> </ol>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -253,7 +253,7 @@
     "title": "Step 3 Integrate SDK",
     "name": "Step_3_Integrate_SDK",
     "version": "201707.0.1",
-    "description": "<img src=\"/img/image2.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel MA Daily Flow</p> <ol> <li>ARIUpdates are sent to OTA handler for Rates, Availability</li> <li>Periodic (30 minute) calls to GetBookingList</li> <li>GetBookingId is called for each BookingId</li> <li>Proceed to Booking Received Flow</li> </ol> <p>OTA Booking Notification (optional)</p> <ol> <li>New Booking arrives for property, notify MyAllocator via OTA API</li> <li>MyAllocator will call GetBookingId and download Booking</li> <li>Proceed to Booking Received Flow</li> </ol> <p>Booking Received Flow</p> <ol> <li>Notify PMS</li> <li>AutoAdjust</li> <li>ARIUpdate of new inventory to all OTA's</li> </ol>",
+    "description": "<img src=\"/build2us-apidocs/img/image2.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel MA Daily Flow</p> <ol> <li>ARIUpdates are sent to OTA handler for Rates, Availability</li> <li>Periodic (30 minute) calls to GetBookingList</li> <li>GetBookingId is called for each BookingId</li> <li>Proceed to Booking Received Flow</li> </ol> <p>OTA Booking Notification (optional)</p> <ol> <li>New Booking arrives for property, notify MyAllocator via OTA API</li> <li>MyAllocator will call GetBookingId and download Booking</li> <li>Proceed to Booking Received Flow</li> </ol> <p>Booking Received Flow</p> <ol> <li>Notify PMS</li> <li>AutoAdjust</li> <li>ARIUpdate of new inventory to all OTA's</li> </ol>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -264,7 +264,7 @@
     "title": "Step 4: Get your first booking",
     "name": "Step_4",
     "version": "201707.0.1",
-    "description": "<p>OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)</p> <img src=\"/img/image4.png\" width=\"700\" alt=\"Alt text\">",
+    "description": "<p>OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)</p> <img src=\"/build2us-apidocs/img/image4.png\" width=\"700\" alt=\"Alt text\">",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -286,7 +286,7 @@
     "title": "",
     "name": "Overview",
     "version": "201707.0.1",
-    "description": "<p>This API allows an OTA (travel booking website) to integrate with MyAllocator by implementing a public-facing API receiver in their environment.</p> <p>The API integration may be developed in any language, however, we have provided a PHP SDK library and receiver that you may drop into your PHP environment to speed up integration. The PHP SDK may be found <a href=\"https://github.com/MyAllocator/myallocator-ota-php\">here</a>.</p> <p>Its as simple as:</p> <img src=\"/img/image3.png\" width=\"700\" alt=\"Alt text\">",
+    "description": "<p>This API allows an OTA (travel booking website) to integrate with MyAllocator by implementing a public-facing API receiver in their environment.</p> <p>The API integration may be developed in any language, however, we have provided a PHP SDK library and receiver that you may drop into your PHP environment to speed up integration. The PHP SDK may be found <a href=\"https://github.com/MyAllocator/myallocator-ota-php\">here</a>.</p> <p>Its as simple as:</p> <img src=\"/build2us-apidocs/img/image3.png\" width=\"700\" alt=\"Alt text\">",
     "filename": "./build2us.pm",
     "groupTitle": "Overview"
   },

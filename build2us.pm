@@ -11,7 +11,7 @@ The API integration may be developed in any language, however, we have provided 
 
 Its as simple as: 
 
-<img src="/img/image3.png" width="700" alt="Alt text">
+<img src="/build2us-apidocs/img/image3.png" width="700" alt="Alt text">
 
 =cut
 
@@ -64,7 +64,7 @@ Its as simple as:
 @apiVersion 201707.0.1
 @apiDescription
 
-<img src="/img/image1.png" width="700" alt="Alt text">
+<img src="/build2us-apidocs/img/image1.png" width="700" alt="Alt text">
 
 Hotel Registration Steps:
 1. Customer selects OTA from list of channels on MA, enters hotel id or username, and password (regcode) and this is passed in a SetupProperty
@@ -81,7 +81,7 @@ Done!
 @apiVersion 201707.0.1
 @apiDescription
 
-<img src="/img/image2.png" width="700" alt="Alt text">
+<img src="/build2us-apidocs/img/image2.png" width="700" alt="Alt text">
 
 Hotel MA Daily Flow
 1. ARIUpdates are sent to OTA handler for Rates, Availability
@@ -125,7 +125,7 @@ It is acceptable to fire this for all bookings - even for properties which are c
 
 OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)
 
-<img src="/img/image4.png" width="700" alt="Alt text">
+<img src="/build2us-apidocs/img/image4.png" width="700" alt="Alt text">
 
 =cut
 
