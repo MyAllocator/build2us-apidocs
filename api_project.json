@@ -1,9 +1,9 @@
 {
-  "name": "Myallocator Build2Us API Documentation",
+  "name": "Myallocator Build-To-Us API Documentation",
   "version": "201707.0.1",
-  "description": "myallocator build2us API for OTA.",
-  "title": "Build2Us",
-  "url": "https://api.myallocator.com",
+  "description": "myallocator Build-To-Us API for OTA.",
+  "title": "Build-To-Us",
+  "url": "http://your.endpoint.com",
   "order": [
     "Overview",
     "Getting_Started",
@@ -16,7 +16,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-07-24T12:42:03.806Z",
+    "time": "2017-07-24T14:43:40.478Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

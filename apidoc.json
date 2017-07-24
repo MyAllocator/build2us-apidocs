@@ -1,9 +1,9 @@
 {
-  "name": "Myallocator Build2Us API Documentation",
+  "name": "Myallocator Build-To-Us API Documentation",
   "version": "201707.0.1",
-  "description": "myallocator build2us API for OTA.",
-  "title": "Build2Us",
-  "url" : "https://api.myallocator.com",
+  "description": "myallocator Build-To-Us API for OTA.",
+  "title": "Build-To-Us",
+  "url" : "http://your.endpoint.com",
   "order": [
       "Overview",
       "Getting_Started",
