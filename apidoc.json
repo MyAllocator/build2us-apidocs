@@ -3,5 +3,12 @@
   "version": "201707.0.1",
   "description": "myallocator build2us API for OTA.",
   "title": "Build2Us",
-  "url" : "https://api.myallocator.com"
+  "url" : "https://api.myallocator.com",
+  "order": [
+      "Overview",
+      "Getting_Started",
+      "SDK_Reference",
+      "Callback_URLs__Optional_",
+      "Appendix"
+  ]
 }
