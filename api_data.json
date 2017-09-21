@@ -677,13 +677,14 @@
     "group": "SDK_Reference",
     "type": "POST",
     "url": "/",
-    "title": "GetRatePlans (not currently implemented)",
-    "name": "GetRatePlans__not_currently_implemented_",
+    "title": "GetRateplans",
+    "name": "GetRateplans",
     "version": "201707.0.1",
+    "description": "<p>If your channel supports different rates per room and if we enabled you for rateplan support, we'll make a GetRateplans call to your system to retrieve which rateplans you have.</p> <p>If a rateplan is tied to a specific room ID (on your channel), then set this room ID in ota_room_id. If a rateplan is applicable for all rooms, set ota_room_id to 0.</p> <p>Note that currently myallocator only supports updating one rateplan per room.</p>",
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"GetRatePlans\",\n    \"ota_property_id\":\"\",\n    \"ota_room_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\"\n}",
+        "content": "{\n    \"verb\": \"GetRateplans\",\n    \"ota_property_id\": \"\",\n    \"mya_property_id\": \"\",\n    \"guid\": \"\",\n    \"shared_secret\": \"\"\n}",
         "type": "json"
       }
     ],
@@ -691,7 +692,7 @@
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\":true,\n    \"Rooms\":[\n        { \"ota_room_id\":\"\", \"ota_rate_id\":\"xxx\", \"title\":\"\", \"maxoccupancy\":\"\", \"minlos\":0, \"maxlos\":\"0\", \"cancellable\":false, \"cutoff_days\":7, \"breakfast\":\"included|excluded|fee\" },\n        { \"ota_room_id\":\"\", \"ota_rate_id\":\"xxx\", \"title\":\"\", \"maxoccupancy\":\"\", \"minlos\":0, \"maxlos\":\"0\", \"cancellable\":false, \"cutoff_days\":7, \"breakfast\":\"included|excluded|fee\" }\n    ]\n}",
+          "content": "{\n    \"success\": true,\n    \"Rateplans\": [\n        { \"ota_room_id\":\"\", \"ota_rateplan_id\":\"xxx\", \"title\":\"Default rate\" },\n        { \"ota_room_id\":\"\", \"ota_rateplan_id\":\"xxx\", \"title\":\"Non-refundable rate\" }\n    ]\n}",
           "type": "json"
         }
       ]
