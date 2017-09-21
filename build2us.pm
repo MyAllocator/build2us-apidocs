@@ -210,24 +210,35 @@ Notes: occupancy should be the maximum number of people who can fit in the room.
 
 =pod
 @apiGroup SDK Reference
-@api {POST} / GetRatePlans (not currently implemented)
-@apiName GetRatePlans (not currently implemented)
+@api {POST} / GetRateplans
+@apiName GetRateplans
 @apiVersion 201707.0.1
-@apiExample Request
+
+@apiDescription
+If your channel supports different rates per room and if we enabled you for
+rateplan support, we'll make a GetRateplans call to your system to retrieve
+which rateplans you have.
+
+If a rateplan is tied to a specific room ID (on your channel), then set this
+room ID in ota_room_id. If a rateplan is applicable for all rooms, set
+ota_room_id to 0.
+
+Note that currently myallocator only supports updating one rateplan per room.
+
+@apiExample {json} Request
     {
-        "verb":"GetRatePlans",
-        "ota_property_id":"",
-        "ota_room_id":"",
-        "mya_property_id":"",
-        "guid":"",
-        "shared_secret":""
+        "verb": "GetRateplans",
+        "ota_property_id": "",
+        "mya_property_id": "",
+        "guid": "",
+        "shared_secret": ""
     }
 @apiSuccessExample {json} Response
     {
-        "success":true,
-        "Rooms":[
-            { "ota_room_id":"", "ota_rate_id":"xxx", "title":"", "maxoccupancy":"", "minlos":0, "maxlos":"0", "cancellable":false, "cutoff_days":7, "breakfast":"included|excluded|fee" },
-            { "ota_room_id":"", "ota_rate_id":"xxx", "title":"", "maxoccupancy":"", "minlos":0, "maxlos":"0", "cancellable":false, "cutoff_days":7, "breakfast":"included|excluded|fee" }
+        "success": true,
+        "Rateplans": [
+            { "ota_room_id":"", "ota_rateplan_id":"xxx", "title":"Default rate" },
+            { "ota_room_id":"", "ota_rateplan_id":"xxx", "title":"Non-refundable rate" }
         ]
     }
 =cut
