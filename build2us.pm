@@ -210,13 +210,13 @@ Notes: occupancy should be the maximum number of people who can fit in the room.
 
 =pod
 @apiGroup SDK Reference
-@api {POST} / GetRateplans
-@apiName GetRateplans
+@api {POST} / GetRatePlans
+@apiName GetRatePlans
 @apiVersion 201707.0.1
 
 @apiDescription
 If your channel supports different rates per room and if we enabled you for
-rateplan support, we'll make a GetRateplans call to your system to retrieve
+rateplan support, we'll make a GetRatePlans call to your system to retrieve
 which rateplans you have.
 
 If a rateplan is tied to a specific room ID (on your channel), then set this
@@ -227,7 +227,7 @@ Note that currently myallocator only supports updating one rateplan per room.
 
 @apiExample {json} Request
     {
-        "verb": "GetRateplans",
+        "verb": "GetRatePlans",
         "ota_property_id": "",
         "mya_property_id": "",
         "guid": "",
@@ -236,7 +236,7 @@ Note that currently myallocator only supports updating one rateplan per room.
 @apiSuccessExample {json} Response
     {
         "success": true,
-        "Rateplans": [
+        "RatePlans": [
             { "ota_room_id":"", "ota_rateplan_id":"xxx", "title":"Default rate" },
             { "ota_room_id":"", "ota_rateplan_id":"xxx", "title":"Non-refundable rate" }
         ]

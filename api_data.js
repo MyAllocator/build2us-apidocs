@@ -677,14 +677,14 @@ define({ "api": [
     "group": "SDK_Reference",
     "type": "POST",
     "url": "/",
-    "title": "GetRateplans",
-    "name": "GetRateplans",
+    "title": "GetRatePlans",
+    "name": "GetRatePlans",
     "version": "201707.0.1",
-    "description": "<p>If your channel supports different rates per room and if we enabled you for rateplan support, we'll make a GetRateplans call to your system to retrieve which rateplans you have.</p> <p>If a rateplan is tied to a specific room ID (on your channel), then set this room ID in ota_room_id. If a rateplan is applicable for all rooms, set ota_room_id to 0.</p> <p>Note that currently myallocator only supports updating one rateplan per room.</p>",
+    "description": "<p>If your channel supports different rates per room and if we enabled you for rateplan support, we'll make a GetRatePlans call to your system to retrieve which rateplans you have.</p> <p>If a rateplan is tied to a specific room ID (on your channel), then set this room ID in ota_room_id. If a rateplan is applicable for all rooms, set ota_room_id to 0.</p> <p>Note that currently myallocator only supports updating one rateplan per room.</p>",
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\": \"GetRateplans\",\n    \"ota_property_id\": \"\",\n    \"mya_property_id\": \"\",\n    \"guid\": \"\",\n    \"shared_secret\": \"\"\n}",
+        "content": "{\n    \"verb\": \"GetRatePlans\",\n    \"ota_property_id\": \"\",\n    \"mya_property_id\": \"\",\n    \"guid\": \"\",\n    \"shared_secret\": \"\"\n}",
         "type": "json"
       }
     ],
@@ -692,7 +692,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\": true,\n    \"Rateplans\": [\n        { \"ota_room_id\":\"\", \"ota_rateplan_id\":\"xxx\", \"title\":\"Default rate\" },\n        { \"ota_room_id\":\"\", \"ota_rateplan_id\":\"xxx\", \"title\":\"Non-refundable rate\" }\n    ]\n}",
+          "content": "{\n    \"success\": true,\n    \"RatePlans\": [\n        { \"ota_room_id\":\"\", \"ota_rateplan_id\":\"xxx\", \"title\":\"Default rate\" },\n        { \"ota_room_id\":\"\", \"ota_rateplan_id\":\"xxx\", \"title\":\"Non-refundable rate\" }\n    ]\n}",
           "type": "json"
         }
       ]
