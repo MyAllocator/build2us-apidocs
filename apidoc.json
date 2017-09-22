@@ -4,6 +4,7 @@
   "description": "myallocator Build-To-Us API for OTA.",
   "title": "Build-To-Us",
   "url" : "http://your.endpoint.com",
+  "callback_url" : "https://api.myallocator.com",
   "order": [
       "Overview",
       "Getting_Started",
