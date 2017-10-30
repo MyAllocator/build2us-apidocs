@@ -589,11 +589,12 @@ Please only parse fields which are included
     "success": true,
     "ota_property_id": 1234,                    // Your (new) property ID
     "ota_property_password": 1234,              // Optional additional parameter to allow connection
-    "instruction_link": "http://ota.com/instructions",   // Optional instructions
+    "instruction_text": "It worked!\n\nNow click the link.",   // Optional instructions
+    "instruction_link": "http://ota.com/instructions",         // Optional link to be displayed below instruction text
 
-    "room_mappings": [                        // Optional mapping
+    "room_mappings": [                    // Optional mapping
         {
-            "ota_room_id" : "11111",          // Your (new) room ID
+            "ota_room_id" : "11111",      // Your (new) room ID
             "mya_room_id" : 56789         // MA Room ID
         },
         {
@@ -602,14 +603,30 @@ Please only parse fields which are included
         }
     ]
 }
-@apiDescription
-Can be used to create a new property (including rooms) on your OTA based on the details that we have in myallocator (eg. property name, address, images, room details, etc). This call needs to be activated explicitly from our side before you can use it. Please talk to your myallocator contact before implementing this call!
 
-Once approved please provide us with your terms & conditions for us to display to a property.
+@apiDescription Can be used to create a new property (including rooms) on your
+OTA based on the details that we have in myallocator (eg. property name,
+address, images, room details, etc). This call needs to be activated explicitly
+from our side before you can use it. Please talk to your myallocator contact
+before implementing this call!
 
-We cannot guarantee that all of the following request fields will really be filled in
+Once approved please provide us with your terms & conditions for us to display
+to a property.
 
-The **instruction link** will be displayed to the hotel after the property creation is complete. You can also provide us with details to show before the creation.
+We cannot guarantee that all of the following request fields will really be
+filled in.
+
+You need to return room_mappings to make the automatic full refresh work after
+successful property creation.
+
+The **instruction text** (instruction_text) will be displayed to the hotel after
+the property creation is complete. We will escape any HTML characters, so please
+only return plain text. You can include linebreaks (\n) which will be converted
+into actual line breaks for HTML display.
+
+If an **instruction link** (instruction_link) is provided we will display the
+clickable link below the instruction text (if present).
+
 =cut
 
 
