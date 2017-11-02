@@ -357,7 +357,8 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 Integrating into MyAllocator. As an OTA there are a few key differences in the
 format.  OTA Bookings should _NEVER_ include RoomTypeIds:[] node, instead pass
 "ChannelRoomType":"123".  Do not attempt to pass "channel", or any field
-labelled starting with Myallocator* (all those will be setup automatically).
+labelled starting with Myallocator* or myallocator_* (all those will be setup
+automatically).
 
 Most fields are optional. The minimal booking example below lists which fields
 are required for a Build-to-us integration.
