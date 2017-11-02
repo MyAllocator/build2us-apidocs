@@ -368,6 +368,16 @@ labelled starting with Myallocator* (all those will be setup automatically).
 Most fields are optional. The minimal booking example below lists which fields
 are required for a Build-to-us integration.
 
+Prices: Send us sell rates (rates including taxes and fees). The sum of
+all room prices should equal the TotalPrice field. Day rates should be per unit,
+so the sum of all day rates multiplied by the number of units should equal the
+room price.
+
+Country codes: For CustomerCountry and CustomerNationality (if you include those
+fields) make sure to pass the country code as uppercase Alpha-2 ISO-3166 codes.
+
+Currency codes: Make sure they are valid ISO-4217 (uppercase).
+
 Implementation suggestions: when testing make sure the MyAllocator test property
 has "download bookings" enabled or the booking will be saved in a queue and not
 visible during testing.  To enable login and go to Manage / General / Download
