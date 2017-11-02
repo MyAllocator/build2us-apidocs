@@ -267,12 +267,21 @@ Note that currently myallocator only supports updating one rateplan per room.
     ]
 }
 
-@apiDescription
-Returns a list of bookings/reservations which have not been acknowledged or modified.
+@apiDescription Returns a list of bookings/reservations which have not been
+acknowledged or modified.
 
-With each request we send along *ota_booking_version*, which has the format *YYYY-MM-DD HH:MM:SS* and indicates the time in UTC we last successfully requested bookings. It can be undefined if no successful response has been received so far. Please use *ota_booking_version* to only return to us new or modified bookings made since then. To ensure that no booking is skipped due to a time-offset between your and our server make sure to always reduce 5 or more minutes from the time given. Example: we provide 2017-06-22 12:09:19, then please return all new/modified/cancalled bookings since 2017-06-22 12:04:19 (5 minutes before the time sent).
+With each request we send along *ota_booking_version*, which has the format
+*YYYY-MM-DD HH:MM:SS* and indicates the time in UTC we last successfully
+requested bookings. It can be undefined if no successful response has been
+received so far. Please use *ota_booking_version* to only return to us new or
+modified bookings made since then. To ensure that no booking is skipped due to a
+time-offset between your and our server make sure to always reduce 5 or more
+minutes from the time given. Example: we provide 2017-06-22 12:09:19, then
+please return all new/modified/cancalled bookings since 2017-06-22 12:04:19 (5
+minutes before the time sent).
 
 If *ota_booking_version* is undefined/empty please return all bookings.
+
 =cut
 
 
@@ -347,24 +356,34 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 }
 
 @apiDescription
-[More Booking Examples](https://github.com/MyAllocator/bookingsamples)
 
-**IMPORTANT**: The github BookingSamples link above is intended for a PMS Integrating into MyAllocator. As an OTA there are a few key differences in the format.  OTA Bookings should _NEVER_ include RoomTypeIds:[] node, instead pass "ChannelRoomType":"123". 
-Do not attempt to pass "channel", or any field labelled "myallocator_xxxx" (all those will be setup automatically)
+[Booking Examples](https://github.com/MyAllocator/bookingsamples)
 
-In the example(s) there are various formats from different OTA's. 
-To complete the BuildToUs certification you must use an example which includes the "DayRates" field(s).
-Future versions of the BuildToUs will require DayRates to pass validation.
+**IMPORTANT**: The github BookingSamples link above is intended for a PMS
+Integrating into MyAllocator. As an OTA there are a few key differences in the
+format.  OTA Bookings should _NEVER_ include RoomTypeIds:[] node, instead pass
+"ChannelRoomType":"123".  Do not attempt to pass "channel", or any field
+labelled starting with Myallocator* (all those will be setup automatically).
 
-implementation suggestions: 
-when testing make sure the MyAllocator test property has "download bookings" enabled or the booking will be saved in a queue and not visible during testing.  To enable login and go to Manage / General / Download new bookings.
-Default setting is "off/disabled".  Once enabled please allow 30 minutes for the backend to start processing bookings.
-Also there may be a normal 1-2 minute period after a GetBookingId response before the booking is visible in the inbox.myallocator.com interface (the bookings are held in a temporary queue on our backend).
+Most fields are optional. The minimal booking example below lists which fields
+are required for a Build-to-us integration.
+
+Implementation suggestions: when testing make sure the MyAllocator test property
+has "download bookings" enabled or the booking will be saved in a queue and not
+visible during testing.  To enable login and go to Manage / General / Download
+new bookings. Default setting is "off/disabled".  Once enabled please allow 30
+minutes for the backend to start processing bookings. Also there may be a normal
+1-2 minute period after a GetBookingId response before the booking is visible in
+the inbox.myallocator.com interface (the bookings are held in a temporary queue
+on our backend).
 
 For testing please use:
 *http://api.myallocator.com/callback/ota/{CID}/v201503/NotifyBooking?ota_property_id={OTA_PID}&booking_id={OTA_ID}&output=json&debug=1*
 
-that url (specifically the &output=json&debug=1 on the URL) will return additional debugging messaging which will provide insight into validation errors.
+That url (specifically the &output=json&debug=1 on the URL) will return
+additional debugging messaging which will provide insight into validation
+errors.
+
 =cut
 
 =pod
