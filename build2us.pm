@@ -300,59 +300,53 @@ If *ota_booking_version* is undefined/empty please return all bookings.
         "booking_id":"OTABookingID",
         "version":""
     }
-@apiSuccessExample Response
-    {
-        "success": true,
-        "booking_id": "OTABookingID",
-        "ota_property_id": "",
-        "mya_property_id": "",
 
-        "Booking": {
-            // see samples in github
-            // especially BuildToUs.json
-            // make sure to send ChannelRoomType (see notes about samples)
-            // never send RoomTypeIds: []
-        }
-    }
 @apiSuccessExample Minimal Booking Example
 {
-    "OrderId": "8604168",
-    "IsCancellation": false,
-    "TotalCurrency": "USD",
-    "TotalPrice": 134
+    "success": true,
+    "booking_id": "OTABookingID",
+    "ota_property_id": "",
+    "mya_property_id": "",
 
-    "Customers": [
-        {
-            "CustomerCountry": "US",
-            "CustomerEmail": "test@test.com",
-            "CustomerFName": "Test Firstname",
-            "CustomerLName": "Test Lastname"
-        }
-    ],
+    "Booking": {
+        "OrderId": "8604168",
+        "IsCancellation": false,
+        "TotalCurrency": "USD",
+        "TotalPrice": 134
 
-    "Rooms": [
-        {
-            "ChannelRoomType": "abcdef",
-            "Currency": "USD",
-            "DayRates": [
-                {
-                    "Date": "2017-11-08",
-                    "Description": "Refundable Rate",
-                    "Rate": 32.5
-                },
-                {
-                    "Date": "2017-11-09",
-                    "Description": "Refundable Rate",
-                    "Rate": 34.5,
-                    "RateId": "13649"
-                }
-            ],
-            "EndDate": "2017-11-09",
-            "Price": 134,
-            "StartDate": "2017-11-08",
-            "Units": 2
-        }
-    ]
+        "Customers": [
+            {
+                "CustomerCountry": "US",
+                "CustomerEmail": "test@test.com",
+                "CustomerFName": "Test Firstname",
+                "CustomerLName": "Test Lastname"
+            }
+        ],
+
+        "Rooms": [
+            {
+                "ChannelRoomType": "abcdef",
+                "Currency": "USD",
+                "DayRates": [
+                    {
+                        "Date": "2017-11-08",
+                        "Description": "Refundable Rate",
+                        "Rate": 32.5
+                    },
+                    {
+                        "Date": "2017-11-09",
+                        "Description": "Refundable Rate",
+                        "Rate": 34.5,
+                        "RateId": "13649"
+                    }
+                ],
+                "EndDate": "2017-11-09",
+                "Price": 134,
+                "StartDate": "2017-11-08",
+                "Units": 2
+            }
+        ]
+    }
 }
 
 @apiDescription
