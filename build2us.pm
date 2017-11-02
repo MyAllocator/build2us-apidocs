@@ -293,106 +293,59 @@ If *ota_booking_version* is undefined/empty please return all bookings.
     }
 @apiSuccessExample Response
     {
-        "success":true,
-        "booking_id":"OTABookingID",
-        "ota_property_id":"",
-        "mya_property_id":"",
-        "Booking":{
+        "success": true,
+        "booking_id": "OTABookingID",
+        "ota_property_id": "",
+        "mya_property_id": "",
+
+        "Booking": {
             // see samples in github
             // especially BuildToUs.json
-            // make sure to send ota_room_id (see notes about samples)
-            // never send RoomTypes:[]
+            // make sure to send ChannelRoomType (see notes about samples)
+            // never send RoomTypeIds: []
         }
     }
-@apiSuccessExample Example "Booking"
+@apiSuccessExample Minimal Booking Example
 {
+    "OrderId": "8604168",
+    "IsCancellation": false,
+    "TotalCurrency": "USD",
+    "TotalPrice": 134
+
     "Customers": [
         {
-            "CustomerLName": "Simpson",
-            "CustomerCompany": "",
-            "CustomerNote": "",
-            "CustomerEmail": "glynis.m@fake-outlook.com",
-            "CustomerFName": "Homer",
-            "CustomerCity": "Kiev  ",
-            "CustomerPostCode": "01001",
-            "CustomerAddress": "Some street",
-            "CustomerPhone": "+60323612345",
-            "CustomerCountry": "ua"  
+            "CustomerCountry": "US",
+            "CustomerEmail": "test@test.com",
+            "CustomerFName": "Test Firstname",
+            "CustomerLName": "Test Lastname"
         }
     ],
-    "IsCancellation": false,
-    "OrderDate": "2013-02-12",
-    "OrderTime": "09:14:30",
-    "OrderId": "256566232",
-    "TotalCurrency": "USD",
-    "TotalPrice": "100.00",
-    "Commission": "5.00",
-    "CommissionCurrency": "USD",
-    "Deposit": "5.00",
-    "DepositCurrency": "USD",
-    "Balance": "5.00",
-    "BalanceCurrency": "USD",
+
     "Rooms": [
         {
-            "Units": 1,
-            "StartDate": "2013-02-12",
-            "EndDate": "2013-02-12",
-            "ChannelRoomType": "1234",
-            "RoomDesc": "Awesome Room",
-            "Adults":2,
-            "Children":0,
-            "Price":1000,
-            "Currency":"USD"
-        }
-    ],
-    "Payments": [
-        {
-            "CardNumber":"4111111111111111",
-            "CardHolderName":"homer simpson",
-            "CardCVV":"123",
-            "CardExpiryMonth":"01",
-            "CardExpiryYear":"2020"
+            "ChannelRoomType": "abcdef",
+            "Currency": "USD",
+            "DayRates": [
+                {
+                    "Date": "2017-11-08",
+                    "Description": "Refundable Rate",
+                    "Rate": 32.5
+                },
+                {
+                    "Date": "2017-11-09",
+                    "Description": "Refundable Rate",
+                    "Rate": 34.5,
+                    "RateId": "13649"
+                }
+            ],
+            "EndDate": "2017-11-09",
+            "Price": 134,
+            "StartDate": "2017-11-08",
+            "Units": 2
         }
     ]
 }
-@apiSuccess (Booking) {Array} Customers Array of customers. Include at least one guest
-@apiSuccess (Booking) {String} CustomerLName Last name
-@apiSuccess (Booking) {String} [CustomerCompany] Customer company
-@apiSuccess (Booking) {String} [CustomerNote]  Customer note
-@apiSuccess (Booking) {String} CustomerEmail email
-@apiSuccess (Booking) {String} CustomerFName First name
-@apiSuccess (Booking) {String} CustomerCity City
-@apiSuccess (Booking) {String} CustomerPostCode Postal code
-@apiSuccess (Booking) {String} CustomerAddress Address
-@apiSuccess (Booking) {String} CustomerPhone Phone
-@apiSuccess (Booking) {String} CustomerCountry Country
-@apiSuccess (Booking) {Boolean} IsCancellation set true if booking is cancelled
-@apiSuccess (Booking) {String} OrderDate (recommended) order created date yyyy-mm-dd
-@apiSuccess (Booking) {String} OrderTime (recommended) order created time hh:mm:ss
-@apiSuccess (Booking) {String} OrderId ota order reference
-@apiSuccess (Booking) {String} TotalCurrency currency for the booking
-@apiSuccess (Booking) {String} TotalPrice total price for everything
-@apiSuccess (Booking) {String} [Commission] ota commission amount
-@apiSuccess (Booking) {String} [CommissionCurrency] ota commission currency
-@apiSuccess (Booking) {String} [Deposit] any deposit collected by the OTA
-@apiSuccess (Booking) {String} [DepositCurrency] If Deposit is set, this is the currency
-@apiSuccess (Booking) {String} [Balance] If deposit is set, this is the remaining balance
-@apiSuccess (Booking) {String} [BalanceCurrency] If balance is set, this is the currency
-@apiSuccess (Booking) {Array} Rooms one for each unique stay
-@apiSuccess (Booking) {Number} Units number of rooms, or beds for a dormitory
-@apiSuccess (Booking) {String} StartDate arrival date
-@apiSuccess (Booking) {String} EndDate ast day of stay (departure date - 1)
-@apiSuccess (Booking) {String} ChannelRoomType the mapped room identifier on the ota. This field is unique to Build2Us api
-@apiSuccess (Booking) {String} RoomDesc a short description of the room
-@apiSuccess (Booking) {Number} [Adults] number of adults staying in room
-@apiSuccess (Booking) {Number} [Children] number of children staying in room
-@apiSuccess (Booking) {String} [Price] total price for the room (for all days)
-@apiSuccess (Booking) {Array} Payments Array of payments
-@apiSuccess (Booking) {String} CardNumber card number
-@apiSuccess (Booking) {String} CardHolderName Name
-@apiSuccess (Booking) {String} CardCVV card cvv
-@apiSuccess (Booking) {String} CardExpiryMonth month number
-@apiSuccess (Booking) {String} CardExpiryYear Year
+
 @apiDescription
 [More Booking Examples](https://github.com/MyAllocator/bookingsamples)
 
