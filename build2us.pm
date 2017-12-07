@@ -67,7 +67,7 @@ Its as simple as:
 <img src="/build2us-apidocs/img/image1.png" width="700" alt="Alt text">
 
 Hotel Registration Steps:
-1. Customer selects OTA from list of channels on MA, enters hotel id or username, and password (regcode) and this is passed in a SetupProperty
+1. Customer selects OTA from list of channels on MA, enters hotel id or username, and password and this is passed in a SetupProperty
 2. MA sends GetRooms and receives a list of Rooms configured on OTA, customer performs Room mapping of MA Room Types to OTA Room Types.
 3. Customer finalizes by performing a full refresh of all data to OTA
 Done!
@@ -159,11 +159,11 @@ Purpose: Pinged prior to SetupProperty or other configuration requests to verify
 @apiExample Request
     {
         "verb":"SetupProperty",
-        "mya_property_id":"",     
-        "ota_property_id":"",    
+        "mya_property_id":"",
+        "ota_property_id":"",
+        "ota_property_password":"",
         "guid":"",
         "shared_secret":"",
-        "ota_regcode":"",
         "RoomInfo":[ .. ]           // conditional, see RoomInfo Appendix
     }
 @apiSuccessExample {json} Response
@@ -173,9 +173,19 @@ Purpose: Pinged prior to SetupProperty or other configuration requests to verify
     }
 @apiDescription
 
-Purpose: on the myallocator.com interface the client will go to the OTA setup by selecting the icon. There the user will be prompted to put in the ota_property_id and ota_regcode registration code (optional: provided by the ota). The ota_property_id will be retained by us and passed in every other call.
+Purpose: on the myallocator.com interface the client will go to the OTA setup by
+selecting the icon. There the user will be prompted to put in the
+ota_property_id and ota_property_password credentials (provided by the ota).
+Both ota_property_id and ota_property_password will be retained by us and passed
+in every call. Should you not need two identification fields please let us know
+and we can set it to only ask for ota_property_id.
 
-Implementation suggestions:  ota_property_id should typically be a username or hotel id on the OTA.   The ota_regcode is typically a password used to access the OTA extranet by the client.    If successful then the mya_property_id should be stored by the ota and used in conjunction with the ota_property_id to verify identity (optional).   the mya_property_id will not change. there will always be a 1:1 mapping between ota_property_id and mya_property_id.
+Implementation suggestions:  ota_property_id should typically be a username or
+hotel id on the OTA. The ota_property_password is typically a password used to
+access the OTA extranet by the client. If successful then the mya_property_id
+should be stored by the ota and used in conjunction with the ota_property_id to
+verify identity (optional). The mya_property_id will not change. There will
+always be a 1:1 mapping between ota_property_id and mya_property_id.
 
 =cut
 

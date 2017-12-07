@@ -242,7 +242,7 @@
     "title": "Step 2 Configure Property on MA and OTA",
     "name": "Step_2",
     "version": "201707.0.1",
-    "description": "<img src=\"/build2us-apidocs/img/image1.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel Registration Steps:</p> <ol> <li>Customer selects OTA from list of channels on MA, enters hotel id or username, and password (regcode) and this is passed in a SetupProperty</li> <li>MA sends GetRooms and receives a list of Rooms configured on OTA, customer performs Room mapping of MA Room Types to OTA Room Types.</li> <li>Customer finalizes by performing a full refresh of all data to OTA Done!</li> </ol>",
+    "description": "<img src=\"/build2us-apidocs/img/image1.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel Registration Steps:</p> <ol> <li>Customer selects OTA from list of channels on MA, enters hotel id or username, and password and this is passed in a SetupProperty</li> <li>MA sends GetRooms and receives a list of Rooms configured on OTA, customer performs Room mapping of MA Room Types to OTA Room Types.</li> <li>Customer finalizes by performing a full refresh of all data to OTA Done!</li> </ol>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -489,7 +489,7 @@
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"SetupProperty\",\n    \"mya_property_id\":\"\",     \n    \"ota_property_id\":\"\",    \n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"ota_regcode\":\"\",\n    \"RoomInfo\":[ .. ]           // conditional, see RoomInfo Appendix\n}",
+        "content": "{\n    \"verb\":\"SetupProperty\",\n    \"mya_property_id\":\"\",\n    \"ota_property_id\":\"\",\n    \"ota_property_password\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"RoomInfo\":[ .. ]           // conditional, see RoomInfo Appendix\n}",
         "type": "json"
       }
     ],
@@ -502,7 +502,7 @@
         }
       ]
     },
-    "description": "<p>Purpose: on the myallocator.com interface the client will go to the OTA setup by selecting the icon. There the user will be prompted to put in the ota_property_id and ota_regcode registration code (optional: provided by the ota). The ota_property_id will be retained by us and passed in every other call.</p> <p>Implementation suggestions:  ota_property_id should typically be a username or hotel id on the OTA.   The ota_regcode is typically a password used to access the OTA extranet by the client.    If successful then the mya_property_id should be stored by the ota and used in conjunction with the ota_property_id to verify identity (optional).   the mya_property_id will not change. there will always be a 1:1 mapping between ota_property_id and mya_property_id.</p>",
+    "description": "<p>Purpose: on the myallocator.com interface the client will go to the OTA setup by selecting the icon. There the user will be prompted to put in the ota_property_id and ota_property_password credentials (provided by the ota). Both ota_property_id and ota_property_password will be retained by us and passed in every call. Should you not need two identification fields please let us know and we can set it to only ask for ota_property_id.</p> <p>Implementation suggestions:  ota_property_id should typically be a username or hotel id on the OTA. The ota_property_password is typically a password used to access the OTA extranet by the client. If successful then the mya_property_id should be stored by the ota and used in conjunction with the ota_property_id to verify identity (optional). The mya_property_id will not change. There will always be a 1:1 mapping between ota_property_id and mya_property_id.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "SDK_Reference"
   }
