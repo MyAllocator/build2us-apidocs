@@ -10,12 +10,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "{\n    \"success\":\"true|false\", \n    \"errors\": [\n        { \"id\":\"\", \"type\":\"\", \"msgid\":\"XXX\", \"msg\":\"\" },\n        { \"id\":\"\", \"type\":\"\", \"msgid\":\"XXX\", \"msg\":\"\" }\n    ]\n}",
+          "content": "{\n    \"success\":\"true|false\",\n    \"errors\": [\n        { \"id\":\"\", \"type\":\"\", \"msgid\":\"XXX\", \"msg\":\"\" },\n        { \"id\":\"\", \"type\":\"\", \"msgid\":\"XXX\", \"msg\":\"\" }\n    ]\n}",
           "type": "json"
         }
       ]
     },
-    "description": "<p>msgtypes:</p> <ul> <li>warning: will only display if the call is successful.  All other types are considered fatal errors.</li> <li>ise : an unknown error occurred in OTA server infrastructure -- retry will occur, you will be notified.</li> <li>api : OTA detected misformatted request / invalid data -- retry will occur.</li> <li>user    : user data mapping inconsistency (this will NOT trigger an error notification to you) -- retry will most likely not occur (varies by data type).</li> </ul> <p>Multiple errors should only be returned calls such as ARIUpdate where multiple-unrelated errors can occur. Most other calls will display either the first or last error message returned.</p> <p>The generic ota error handler accepts two &quot;high level&quot; approaches to error handling, the first is to use your codes and messages (id + msg), the second is to use ours (msgid).</p> <p>If msgid is used, then you will need to obtain the list of msgid's and map your internal error responses to our codes, this has the advantage of being able to be internationalized for clients, and also linking to relevant knowledge base articles.  If we don't have suitable matching error in our list of codes we are happy to add them for you.  Here is a short table of common msgid's</p> <table> <thead> <tr> <th>msgid</th> <th>explanation</th> </tr> </thead> <tbody> <tr> <td>FAULT.OTA.LOGIN</td> <td>The credentials provided by you for the ota are invalid.</td> </tr> <tr> <td>FAULT.OTA.LOGIN.DISABLED</td> <td>The account credentials are valid, but the login has been disabled or is not activated for this interface</td> </tr> <tr> <td>FAULT.OTA.ROOM.MINRATE</td> <td>the rate is too low and was not updated.</td> </tr> </tbody> </table> <p>Please refer to the <a href=\"https://github.com/MyAllocator/myallocator-error-codes/blob/master/Errors.md\">following document</a> for a full list of error codes generated and handled by myallocator.</p> <p>If a msgid is returned then the json &quot;success&quot;:&quot;true|false&quot; is ignored and the msgid is considered authoritative on the state of the request (this is because msgid's can have more subtle status's like partial success which cannot be represented by a simple boolean state)</p> <p>If msgid is not included, or is not valid then the boolean &quot;success&quot;:&quot;true|false&quot; + the id and msg will be used.  If success is true then all errors will be treated as warnings, and if success is false then all errors will be treated as fatal errors.  The msgid 's will be generated under the cid namespace for the ota as follows:</p> <p>(success = false) FAULT.OTA.cid.id  : msg</p> <p>(success = true) WARNING.OTA.cid.id : msg</p> <p>If you plan to submit errors to us for internationalization then you can also include the corresponding msgid for your business logic.</p> <p>msgs can also contain variables, this is particularly handy for situations where room id's should be displayed.  To do this simply include the variable in the msgtxt -- ex: %room_id%  %room_desc%  ---</p> <p>{ msg:&quot;sorry but %room_desc% #%room_id% is not valid&quot;, room_desc:&quot;2 bedroom dorm&quot;, room_id:&quot;123&quot; }</p> <p>This approach can also be used with existing myallocator msgid's which have variables, making it possible to internationalize error responses while still mapping to fixed error codes.</p> <p>HTTP Status code <a href=\"https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md\">reference</a>.</p>",
+    "description": "<p>msgtypes:</p> <ul> <li>warning: will only display if the call is successful.  All other types are considered fatal errors.</li> <li>ise : an unknown error occurred in OTA server infrastructure -- retry will occur, you will be notified.</li> <li>api : OTA detected misformatted request / invalid data -- retry will occur.</li> <li>user    : user data mapping inconsistency (this will NOT trigger an error notification to you) -- retry will most likely not occur (varies by data type).</li> </ul> <p>Multiple errors should only be returned calls such as ARIUpdate where multiple- unrelated errors can occur. Most other calls will display either the first or last error message returned.</p> <p>The generic ota error handler accepts two &quot;high level&quot; approaches to error handling, the first is to use your codes and messages (id + msg), the second is to use ours (msgid).</p> <p>If msgid is used, then you will need to obtain the list of msgid's and map your internal error responses to our codes, this has the advantage of being able to be internationalized for clients, and also linking to relevant knowledge base articles.  If we don't have suitable matching error in our list of codes we are happy to add them for you.  Here is a short table of common msgid's</p> <table> <thead> <tr> <th>msgid</th> <th>explanation</th> </tr> </thead> <tbody> <tr> <td>FAULT.OTA.LOGIN</td> <td>The credentials provided by you for the ota are invalid.</td> </tr> <tr> <td>FAULT.OTA.LOGIN.DISABLED</td> <td>The account credentials are valid, but the login has been disabled or is not activated for this interface</td> </tr> <tr> <td>FAULT.OTA.ROOM.MINRATE</td> <td>the rate is too low and was not updated.</td> </tr> </tbody> </table> <p>Please refer to the <a href=\"https://github.com/MyAllocator/myallocator-error-codes/blob/master/Errors.md\">following document</a> for a full list of error codes generated and handled by myallocator.</p> <p>If a msgid is returned then the json &quot;success&quot;:&quot;true|false&quot; is ignored and the msgid is considered authoritative on the state of the request (this is because msgid's can have more subtle status's like partial success which cannot be represented by a simple boolean state)</p> <p>If msgid is not included, or is not valid then the boolean &quot;success&quot;:&quot;true|false&quot; + the id and msg will be used.  If success is true then all errors will be treated as warnings, and if success is false then all errors will be treated as fatal errors.  The msgid 's will be generated under the cid namespace for the ota as follows:</p> <p>(success = false) FAULT.OTA.cid.id  : msg</p> <p>(success = true) WARNING.OTA.cid.id : msg</p> <p>If you plan to submit errors to us for internationalization then you can also include the corresponding msgid for your business logic.</p> <p>msgs can also contain variables, this is particularly handy for situations where room id's should be displayed.  To do this simply include the variable in the msgtxt -- ex: %room_id%  %room_desc%  ---</p> <p>{ msg:&quot;sorry but %room_desc% #%room_id% is not valid&quot;, room_desc:&quot;2 bedroom dorm&quot;, room_id:&quot;123&quot; }</p> <p>This approach can also be used with existing myallocator msgid's which have variables, making it possible to internationalize error responses while still mapping to fixed error codes.</p> <p>HTTP Status code <a href=\"https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md\">reference</a>.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
@@ -27,15 +27,75 @@ define({ "api": [
     "name": "RoomInfo",
     "version": "201707.0.1",
     "success": {
+      "fields": {
+        "Response": [
+          {
+            "group": "Response",
+            "type": "Object[]",
+            "optional": false,
+            "field": "RoomInfo",
+            "description": "<p>Array of room information objects</p>"
+          },
+          {
+            "group": "Response",
+            "type": "Number",
+            "optional": false,
+            "field": "RoomInfo/mya_room_id",
+            "description": "<p>myallocator room type ID</p>"
+          },
+          {
+            "group": "Response",
+            "type": "Number",
+            "optional": true,
+            "field": "RoomInfo/ota_room_id",
+            "description": "<p>channel room ID (if mapped)</p>"
+          },
+          {
+            "group": "Response",
+            "type": "Number",
+            "optional": false,
+            "field": "RoomInfo/beds",
+            "description": "<p>Number of beds in the room type</p>"
+          },
+          {
+            "group": "Response",
+            "type": "Number",
+            "optional": false,
+            "field": "RoomInfo/units",
+            "description": "<p>Number of rooms of this type</p>"
+          },
+          {
+            "group": "Response",
+            "type": "Boolean",
+            "optional": false,
+            "field": "RoomInfo/dormitory",
+            "description": "<p>Whether it's a dorm (shared room) or private room.</p>"
+          },
+          {
+            "group": "Response",
+            "type": "String",
+            "optional": false,
+            "field": "RoomInfo/label",
+            "description": "<p>Short name referencing the room type.</p>"
+          },
+          {
+            "group": "Response",
+            "type": "String",
+            "optional": true,
+            "field": "RoomInfo/description",
+            "description": "<p>A most longer description of the room.</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Room Info example",
-          "content": "{\n    \"RoomInfo\" : [\n        { \"mya_room_id\":\"\", \"ota_room_id\":\"\", \"label\":\"Single Room\", \"beds\":1, \"units\":10, \"dormitory\":false, \"Images\":[ \"http://path.to/image1.png\", \"http://path.to/image2.png\" ]},\n        { \"mya_room_id\":\"\", \"ota_room_id\":\"\", \"label\":\"Double Room\", \"beds\":2, \"units\":10, \"dormitory\":false, \"Images\":[ \"http://path.to/image1.png\", \"http://path.to/image2.png\" ]},\n        { \"mya_room_id\":\"\", \"ota_room_id\":\"\", \"label\":\"6 Bed CO-ED Dormitory\", \"beds\":6, \"units\":1, \"dormitory\":false, \"gender\":\"MIXED\", \"Images\":[ \"http://path.to/image1.png\", \"http://path.to/image2.png\" ]},\n        { \"mya_room_id\":\"\", \"ota_room_id\":\"\", \"label\":\"4 Bed FEMALE Dormitory\", \"beds\":4, \"units\":1, \"dormitory\":false, \"gender\":\"FEMALE\", \"Images\":[ \"http://path.to/image1.png\", \"http://path.to/image2.png\" ]},\n        { \"mya_room_id\":\"\", \"ota_room_id\":\"\", \"label\":\"4 Bed MALE Dormitory\", \"beds\":6, \"units\":1, \"dormitory\":false, \"gender\":\"MALE\", \"Images\":[ \"http://path.to/image1.png\", \"http://path.to/image2.png\" ]}\n    ]\n}",
+          "content": "{\n    \"RoomInfo\": [\n        {\n            \"Images\": [\n                \"http://path.to/image1.png\",\n                \"http://path.to/image2.png\"\n            ],\n            \"beds\": 1,\n            \"dormitory\": false,\n            \"label\": \"Single Room\",\n            \"description\": \"Single Room with a sea view\",\n            \"mya_room_id\": \"1234\",\n            \"ota_room_id\": \"\",\n            \"units\": 10\n        },\n        {\n            \"Images\": [\n                \"http://path.to/image3.png\",\n                \"http://path.to/image4.png\"\n            ],\n            \"beds\": 2,\n            \"dormitory\": false,\n            \"label\": \"Double Room\",\n            \"description\": \"Double Room with a jacuzzi\",\n            \"mya_room_id\": \"2345\",\n            \"ota_room_id\": \"\",\n            \"units\": 15\n        }\n    ]\n}",
           "type": "json"
         }
       ]
     },
-    "description": "<p>RoomInfo (if specified in OTA definition) is conditionally returned in the SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo Callback.<br> To save bandwidth RoomInfo is only returned in SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration on MyAllocator.  The RoomInfo callback is always available.<br> RoomInfo is only necessary for deep integrations or situations where the OTA plans to automatically/create destroy rooms using MyAllocator configuration.</p> <p><em>Implementation Suggestion:</em> If you are an OTA planning to use MyAllocator RoomId's (mya_room_id) instead of your own ota_room_id's please let us know and we'll set the ota_room_id automatically.  Then we can also eliminate the Room Mapping step from the properties ota configuration.</p>",
+    "description": "<p>RoomInfo (if enabled for your OTA by us) is conditionally returned in the SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo Callback. To save bandwidth RoomInfo is only returned in SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration on MyAllocator.  The RoomInfo callback is always available. RoomInfo is only necessary for deep integrations or situations where the OTA plans to automatically/create destroy rooms using MyAllocator configuration. In a normal integration this isn't very usual.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
@@ -46,7 +106,7 @@ define({ "api": [
     "title": "Special Considerations",
     "name": "Special_Considerations",
     "version": "201707.0.1",
-    "description": "<p>Json is a typeless language, by convention any associative array (hash) key which begins with an Uppercase First Letter will return an array of hashes. (These are not typos, they are intentional)</p> <p>HTTP response codes should always be 200, with a content-type application/json, gzip compression and keepalives will be used if supported.</p>",
+    "description": "<p>JSON is a typeless language, by convention any associative array (hash) key which begins with an Uppercase First Letter will return an array of hashes. (These are not typos, they are intentional)</p> <p>HTTP response codes should always be 200, with a content-type application/json, gzip compression and keepalives will be used if supported.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
@@ -104,21 +164,21 @@ define({ "api": [
         "Request": [
           {
             "group": "Request",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "shared_secret",
             "description": "<p>secret</p>"
           },
           {
             "group": "Request",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "mya_property_id",
             "description": "<p>property_id</p>"
           },
           {
             "group": "Request",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "booking_json",
             "description": "<p>see booking samples</p>"
@@ -139,12 +199,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Response",
-          "content": "{\n        \"myallocator_id\":\"12345\",   \n        \"success\":true\n}",
+          "content": "{\n        \"myallocator_id\":\"12345\",\n        \"success\":true\n}",
           "type": "json"
         }
       ]
     },
-    "description": "<p><strong>IMPORTANT:</strong> please record the myallocator_id for your records. If you implement BookingCreate you must also implement retry logic.  Please do not retry more than once per minute. Additionally the system will lock (block) multiple concurrent requests for the same property.</p>",
+    "description": "<p>**IMPORTANT: please record the myallocator_id for your records. If you implement **BookingCreate you must also implement retry logic.  Please do not retry more **than once per minute. Additionally the system will lock (block) multiple **concurrent requests for the same property.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },
@@ -275,7 +335,7 @@ define({ "api": [
     "title": "Tracking Pixels",
     "name": "Tracking_Pixels",
     "version": "201707.0.1",
-    "description": "<p>NotifyBooking</p> <p>Requests MyAllocator to immediately request a booking based on the ota_property_id.<br> This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking.</p> <p>It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.</p>",
+    "description": "<p>NotifyBooking</p> <p>Requests MyAllocator to immediately request a booking based on the ota_property_id. This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking.</p> <p>It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -313,7 +373,7 @@ define({ "api": [
         }
       ]
     },
-    "description": "<p>Return availability for a room_id.  If OTA does not support a particular ota_room_id they should accept all good data, and flag the request &quot;success&quot;:&quot;warning&quot; with sufficient errors to describe the data.  This will flag the OTA in the user management interface as requiring  attention.</p> <p>Some fields are conditional, or will be passed conditionally.<br> Please only parse fields which are included</p>",
+    "description": "<p>Return availability for a room_id.  If OTA does not support a particular ota_room_id they should accept all good data, and flag the request &quot;success&quot;:&quot;warning&quot; with sufficient errors to describe the data.  This will flag the OTA in the user management interface as requiring  attention.</p> <p>Some fields are conditional, or will be passed conditionally. Please only parse fields which are included</p>",
     "filename": "./build2us.pm",
     "groupTitle": "SDK_Reference"
   },
@@ -327,7 +387,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"Property\" : {\n        \"ota_cid\" : \"your_cid\",\n        \"verb\" : \"CreateProperty\",\n        \"shared_secret\" : \"****\",\n        \"guid\" : \"...\",\n\n        \"ota_property_id\" : \"\",               // For this call always empty\n        \"ota_property_password\" : \"\",         // For this call always empty\n        \n        \"mya_property_id\" : \"12345\",\n        \"name\" : \"Sample Hostel\",\n        \"country\" : \"US\",\n        \"currency\" : \"EUR\",\n        \"email_default\" : \"someone@example.com\",\n        \"email_channel_booking\" : \"bookings@example.com\",\n        \"default_min_los\" : 3,\n        \"default_max_los\" : 0,   // 0 means no max_los restriction\n        \"breakfast\" : \"\",        //  = Not available, IN = Included in price, EX = Excluded from price\n        \"weekend\" : [\n            \"tuesday\",\n            \"saturday\",\n            \"sunday\n        ],\n\n        \"firstname\" : \"John\",\n        \"lastname\"  : \"Smith\",\n        \"timezone\" : \"Asia/Thimphu\",\n\n        \"address\" : {\n            \"street\" : \"Main St\",\n            \"city\" : \"San Diego\",\n            \"zip\" : \"92120\",\n            \"state\" : \"CA\",\n            \"country\" : \"US\",\n            \"website\" : \"http://example.com\",\n            \"lon\" : \"32.715736\",\n            \"lat\" : \"-117.161087\",\n            \"phone\" : \"+1 123123123 \",\n            \"fax\" : \"+1 123123123\n        },\n\n        \"business_contact\": {\n            \"main_contact_name\": \"Jeff Johnson\",\n            \"company_name\": \"Hostels Inc.\",\n            \"account_manager_name\": \"Hillary Jackson\",\n            \"vat_id\": \"US2345678\",\n            \"street\": \"Office Street\",\n            \"state\": \"Office State\",\n            \"zip\": \"22222\",\n            \"city\": \"Office City\",\n            \"country\": \"DE\"\n        },\n\n\n        \"rooms\" : [\n            {\n                \"mya_room_id\" : 45829,\n                \"units\" : 5,                // Number of rooms for this type\n                \"beds\" : 2,               // Max. number of beds in that room\n                \"dormitory\" : false,\n                \"label\" : \"Double Room\",\n                \"description\" : \"A potentially long description about the room\",\n                \"images\" : [\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg\",\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg\",\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c39.jpg\n                ]\n            },\n            {\n                \"mya_room_id\" : 290,\n                \"units\" : 25,\n                \"beds\" : \"4\",\n                \"dormitory\" : false,\n                \"label\" : \"4-person private\",\n                \"description\" : null,\n                \"images\" : []\n            },\n            {\n                \"mya_room_id\" : 329,\n                \"units\" : 7,\n                \"beds\" : \"3\",\n                \"dormitory\" : false,\n                \"label\" : \"3-person private\",\n                \"description\" : \"Best three bed room in town\",\n                \"images\" : [\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg\n                ]\n            },\n            {\n                \"mya_room_id\" : 52,\n                \"units\" : 3,\n                \"beds\" : \"30\",\n                \"dormitory\" : true,\n                \"gender\" : \"MIXED\",             // Can be MIXED, FEMALE, MALE\n                \"label\" : \"30-person mixed shared\",\n                \"description\" : null,\n                \"images\" : []\n            }\n        ]\n    }\n}",
+        "content": "{\n    \"Property\" : {\n        \"ota_cid\" : \"your_cid\",\n        \"verb\" : \"CreateProperty\",\n        \"shared_secret\" : \"****\",\n        \"guid\" : \"...\",\n\n        \"ota_property_id\" : \"\",               // For this call always empty\n        \"ota_property_password\" : \"\",         // For this call always empty\n\n        \"mya_property_id\" : \"12345\",\n        \"name\" : \"Sample Hostel\",\n        \"country\" : \"US\",\n        \"currency\" : \"EUR\",\n        \"email_default\" : \"someone@example.com\",\n        \"email_channel_booking\" : \"bookings@example.com\",\n        \"default_min_los\" : 3,\n        \"default_max_los\" : 0,   // 0 means no max_los restriction\n        \"breakfast\" : \"\",        //  = Not available, IN = Included in price, EX = Excluded from price\n        \"weekend\" : [\n            \"tuesday\",\n            \"saturday\",\n            \"sunday\n        ],\n\n        \"firstname\" : \"John\",\n        \"lastname\"  : \"Smith\",\n        \"timezone\" : \"Asia/Thimphu\",\n\n        \"address\" : {\n            \"street\" : \"Main St\",\n            \"city\" : \"San Diego\",\n            \"zip\" : \"92120\",\n            \"state\" : \"CA\",\n            \"country\" : \"US\",\n            \"website\" : \"http://example.com\",\n            \"lon\" : \"32.715736\",\n            \"lat\" : \"-117.161087\",\n            \"phone\" : \"+1 123123123 \",\n            \"fax\" : \"+1 123123123\n        },\n\n        \"business_contact\": {\n            \"main_contact_name\": \"Jeff Johnson\",\n            \"company_name\": \"Hostels Inc.\",\n            \"account_manager_name\": \"Hillary Jackson\",\n            \"vat_id\": \"US2345678\",\n            \"street\": \"Office Street\",\n            \"state\": \"Office State\",\n            \"zip\": \"22222\",\n            \"city\": \"Office City\",\n            \"country\": \"DE\"\n        },\n\n\n        \"rooms\" : [\n            {\n                \"mya_room_id\" : 45829,\n                \"units\" : 5,                // Number of rooms for this type\n                \"beds\" : 2,               // Max. number of beds in that room\n                \"dormitory\" : false,\n                \"label\" : \"Double Room\",\n                \"description\" : \"A potentially long description about the room\",\n                \"images\" : [\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg\",\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg\",\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c39.jpg\n                ]\n            },\n            {\n                \"mya_room_id\" : 290,\n                \"units\" : 25,\n                \"beds\" : \"4\",\n                \"dormitory\" : false,\n                \"label\" : \"4-person private\",\n                \"description\" : null,\n                \"images\" : []\n            },\n            {\n                \"mya_room_id\" : 329,\n                \"units\" : 7,\n                \"beds\" : \"3\",\n                \"dormitory\" : false,\n                \"label\" : \"3-person private\",\n                \"description\" : \"Best three bed room in town\",\n                \"images\" : [\n                    \"https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg\n                ]\n            },\n            {\n                \"mya_room_id\" : 52,\n                \"units\" : 3,\n                \"beds\" : \"30\",\n                \"dormitory\" : true,\n                \"gender\" : \"MIXED\",             // Can be MIXED, FEMALE, MALE\n                \"label\" : \"30-person mixed shared\",\n                \"description\" : null,\n                \"images\" : []\n            }\n        ]\n    }\n}",
         "type": "json"
       }
     ],

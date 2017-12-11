@@ -1,21 +1,27 @@
 =pod
+
 @apiGroup Overview
 @api /
 @apiName Overview
 @apiVersion 201707.0.1
 @apiDescription
 
-This API allows an OTA (travel booking website) to integrate with MyAllocator by implementing a public-facing API receiver in their environment. 
+This API allows an OTA (travel booking website) to integrate with MyAllocator by
+implementing a public-facing API receiver in their environment.
 
-The API integration may be developed in any language, however, we have provided a PHP SDK library and receiver that you may drop into your PHP environment to speed up integration. The PHP SDK may be found [here](https://github.com/MyAllocator/myallocator-ota-php).
+The API integration may be developed in any language, however, we have provided
+a PHP SDK library and receiver that you may drop into your PHP environment to
+speed up integration. The PHP SDK may be found
+[here](https://github.com/MyAllocator/myallocator-ota-php).
 
-Its as simple as: 
+Its as simple as:
 
 <img src="/build2us-apidocs/img/image3.png" width="700" alt="Alt text">
 
 =cut
 
 =pod
+
 @apiGroup Getting Started
 @api / Step 1
 @apiName Step_1
@@ -23,9 +29,9 @@ Its as simple as:
 @apiDescription
 
 * Setup a FREE trial account at inbox.myallocator.com
-* Send an email to devhelp@myallocator.com and introduce yourself. Include the following details: 
+* Send an email to devhelp@myallocator.com and introduce yourself. Include the following details:
     * Your Domain Name/URL
-    * API Receiver URL (the script on your servers which will receive requests from MyAllocator) -- this can be a development machine/test environment. 
+    * API Receiver URL (the script on your servers which will receive requests from MyAllocator) -- this can be a development machine/test environment.
     * Attach a 36x36 Icon (for our user interface)
     * Signup/Registration URL for clients:
     * Special signup instructions: (will be displayed in our interface, and should help the hotel understand how to obtain setup credentials).
@@ -37,9 +43,9 @@ Its as simple as:
         * Maximum Length of Stay  [Y/N]
         * Dormitories (shared rooms) [Y/N]
         * Single Use Rates : special rates for a single person to take an entire dorm room [Y/N]
-    * Rate Plan/Packages [Y/N] 
-        * NOTE: rate plans/packages allow one hotel room type to have multiple prices & restrictions, and sometimes separate availability. 
-        * Close Outs : do you support special "close out" flags which enable rooms to be closed for specific days without setting availability or rates to zero.  
+    * Rate Plan/Packages [Y/N]
+        * NOTE: rate plans/packages allow one hotel room type to have multiple prices & restrictions, and sometimes separate availability.
+        * Close Outs : do you support special "close out" flags which enable rooms to be closed for specific days without setting availability or rates to zero.
         * Closed Arrivals : can the property block arrivals on certain days
         * Closed Departures : can the property block departures on certain days
     * Developer timezone, and estimated completion date.
@@ -49,15 +55,17 @@ Its as simple as:
 * We'll review your answers and create a definition for the OTA.
     * We will send you the cid, and shared_secret that is required for the API calls.
     * The API calls will not work until the definition is live, which will happen on our next development update (normally every two weeks).
-* At that point 
+* At that point
     * The channel will display as "in development" for all clients to see.
-    * You will be able to use your trial account as a test harness for sending updates to your OTA. 
-    * You may take as long as you need in development however as a courtesy we request you update our development team at least once every two weeks while in development with your current estimated completion date. 
+    * You will be able to use your trial account as a test harness for sending updates to your OTA.
+    * You may take as long as you need in development however as a courtesy we request you update our development team at least once every two weeks while in development with your current estimated completion date.
     * OTA's which fail to provide an estimated completion date may have their participation eligibility rescinded.
-    * When you are finished with development please let us know and we'll change the status on the OTA to live so clients can use it. 
+    * When you are finished with development please let us know and we'll change the status on the OTA to live so clients can use it.
+
 =cut
 
 =pod
+
 @apiGroup Getting Started
 @api / Step 2 Configure Property on MA and OTA
 @apiName Step_2
@@ -67,14 +75,17 @@ Its as simple as:
 <img src="/build2us-apidocs/img/image1.png" width="700" alt="Alt text">
 
 Hotel Registration Steps:
-1. Customer selects OTA from list of channels on MA, enters hotel id or username, and password and this is passed in a SetupProperty
-2. MA sends GetRooms and receives a list of Rooms configured on OTA, customer performs Room mapping of MA Room Types to OTA Room Types.
+1. Customer selects OTA from list of channels on MA, enters hotel id or
+username, and password and this is passed in a SetupProperty
+2. MA sends GetRooms and receives a list of Rooms configured on OTA, customer
+performs Room mapping of MA Room Types to OTA Room Types.
 3. Customer finalizes by performing a full refresh of all data to OTA
 Done!
 
 =cut
 
 =pod
+
 @apiGroup Getting Started
 @api / Step 3 Integrate SDK
 @apiName Step 3 Integrate SDK
@@ -102,6 +113,7 @@ Booking Received Flow
 =cut
 
 =pod
+
 @apiGroup Getting Started
 @api /callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel} Tracking Pixels
 @apiName Tracking Pixels
@@ -109,14 +121,17 @@ Booking Received Flow
 @apiDescription
 #NotifyBooking
 
-Requests MyAllocator to immediately request a booking based on the ota_property_id.  
-This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking. 
+Requests MyAllocator to immediately request a booking based on the
+ota_property_id. This should be fired/hit on any new booking OR any changes such
+as cancellations to an existing booking.
 
-It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.
+It is acceptable to fire this for all bookings - even for properties which are
+connected to other channel managers.
 
 =cut
 
 =pod
+
 @apiGroup Getting Started
 @api / Step 4: Get your first booking
 @apiName Step 4
@@ -130,6 +145,7 @@ OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)
 =cut
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / HealthCheck
 @apiName HealthCheck
@@ -147,11 +163,14 @@ OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)
 }
 @apiDescription
 
-Purpose: Pinged prior to SetupProperty or other configuration requests to verify proper operation. Should always return true.  If the system is in scheduled maintenance this url should return true.
+Purpose: Pinged prior to SetupProperty or other configuration requests to verify
+proper operation. Should always return true.  If the system is in scheduled
+maintenance this url should return true.
 
 =cut
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / SetupProperty (required)
 @apiName SetupProperty (required)
@@ -190,6 +209,7 @@ always be a 1:1 mapping between ota_property_id and mya_property_id.
 =cut
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / GetRoomTypes (required)
 @apiName GetRoomTypes (required)
@@ -215,10 +235,13 @@ always be a 1:1 mapping between ota_property_id and mya_property_id.
 @apiDescription
 Purpose: gets a list of rooms configured on the OTA.
 
-Notes: occupancy should be the maximum number of people who can fit in the room. dorm indicates the room is shared with other guests.
+Notes: occupancy should be the maximum number of people who can fit in the room.
+dorm indicates the room is shared with other guests.
+
 =cut
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / GetRatePlans
 @apiName GetRatePlans
@@ -251,9 +274,11 @@ Note that currently myallocator only supports updating one rateplan per room.
             { "ota_room_id":"", "ota_rateplan_id":"xxx", "title":"Non-refundable rate" }
         ]
     }
+
 =cut
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / GetBookingList
 @apiName GetBookingList
@@ -296,6 +321,7 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / GetBookingId
 @apiName GetBookingId
@@ -402,6 +428,7 @@ errors.
 =cut
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / ARIUpdate
 @apiName ARIUpdate
@@ -456,14 +483,19 @@ errors.
     }
 @apiDescription
 
-Return availability for a room_id.  If OTA does not support a particular ota_room_id they should accept all good data, and flag the request "success":"warning" with sufficient errors to describe the data.  This will flag the OTA in the user management interface as requiring  attention. 
+Return availability for a room_id.  If OTA does not support a particular
+ota_room_id they should accept all good data, and flag the request
+"success":"warning" with sufficient errors to describe the data.  This will flag
+the OTA in the user management interface as requiring  attention.
 
-Some fields are conditional, or will be passed conditionally.   
-Please only parse fields which are included 
+Some fields are conditional, or will be passed conditionally.
+Please only parse fields which are included
+
 =cut
 
 
 =pod
+
 @apiGroup SDK Reference
 @api {POST} / CreateProperty
 @apiName CreateProperty
@@ -478,7 +510,7 @@ Please only parse fields which are included
 
             "ota_property_id" : "",               // For this call always empty
             "ota_property_password" : "",         // For this call always empty
-            
+
             "mya_property_id" : "12345",
             "name" : "Sample Hostel",
             "country" : "US",
@@ -618,6 +650,7 @@ clickable link below the instruction text (if present).
 
 
 =pod
+
 @apiGroup Callback URLs (Optional)
 @api /callback/ota/{cid}/v201506/ChannelList ChannelList
 @apiName ChannelList
@@ -631,9 +664,11 @@ clickable link below the instruction text (if present).
             { "cid":"exp", "pretty":"Expedia", "icon-url":"https://www.fullpath/to/cdn/image" }
     ]
 }
+
 =cut
 
 =pod
+
 @apiGroup Callback URLs (Optional)
 @api {POST|GET} /callback/ota/{cid}/v201506/RoomInfo RoomInfo
 @apiName RoomInfo
@@ -646,28 +681,35 @@ clickable link below the instruction text (if present).
 {
         "RoomInfo:[ .. ] // see RoomInfo Appendix
 }
+
 =cut
 
 =pod
+
 @apiGroup Callback URLs (Optional)
 @api {POST|GET} /callback/ota/{cid}/v201506/BookingCreate BookingCreate
 @apiName BookingCreate
 @apiVersion 201707.0.1
-@apiParam (Request) {string} shared_secret secret
-@apiParam (Request) {string} mya_property_id property_id
-@apiParam (Request) {string} booking_json see booking samples
+@apiParam (Request) {String} shared_secret secret
+@apiParam (Request) {String} mya_property_id property_id
+@apiParam (Request) {String} booking_json see booking samples
 @apiHeaderExample {json} Response Header
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
 {
-        "myallocator_id":"12345",   
+        "myallocator_id":"12345",
         "success":true
 }
 @apiDescription
-**IMPORTANT:** please record the myallocator_id for your records. If you implement BookingCreate you must also implement retry logic.  Please do not retry more than once per minute. Additionally the system will lock (block) multiple concurrent requests for the same property.
+**IMPORTANT: please record the myallocator_id for your records. If you implement
+**BookingCreate you must also implement retry logic.  Please do not retry more
+**than once per minute. Additionally the system will lock (block) multiple
+**concurrent requests for the same property.
+
 =cut
 
 =pod
+
 @apiGroup Callback URLs (Optional)
 @api {POST|GET} /callback/ota/{cid}/v201506/ARIFullRefresh ARIFullRefresh
 @apiName ARIFullRefresh
@@ -675,52 +717,95 @@ clickable link below the instruction text (if present).
 @apiParam (Request) {string} shared_secret secret
 @apiParam (Request) {string} mya_property_id property_id
 @apiDescription
-This is for technical support on the remote OTA to enqueue a full refresh of the property.
+This is for technical support on the remote OTA to enqueue a full refresh of the
+property.
+
 =cut
 
 =pod
+
 @apiGroup Appendix
 @api / RoomInfo
 @apiName RoomInfo
 @apiVersion 201707.0.1
+@apiSuccess (Response) {Object[]} RoomInfo Array of room information objects
+@apiSuccess (Response) {Object} RoomInfo   Room information object
+@apiSuccess (Response) {Number} RoomInfo/mya_room_id myallocator room type ID
+@apiSuccess (Response) {Number} [RoomInfo/ota_room_id] channel room ID (if mapped)
+@apiSuccess (Response) {Number} RoomInfo/beds Number of beds in the room type
+@apiSuccess (Response) {Number} RoomInfo/units Number of rooms of this type
+@apiSuccess (Response) {Boolean} RoomInfo/dormitory Whether it's a dorm (shared room) or private room.
+@apiSuccess (Response) {String} RoomInfo/label Short name referencing the room type.
+@apiSuccess (Response) {String} [RoomInfo/description] A most longer description of the room.
+
 @apiSuccessExample {json} Room Info example
 {
-    "RoomInfo" : [
-        { "mya_room_id":"", "ota_room_id":"", "label":"Single Room", "beds":1, "units":10, "dormitory":false, "Images":[ "http://path.to/image1.png", "http://path.to/image2.png" ]},
-        { "mya_room_id":"", "ota_room_id":"", "label":"Double Room", "beds":2, "units":10, "dormitory":false, "Images":[ "http://path.to/image1.png", "http://path.to/image2.png" ]},
-        { "mya_room_id":"", "ota_room_id":"", "label":"6 Bed CO-ED Dormitory", "beds":6, "units":1, "dormitory":false, "gender":"MIXED", "Images":[ "http://path.to/image1.png", "http://path.to/image2.png" ]},
-        { "mya_room_id":"", "ota_room_id":"", "label":"4 Bed FEMALE Dormitory", "beds":4, "units":1, "dormitory":false, "gender":"FEMALE", "Images":[ "http://path.to/image1.png", "http://path.to/image2.png" ]},
-        { "mya_room_id":"", "ota_room_id":"", "label":"4 Bed MALE Dormitory", "beds":6, "units":1, "dormitory":false, "gender":"MALE", "Images":[ "http://path.to/image1.png", "http://path.to/image2.png" ]}
+    "RoomInfo": [
+        {
+            "Images": [
+                "http://path.to/image1.png",
+                "http://path.to/image2.png"
+            ],
+            "beds": 1,
+            "dormitory": false,
+            "label": "Single Room",
+            "description": "Single Room with a sea view",
+            "mya_room_id": "1234",
+            "ota_room_id": "",
+            "units": 10
+        },
+        {
+            "Images": [
+                "http://path.to/image3.png",
+                "http://path.to/image4.png"
+            ],
+            "beds": 2,
+            "dormitory": false,
+            "label": "Double Room",
+            "description": "Double Room with a jacuzzi",
+            "mya_room_id": "2345",
+            "ota_room_id": "",
+            "units": 15
+        }
     ]
 }
 @apiDescription
-RoomInfo (if specified in OTA definition) is conditionally returned in the SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo Callback.  
-To save bandwidth RoomInfo is only returned in SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration on MyAllocator.  The RoomInfo callback is always available.  
-RoomInfo is only necessary for deep integrations or situations where the OTA plans to automatically/create destroy rooms using MyAllocator configuration.
+RoomInfo (if enabled for your OTA by us) is conditionally returned in the
+SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo
+Callback. To save bandwidth RoomInfo is only returned in
+SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration
+on MyAllocator.  The RoomInfo callback is always available. RoomInfo is only
+necessary for deep integrations or situations where the OTA plans to
+automatically/create destroy rooms using MyAllocator configuration. In a normal
+integration this isn't very usual.
 
-*Implementation Suggestion:* If you are an OTA planning to use MyAllocator RoomId's (mya_room_id) instead of your own ota_room_id's please let us know and we'll set the ota_room_id automatically.  Then we can also eliminate the Room Mapping step from the properties ota configuration. 
 =cut
 
 =pod
+
 @apiGroup Appendix
 @api / Special Considerations
 @apiName Special Considerations
 @apiVersion 201707.0.1
 @apiDescription
-Json is a typeless language, by convention any associative array (hash) key which begins with an Uppercase First Letter will return an array of hashes. (These are not typos, they are intentional)
+JSON is a typeless language, by convention any associative array (hash) key
+which begins with an Uppercase First Letter will return an array of hashes.
+(These are not typos, they are intentional)
 
-HTTP response codes should always be 200, with a content-type application/json, gzip compression and keepalives will be used if supported.
+HTTP response codes should always be 200, with a content-type application/json,
+gzip compression and keepalives will be used if supported.
 
 =cut
 
 =pod
+
 @apiGroup Appendix
 @api / Returning Messages/Error(s)
 @apiName Returning Messages/Error(s)
 @apiVersion 201707.0.1
 @apiErrorExample {json} Error-Response:
 {
-    "success":"true|false", 
+    "success":"true|false",
     "errors": [
         { "id":"", "type":"", "msgid":"XXX", "msg":"" },
         { "id":"", "type":"", "msgid":"XXX", "msg":"" }
@@ -731,14 +816,21 @@ msgtypes:
 * warning: will only display if the call is successful.  All other types are considered fatal errors.
 * ise : an unknown error occurred in OTA server infrastructure -- retry will occur, you will be notified.
 * api : OTA detected misformatted request / invalid data -- retry will occur.
-* user    : user data mapping inconsistency (this will NOT trigger an error notification to you) -- retry will most likely not occur (varies by data type). 
+* user    : user data mapping inconsistency (this will NOT trigger an error notification to you) -- retry will most likely not occur (varies by data type).
 
+Multiple errors should only be returned calls such as ARIUpdate where multiple-
+unrelated errors can occur. Most other calls will display either the first or
+last error message returned.
 
-Multiple errors should only be returned calls such as ARIUpdate where multiple-unrelated errors can occur. Most other calls will display either the first or last error message returned.
+The generic ota error handler accepts two "high level" approaches to error
+handling, the first is to use your codes and messages (id + msg), the second is
+to use ours (msgid).
 
-The generic ota error handler accepts two "high level" approaches to error handling, the first is to use your codes and messages (id + msg), the second is to use ours (msgid).  
-
-If msgid is used, then you will need to obtain the list of msgid's and map your internal error responses to our codes, this has the advantage of being able to be internationalized for clients, and also linking to relevant knowledge base articles.  If we don't have suitable matching error in our list of codes we are happy to add them for you.  Here is a short table of common msgid's
+If msgid is used, then you will need to obtain the list of msgid's and map your
+internal error responses to our codes, this has the advantage of being able to
+be internationalized for clients, and also linking to relevant knowledge base
+articles.  If we don't have suitable matching error in our list of codes we are
+happy to add them for you.  Here is a short table of common msgid's
 
 |msgid|explanation|
 | -- | ----- |
@@ -746,29 +838,44 @@ If msgid is used, then you will need to obtain the list of msgid's and map your 
 |FAULT.OTA.LOGIN.DISABLED|The account credentials are valid, but the login has been disabled or is not activated for this interface|
 |FAULT.OTA.ROOM.MINRATE|the rate is too low and was not updated.|
 
-Please refer to the [following document](https://github.com/MyAllocator/myallocator-error-codes/blob/master/Errors.md) for a full list of error codes generated and handled by myallocator.
+Please refer to the
+[following document](https://github.com/MyAllocator/myallocator-error-codes/blob/master/Errors.md)
+for a full list of error codes generated and handled by myallocator.
 
-If a msgid is returned then the json "success":"true|false" is ignored and the msgid is considered authoritative on the state of the request (this is because msgid's can have more subtle status's like partial success which cannot be represented by a simple boolean state)
+If a msgid is returned then the json "success":"true|false" is ignored and the
+msgid is considered authoritative on the state of the request (this is because
+msgid's can have more subtle status's like partial success which cannot be
+represented by a simple boolean state)
 
-If msgid is not included, or is not valid then the boolean "success":"true|false" + the id and msg will be used.  If success is true then all errors will be treated as warnings, and if success is false then all errors will be treated as fatal errors.  The msgid 's will be generated under the cid namespace for the ota as follows:
+If msgid is not included, or is not valid then the boolean
+"success":"true|false" + the id and msg will be used.  If success is true then
+all errors will be treated as warnings, and if success is false then all errors
+will be treated as fatal errors.  The msgid 's will be generated under the cid
+namespace for the ota as follows:
 
 (success = false) FAULT.OTA.cid.id  : msg
 
 (success = true) WARNING.OTA.cid.id : msg
 
-If you plan to submit errors to us for internationalization then you can also include the corresponding msgid for your business logic. 
+If you plan to submit errors to us for internationalization then you can also
+include the corresponding msgid for your business logic.
 
-msgs can also contain variables, this is particularly handy for situations where room id's should be displayed.  To do this simply include the variable in the msgtxt -- ex: %room_id%  %room_desc%  --- 
+msgs can also contain variables, this is particularly handy for situations where
+room id's should be displayed.  To do this simply include the variable in the
+msgtxt -- ex: %room_id%  %room_desc%  ---
 
 { msg:"sorry but %room_desc% #%room_id% is not valid", room_desc:"2 bedroom dorm", room_id:"123" }
 
-This approach can also be used with existing myallocator msgid's which have variables, making it possible to internationalize error responses while still mapping to fixed error codes.
+This approach can also be used with existing myallocator msgid's which have
+variables, making it possible to internationalize error responses while still
+mapping to fixed error codes.
 
 HTTP Status code [reference](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md).
 
 =cut
 
 =pod
+
 @apiGroup Appendix
 @api / Terminology
 @apiName Terminology
@@ -786,7 +893,8 @@ HTTP Status code [reference](https://github.com/for-GET/know-your-http-well/blob
 |booking_id|the booking id on the ota of a particular reservation|
 
 **HTTPS Request:**
-json payload will be transmitted in a json form parameter via form-data, and with Content-Type of "application/json"
+json payload will be transmitted in a json form parameter via form-data, and
+with Content-Type of "application/json"
 json response should be of type "application/json"
 
 =cut
