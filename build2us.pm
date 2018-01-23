@@ -348,7 +348,7 @@ If *ota_booking_version* is undefined/empty please return all bookings.
         "OrderId": "8604168",
         "IsCancellation": false,
         "TotalCurrency": "USD",
-        "TotalPrice": 134
+        "TotalPrice": 134,
 
         "Customers": [
             {
