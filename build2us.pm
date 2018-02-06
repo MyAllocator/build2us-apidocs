@@ -483,10 +483,9 @@ errors.
     }
 @apiDescription
 
-Return availability for a room_id.  If OTA does not support a particular
-ota_room_id they should accept all good data, and flag the request
-"success":"warning" with sufficient errors to describe the data.  This will flag
-the OTA in the user management interface as requiring  attention.
+Return availability for a room_id. If OTA does not support a particular
+ota_room_id they should return an error. This will flag the OTA in the
+user management interface as requiring attention.
 
 Some fields are conditional, or will be passed conditionally.
 Please only parse fields which are included
@@ -794,83 +793,6 @@ which begins with an Uppercase First Letter will return an array of hashes.
 
 HTTP response codes should always be 200, with a content-type application/json,
 gzip compression and keepalives will be used if supported.
-
-=cut
-
-=pod
-
-@apiGroup Appendix
-@api / Returning Messages/Error(s)
-@apiName Returning Messages/Error(s)
-@apiVersion 201707.0.1
-@apiErrorExample {json} Error-Response:
-{
-    "success":"true|false",
-    "errors": [
-        { "id":"", "type":"", "msgid":"XXX", "msg":"" },
-        { "id":"", "type":"", "msgid":"XXX", "msg":"" }
-    ]
-}
-@apiDescription
-msgtypes:
-* warning: will only display if the call is successful.  All other types are considered fatal errors.
-* ise : an unknown error occurred in OTA server infrastructure -- retry will occur, you will be notified.
-* api : OTA detected misformatted request / invalid data -- retry will occur.
-* user    : user data mapping inconsistency (this will NOT trigger an error notification to you) -- retry will most likely not occur (varies by data type).
-
-Multiple errors should only be returned calls such as ARIUpdate where multiple-
-unrelated errors can occur. Most other calls will display either the first or
-last error message returned.
-
-The generic ota error handler accepts two "high level" approaches to error
-handling, the first is to use your codes and messages (id + msg), the second is
-to use ours (msgid).
-
-If msgid is used, then you will need to obtain the list of msgid's and map your
-internal error responses to our codes, this has the advantage of being able to
-be internationalized for clients, and also linking to relevant knowledge base
-articles.  If we don't have suitable matching error in our list of codes we are
-happy to add them for you.  Here is a short table of common msgid's
-
-|msgid|explanation|
-| -- | ----- |
-|FAULT.OTA.LOGIN|The credentials provided by you for the ota are invalid.|
-|FAULT.OTA.LOGIN.DISABLED|The account credentials are valid, but the login has been disabled or is not activated for this interface|
-|FAULT.OTA.ROOM.MINRATE|the rate is too low and was not updated.|
-
-Please refer to the
-[following document](https://github.com/MyAllocator/myallocator-error-codes/blob/master/Errors.md)
-for a full list of error codes generated and handled by myallocator.
-
-If a msgid is returned then the json "success":"true|false" is ignored and the
-msgid is considered authoritative on the state of the request (this is because
-msgid's can have more subtle status's like partial success which cannot be
-represented by a simple boolean state)
-
-If msgid is not included, or is not valid then the boolean
-"success":"true|false" + the id and msg will be used.  If success is true then
-all errors will be treated as warnings, and if success is false then all errors
-will be treated as fatal errors.  The msgid 's will be generated under the cid
-namespace for the ota as follows:
-
-(success = false) FAULT.OTA.cid.id  : msg
-
-(success = true) WARNING.OTA.cid.id : msg
-
-If you plan to submit errors to us for internationalization then you can also
-include the corresponding msgid for your business logic.
-
-msgs can also contain variables, this is particularly handy for situations where
-room id's should be displayed.  To do this simply include the variable in the
-msgtxt -- ex: %room_id%  %room_desc%  ---
-
-{ msg:"sorry but %room_desc% #%room_id% is not valid", room_desc:"2 bedroom dorm", room_id:"123" }
-
-This approach can also be used with existing myallocator msgid's which have
-variables, making it possible to internationalize error responses while still
-mapping to fixed error codes.
-
-HTTP Status code [reference](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md).
 
 =cut
 

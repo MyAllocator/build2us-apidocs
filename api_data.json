@@ -3,26 +3,6 @@
     "group": "Appendix",
     "type": "",
     "url": "/",
-    "title": "Returning Messages/Error(s)",
-    "name": "Returning_Messages_Error_s_",
-    "version": "201707.0.1",
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n    \"success\":\"true|false\",\n    \"errors\": [\n        { \"id\":\"\", \"type\":\"\", \"msgid\":\"XXX\", \"msg\":\"\" },\n        { \"id\":\"\", \"type\":\"\", \"msgid\":\"XXX\", \"msg\":\"\" }\n    ]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "description": "<p>msgtypes:</p> <ul> <li>warning: will only display if the call is successful.  All other types are considered fatal errors.</li> <li>ise : an unknown error occurred in OTA server infrastructure -- retry will occur, you will be notified.</li> <li>api : OTA detected misformatted request / invalid data -- retry will occur.</li> <li>user    : user data mapping inconsistency (this will NOT trigger an error notification to you) -- retry will most likely not occur (varies by data type).</li> </ul> <p>Multiple errors should only be returned calls such as ARIUpdate where multiple- unrelated errors can occur. Most other calls will display either the first or last error message returned.</p> <p>The generic ota error handler accepts two &quot;high level&quot; approaches to error handling, the first is to use your codes and messages (id + msg), the second is to use ours (msgid).</p> <p>If msgid is used, then you will need to obtain the list of msgid's and map your internal error responses to our codes, this has the advantage of being able to be internationalized for clients, and also linking to relevant knowledge base articles.  If we don't have suitable matching error in our list of codes we are happy to add them for you.  Here is a short table of common msgid's</p> <table> <thead> <tr> <th>msgid</th> <th>explanation</th> </tr> </thead> <tbody> <tr> <td>FAULT.OTA.LOGIN</td> <td>The credentials provided by you for the ota are invalid.</td> </tr> <tr> <td>FAULT.OTA.LOGIN.DISABLED</td> <td>The account credentials are valid, but the login has been disabled or is not activated for this interface</td> </tr> <tr> <td>FAULT.OTA.ROOM.MINRATE</td> <td>the rate is too low and was not updated.</td> </tr> </tbody> </table> <p>Please refer to the <a href=\"https://github.com/MyAllocator/myallocator-error-codes/blob/master/Errors.md\">following document</a> for a full list of error codes generated and handled by myallocator.</p> <p>If a msgid is returned then the json &quot;success&quot;:&quot;true|false&quot; is ignored and the msgid is considered authoritative on the state of the request (this is because msgid's can have more subtle status's like partial success which cannot be represented by a simple boolean state)</p> <p>If msgid is not included, or is not valid then the boolean &quot;success&quot;:&quot;true|false&quot; + the id and msg will be used.  If success is true then all errors will be treated as warnings, and if success is false then all errors will be treated as fatal errors.  The msgid 's will be generated under the cid namespace for the ota as follows:</p> <p>(success = false) FAULT.OTA.cid.id  : msg</p> <p>(success = true) WARNING.OTA.cid.id : msg</p> <p>If you plan to submit errors to us for internationalization then you can also include the corresponding msgid for your business logic.</p> <p>msgs can also contain variables, this is particularly handy for situations where room id's should be displayed.  To do this simply include the variable in the msgtxt -- ex: %room_id%  %room_desc%  ---</p> <p>{ msg:&quot;sorry but %room_desc% #%room_id% is not valid&quot;, room_desc:&quot;2 bedroom dorm&quot;, room_id:&quot;123&quot; }</p> <p>This approach can also be used with existing myallocator msgid's which have variables, making it possible to internationalize error responses while still mapping to fixed error codes.</p> <p>HTTP Status code <a href=\"https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md\">reference</a>.</p>",
-    "filename": "./build2us.pm",
-    "groupTitle": "Appendix"
-  },
-  {
-    "group": "Appendix",
-    "type": "",
-    "url": "/",
     "title": "RoomInfo",
     "name": "RoomInfo",
     "version": "201707.0.1",
@@ -373,7 +353,7 @@
         }
       ]
     },
-    "description": "<p>Return availability for a room_id.  If OTA does not support a particular ota_room_id they should accept all good data, and flag the request &quot;success&quot;:&quot;warning&quot; with sufficient errors to describe the data.  This will flag the OTA in the user management interface as requiring  attention.</p> <p>Some fields are conditional, or will be passed conditionally. Please only parse fields which are included</p>",
+    "description": "<p>Return availability for a room_id. If OTA does not support a particular ota_room_id they should return an error. This will flag the OTA in the user management interface as requiring attention.</p> <p>Some fields are conditional, or will be passed conditionally. Please only parse fields which are included</p>",
     "filename": "./build2us.pm",
     "groupTitle": "SDK_Reference"
   },
