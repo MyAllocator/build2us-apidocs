@@ -522,7 +522,7 @@ Please only parse fields which are included
             "weekend" : [
                 "tuesday",
                 "saturday",
-                "sunday
+                "sunday"
             ],
 
             "firstname" : "John",
@@ -539,7 +539,7 @@ Please only parse fields which are included
                 "lon" : "32.715736",
                 "lat" : "-117.161087",
                 "phone" : "+1 123123123 ",
-                "fax" : "+1 123123123
+                "fax" : "+1 123123123"
             },
 
             "business_contact": {
@@ -566,7 +566,7 @@ Please only parse fields which are included
                     "images" : [
                         "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg",
                         "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg",
-                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c39.jpg
+                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c39.jpg"
                     ]
                 },
                 {
@@ -586,7 +586,7 @@ Please only parse fields which are included
                     "label" : "3-person private",
                     "description" : "Best three bed room in town",
                     "images" : [
-                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg"
                     ]
                 },
                 {
@@ -678,7 +678,7 @@ clickable link below the instruction text (if present).
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
 {
-        "RoomInfo:[ .. ] // see RoomInfo Appendix
+        "RoomInfo":[ .. ] // see RoomInfo Appendix
 }
 
 =cut
