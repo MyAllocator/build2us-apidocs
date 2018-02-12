@@ -501,16 +501,16 @@ Please only parse fields which are included
 @apiVersion 201707.0.1
 @apiExample {json} Request
     {
+        "mya_property_id" : "12345",
+        "ota_cid" : "your_cid",
+        "verb" : "CreateProperty",
+        "shared_secret" : "****",
+        "guid" : "...",
+
+        "ota_property_id" : "",               // For this call always empty
+        "ota_property_password" : "",         // For this call always empty
+
         "Property" : {
-            "ota_cid" : "your_cid",
-            "verb" : "CreateProperty",
-            "shared_secret" : "****",
-            "guid" : "...",
-
-            "ota_property_id" : "",               // For this call always empty
-            "ota_property_password" : "",         // For this call always empty
-
-            "mya_property_id" : "12345",
             "name" : "Sample Hostel",
             "country" : "US",
             "currency" : "EUR",
