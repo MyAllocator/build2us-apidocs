@@ -443,30 +443,30 @@ errors.
         "shared_secret":"",
         "Inventory": [
             {
-                "ota_room_id": 123,     // always passed
-                "ota_rate_id": 456,     // only if rateplans are supported
-                "start_date": "YYYY-MM-DD", // always passed
-                "end_date": "YYYY-MM-DD",   // always passed
-                "units": 5,                 // conditionally passed
-                "rate": 50.00,          // conditionally passed
-                "min_los": 0,           // *only if ota capable
-                "max_los": 0,           // *only if ota capable
-                "closearr": false,      // *only if ota capable
-                "closedep": false,      // *only if ota capable
-                "close": false          // *only if ota capable
+                "ota_room_id" : "61365",     // always passed
+                "ota_rate_id" : "rate_456",  // only if rateplans are supported
+                "start_date" : "2018-01-22", // always passed
+                "end_date" : "2018-02-12",   // always passed
+                "units" : 5,                 // conditionally passed
+                "rate" : "0.00",             // conditionally passed
+                "max_los" : 14,              // *only if ota capable
+                "min_los" : 2,               // *only if ota capable
+                "closearr" : false,          // *only if ota capable
+                "closedep": false,           // *only if ota capable
+                "close" : false              // *only if ota capable
             },
             {
-                "ota_room_id": 123,
-                "ota_rate_id": 456,
-                "start_date": "YYYY-MM-DD",
-                "end_date": "YYYY-MM-DD",
-                "units": 5,
-                "rate": 50.00,
-                "min_los": 0,
-                "max_los": 0,       // max length of stay
-                "closearr": false,  // do not allow arrivals in this range
-                "closedep": false,  // do not allow departures in this range
-                "close": false      // do not allow bookings
+                "ota_room_id" : "61365",
+                "ota_rate_id" : "rate_456",
+                "start_date" : "2018-02-13"
+                "end_date" : "2018-02-14",
+                "units" : 0,
+                "rate" : "309.00",
+                "max_los" : 14,              // max length of stay
+                "min_los" : 2,               // min length of stay
+                "closearr": false,           // do not allow arrivals in this range
+                "closedep": false,           // do not allow departures in this range
+                "close": false               // do not allow bookings
             }
         ]
     }
