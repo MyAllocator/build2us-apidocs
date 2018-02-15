@@ -67,7 +67,7 @@ Its as simple as:
 =pod
 
 @apiGroup Getting Started
-@api / Step 2 Configure Property on MA and OTA
+@api / Step 2: Configure Property on MA and OTA
 @apiName Step_2
 @apiVersion 201707.0.1
 @apiDescription
@@ -87,8 +87,8 @@ Done!
 =pod
 
 @apiGroup Getting Started
-@api / Step 3 Integrate SDK
-@apiName Step 3 Integrate SDK
+@api / Step 3: Integrate SDK
+@apiName Step 3: Integrate SDK
 @apiVersion 201707.0.1
 @apiDescription
 
@@ -115,8 +115,8 @@ Booking Received Flow
 =pod
 
 @apiGroup Getting Started
-@api {POST|GET} /callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel} NotifyBooking
-@apiName NotifyBooking
+@api {POST|GET} /callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel} Step 4: NotifyBooking
+@apiName Step 4: NotifyBooking
 @apiVersion 201707.0.1
 @apiDescription
 #NotifyBooking
@@ -133,8 +133,8 @@ connected to other channel managers.
 =pod
 
 @apiGroup Getting Started
-@api / Step 4: Get your first booking
-@apiName Step 4
+@api / Step 5: Get your first booking
+@apiName Step 5
 @apiVersion 201707.0.1
 @apiDescription
 
