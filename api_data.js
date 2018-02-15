@@ -63,7 +63,7 @@ define({ "api": [
             "type": "String",
             "optional": true,
             "field": "RoomInfo/description",
-            "description": "<p>A most longer description of the room.</p>"
+            "description": "<p>A longer description of the room.</p>"
           }
         ]
       },
