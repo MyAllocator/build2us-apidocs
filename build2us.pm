@@ -735,7 +735,7 @@ property.
 @apiSuccess (Response) {Number} RoomInfo/units Number of rooms of this type
 @apiSuccess (Response) {Boolean} RoomInfo/dormitory Whether it's a dorm (shared room) or private room.
 @apiSuccess (Response) {String} RoomInfo/label Short name referencing the room type.
-@apiSuccess (Response) {String} [RoomInfo/description] A most longer description of the room.
+@apiSuccess (Response) {String} [RoomInfo/description] A longer description of the room.
 
 @apiSuccessExample {json} Room Info example
 {
