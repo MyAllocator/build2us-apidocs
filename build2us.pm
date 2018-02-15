@@ -119,7 +119,6 @@ Booking Received Flow
 @apiName Step 4: NotifyBooking
 @apiVersion 201707.0.1
 @apiDescription
-#NotifyBooking
 
 Requests MyAllocator to immediately request a booking based on the
 ota_property_id. This should be fired/hit on any new booking OR any changes such
