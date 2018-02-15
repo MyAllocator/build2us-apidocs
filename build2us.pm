@@ -115,8 +115,8 @@ Booking Received Flow
 =pod
 
 @apiGroup Getting Started
-@api /callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel} Tracking Pixels
-@apiName Tracking Pixels
+@api {POST|GET} /callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel} NotifyBooking
+@apiName NotifyBooking
 @apiVersion 201707.0.1
 @apiDescription
 #NotifyBooking

@@ -266,6 +266,17 @@
   },
   {
     "group": "Getting_Started",
+    "type": "POST|GET",
+    "url": "/callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel}",
+    "title": "NotifyBooking",
+    "name": "NotifyBooking",
+    "version": "201707.0.1",
+    "description": "<p>NotifyBooking</p> <p>Requests MyAllocator to immediately request a booking based on the ota_property_id. This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking.</p> <p>It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.</p>",
+    "filename": "./build2us.pm",
+    "groupTitle": "Getting_Started"
+  },
+  {
+    "group": "Getting_Started",
     "type": "",
     "url": "/",
     "title": "Step 1",
@@ -305,17 +316,6 @@
     "name": "Step_4",
     "version": "201707.0.1",
     "description": "<p>OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)</p> <img src=\"/build2us-apidocs/img/image4.png\" width=\"700\" alt=\"Alt text\">",
-    "filename": "./build2us.pm",
-    "groupTitle": "Getting_Started"
-  },
-  {
-    "group": "Getting_Started",
-    "type": "",
-    "url": "/callback/ota/{cid}/v201503/NotifyBooking?ota_property_id={ota_property_id}&booking_id={booking_id}&output={json|pixel}",
-    "title": "Tracking Pixels",
-    "name": "Tracking_Pixels",
-    "version": "201707.0.1",
-    "description": "<p>NotifyBooking</p> <p>Requests MyAllocator to immediately request a booking based on the ota_property_id. This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking.</p> <p>It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
