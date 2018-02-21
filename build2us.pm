@@ -366,12 +366,15 @@ If *ota_booking_version* is undefined/empty please return all bookings.
                     {
                         "Date": "2017-11-08",
                         "Description": "Refundable Rate",
-                        "Rate": 32.5
+                        "Rate": 32.5,
+                        "Currency": "USD",
+                        "RateId": "13649"
                     },
                     {
                         "Date": "2017-11-09",
                         "Description": "Refundable Rate",
                         "Rate": 34.5,
+                        "Currency": "USD",
                         "RateId": "13649"
                     }
                 ],
