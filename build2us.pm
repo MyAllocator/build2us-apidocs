@@ -332,14 +332,14 @@ If *ota_booking_version* is undefined/empty please return all bookings.
         "mya_property_id":"",
         "guid":"",
         "shared_secret":"",
-        "booking_id":"OTABookingID",
+        "booking_id":"8604168",
         "version":""
     }
 
 @apiSuccessExample Minimal Booking Example
 {
     "success": true,
-    "booking_id": "OTABookingID",
+    "booking_id": "8604168", // should be same as OrderId
     "ota_property_id": "",
     "mya_property_id": "",
 
