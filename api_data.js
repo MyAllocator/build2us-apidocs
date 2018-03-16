@@ -515,7 +515,7 @@ define({ "api": [
         }
       ]
     },
-    "description": "<p>Purpose: Pinged prior to SetupProperty or other configuration requests to verify proper operation. Should always return true.  If the system is in scheduled maintenance this url should return true.</p>",
+    "description": "<p>Purpose: Pinged prior to SetupProperty or other configuration requests to verify proper operation. Should always return true.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "SDK_Reference"
   },

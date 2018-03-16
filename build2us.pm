@@ -163,8 +163,7 @@ OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)
 @apiDescription
 
 Purpose: Pinged prior to SetupProperty or other configuration requests to verify
-proper operation. Should always return true.  If the system is in scheduled
-maintenance this url should return true.
+proper operation. Should always return true.
 
 =cut
 
