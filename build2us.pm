@@ -377,9 +377,11 @@ If *ota_booking_version* is undefined/empty please return all bookings.
                         "RateId": "13649"
                     }
                 ],
-                "EndDate": "2017-11-09",
-                "Price": 134,
                 "StartDate": "2017-11-08",
+                "EndDate": "2017-11-09", // Set equal to last full day of stay
+                                         // (departure date minus 1)
+                                         // In this example, the booking is for two nights
+                "Price": 134,
                 "Units": 2
             }
         ]
