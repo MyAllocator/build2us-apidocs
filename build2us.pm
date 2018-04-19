@@ -37,7 +37,7 @@ Its as simple as:
     * Special signup instructions: (will be displayed in our interface, and should help the hotel understand how to obtain setup credentials).
     * Administrative Contact (Name, Email, Phone, Skype, etc.)
     * Technical/Developer Contact
-    * update_years: how many years in the future can availability be uploaded
+    * Update Years: how many years in the future can availability be uploaded
     * Core Features:
         * Minimum Length of Stay  [Y/N]  (# days)
         * Maximum Length of Stay  [Y/N]
@@ -344,6 +344,8 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 
     "Booking": {
         "OrderId": "123456789",
+        "OrderDate": "2018-04-22",
+        "OrderTime": "18:02:58",
         "IsCancellation": false,
         "TotalCurrency": "USD",
         "TotalPrice": 134,
@@ -411,6 +413,9 @@ Country codes: For CustomerCountry and CustomerNationality (if you include those
 fields) make sure to pass the country code as uppercase Alpha-2 ISO-3166 codes.
 
 Currency codes: Make sure they are valid ISO-4217 (uppercase).
+
+Make sure to provide OrderDate and OrderTime. Tell us which timezone the date
+and time is in before the certification. We recommend UTC.
 
 Implementation suggestions: when testing make sure the MyAllocator test property
 has "download bookings" enabled or the booking will be saved in a queue and not
