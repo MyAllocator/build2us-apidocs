@@ -443,13 +443,15 @@ errors.
 @apiVersion 201707.0.1
 @apiExample {json} Request
     {
-        "verb":"ARIUpdate"
-        "ota_property_id":"",
-        "mya_property_id":"",
-        "guid":"",
-        "currency":"USD",
-        "shared_secret":"",
-        "Inventory": [
+        "verb":"ARIUpdate",
+        "ota_property_id" : "CID_123",
+        "ota_property_password" : "very:secret-password",
+        "mya_property_id" : "25678",
+        "guid" : "",
+        "currency" : "USD",
+        "ota_cid" : "",
+        "shared_secret" : "",
+        "Inventory" : [
             {
                 "ota_room_id" : "61365",     // always passed
                 "ota_rate_id" : "rate_456",  // only if rateplans are supported
