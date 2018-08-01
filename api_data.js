@@ -49,7 +49,7 @@ define({ "api": [
             "type": "boolean",
             "optional": false,
             "field": "RoomInfo/dormitory",
-            "description": "<p>Whether it's a dorm /shared room (true) or private room (false).</p>"
+            "description": "<p>Whether it's a dorm/shared room (true) or private room (false).</p>"
           },
           {
             "group": "Response",
@@ -193,7 +193,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response",
-          "content": "{\n        \"myallocator_id\":\"12345\",\n        \"success\":true\n}",
+          "content": "{\n        \"success\":true\n}",
           "type": "json"
         }
       ]
