@@ -707,7 +707,6 @@ clickable link below the instruction text (if present).
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
 {
-        "myallocator_id":"12345",
         "success":true
 }
 @apiDescription
