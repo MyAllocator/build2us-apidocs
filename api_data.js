@@ -11,56 +11,56 @@ define({ "api": [
         "Response": [
           {
             "group": "Response",
-            "type": "Object[]",
+            "type": "object[]",
             "optional": false,
             "field": "RoomInfo",
             "description": "<p>Array of room information objects</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": false,
             "field": "RoomInfo/mya_room_id",
             "description": "<p>myallocator room type ID</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": true,
             "field": "RoomInfo/ota_room_id",
             "description": "<p>channel room ID (if mapped)</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": false,
             "field": "RoomInfo/beds",
             "description": "<p>Number of beds in the room type</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": false,
             "field": "RoomInfo/units",
             "description": "<p>Number of rooms of this type</p>"
           },
           {
             "group": "Response",
-            "type": "Boolean",
+            "type": "boolean",
             "optional": false,
             "field": "RoomInfo/dormitory",
-            "description": "<p>Whether it's a dorm (shared room) or private room.</p>"
+            "description": "<p>Whether it's a dorm /shared room (true) or private room (false).</p>"
           },
           {
             "group": "Response",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "RoomInfo/label",
-            "description": "<p>Short name referencing the room type.</p>"
+            "description": "<p>Room name/title.</p>"
           },
           {
             "group": "Response",
-            "type": "String",
+            "type": "string",
             "optional": true,
             "field": "RoomInfo/description",
             "description": "<p>A longer description of the room.</p>"
@@ -123,12 +123,19 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "mya_property_id",
-            "description": "<p>property_id</p>"
+            "description": "<p>myallocator property ID</p>"
+          },
+          {
+            "group": "Request",
+            "type": "string",
+            "optional": false,
+            "field": "ota_property_id",
+            "description": "<p>property ID on OTA side</p>"
           }
         ]
       }
     },
-    "description": "<p>This is for technical support on the remote OTA to enqueue a full refresh of the property.</p>",
+    "description": "<p>This is for technical support on the remote OTA to enqueue a full refresh of the property. You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },
@@ -144,21 +151,28 @@ define({ "api": [
         "Request": [
           {
             "group": "Request",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "shared_secret",
             "description": "<p>secret</p>"
           },
           {
             "group": "Request",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "mya_property_id",
-            "description": "<p>property_id</p>"
+            "description": "<p>myallocator property ID</p>"
           },
           {
             "group": "Request",
-            "type": "String",
+            "type": "string",
+            "optional": false,
+            "field": "ota_property_id",
+            "description": "<p>property ID on OTA side</p>"
+          },
+          {
+            "group": "Request",
+            "type": "string",
             "optional": false,
             "field": "booking_json",
             "description": "<p>see booking samples</p>"
@@ -184,7 +198,7 @@ define({ "api": [
         }
       ]
     },
-    "description": "<p>**IMPORTANT: please record the myallocator_id for your records. If you implement **BookingCreate you must also implement retry logic.  Please do not retry more **than once per minute. Additionally the system will lock (block) multiple **concurrent requests for the same property.</p>",
+    "description": "<p>You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id. <strong>IMPORTANT:</strong> please record the myallocator_id for your records. If you implement BookingCreate you must also implement retry logic.  Please do not retry more than once per minute. Additionally the system will lock (block) multiple concurrent requests for the same property.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },
@@ -238,7 +252,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "mya_property_id",
-            "description": "<p>property_id</p>"
+            "description": "<p>myallocator property ID</p>"
           }
         ]
       }
