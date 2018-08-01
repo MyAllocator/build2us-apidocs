@@ -748,7 +748,7 @@ myallocator ID's) or mya_property_id.
 @apiSuccess (Response) {number} [RoomInfo/ota_room_id] channel room ID (if mapped)
 @apiSuccess (Response) {number} RoomInfo/beds Number of beds in the room type
 @apiSuccess (Response) {number} RoomInfo/units Number of rooms of this type
-@apiSuccess (Response) {boolean} RoomInfo/dormitory Whether it's a dorm /shared room (true) or private room (false).
+@apiSuccess (Response) {boolean} RoomInfo/dormitory Whether it's a dorm/shared room (true) or private room (false).
 @apiSuccess (Response) {string} RoomInfo/label Room name/title.
 @apiSuccess (Response) {string} [RoomInfo/description] A longer description of the room.
 
