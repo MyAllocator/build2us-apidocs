@@ -209,6 +209,50 @@ always be a 1:1 mapping between ota_property_id and mya_property_id.
 =pod
 
 @apiGroup SDK Reference
+@api {POST} / GetSubProperties
+@apiName GetSubProperties
+@apiVersion 201707.0.1
+@apiExample Request
+    {
+        "verb":"GetSubProperties"
+        "mya_property_id":"",
+        "ota_property_id":"",
+        "shared_secret":""
+    }
+@apiSuccessExample {json} Response
+    {
+        "success":true,
+        "SubProperties":[
+            { "ota_property_sub_id": "", "title":"" },
+            { "ota_property_sub_id": "", "title":"" },
+        ]
+    }
+@apiDescription
+
+Purpose: Some OTAs only allow one property for a specific login
+username/password where the username is also the ota_property_id. Others allow
+for one username/password to be associate with multiple properties. In this
+second case, each OTA property identifier is stored as an ota_property_sub_id in
+order to be handled separately from the client's OTA username. This method
+call provides all of the properties (ota_property_sub_ids) associated with the
+client's username/password so that the correct ota_property_sub_id can be
+linked with our mya_property_id for a specific property.
+
+IMPORTANT: Please contact us to enable this capability for your OTA. It is NOT
+enabled by default. It is only necessary if your OTA allows for multiple
+properties associated with one login username/password.
+
+Implementation suggestions: ota_property_sub_id will be the OTA identifier for
+a specific property managed by a client while the title is that property's
+name. This method will allow the client to map their MyAllocator property with
+the OTA's ota_property_sub_id when setting up the property-OTA association
+on MyAllocator.
+
+=cut
+
+=pod
+
+@apiGroup SDK Reference
 @api {POST} / GetRoomTypes (required)
 @apiName GetRoomTypes (required)
 @apiVersion 201707.0.1

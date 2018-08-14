@@ -342,9 +342,8 @@ require([
                 }
 
                 // add prefix URL for endpoint
-                var prefix_url = (fields.article.group == "Callback_URLs__Optional_"
-                    || fields.article.group == "Getting_Started") ? apiProject.callback_url : apiProject.url;
-                fields.article.url = prefix_url + fields.article.url;
+                if (apiProject.url)
+                    fields.article.url = apiProject.url + fields.article.url;
 
                 addArticleSettings(fields, entry);
 
