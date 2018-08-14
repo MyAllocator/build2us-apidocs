@@ -727,7 +727,7 @@ clickable link below the instruction text (if present).
 @apiName RoomInfo
 @apiVersion 201707.0.1
 @apiParam (Request) {string} shared_secret secret
-@apiParam (Request) {string} mya_property_id property_id
+@apiParam (Request) {string} mya_property_id myallocator property ID
 @apiHeaderExample {json} Response Header
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
@@ -743,21 +743,23 @@ clickable link below the instruction text (if present).
 @api {POST|GET} /callback/ota/{cid}/v201506/BookingCreate BookingCreate
 @apiName BookingCreate
 @apiVersion 201707.0.1
-@apiParam (Request) {String} shared_secret secret
-@apiParam (Request) {String} mya_property_id property_id
-@apiParam (Request) {String} booking_json see booking samples
+@apiParam (Request) {string} shared_secret secret
+@apiParam (Request) {string} mya_property_id myallocator property ID
+@apiParam (Request) {string} ota_property_id property ID on OTA side
+@apiParam (Request) {string} booking_json see booking samples
 @apiHeaderExample {json} Response Header
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
 {
-        "myallocator_id":"12345",
         "success":true
 }
 @apiDescription
-**IMPORTANT: please record the myallocator_id for your records. If you implement
-**BookingCreate you must also implement retry logic.  Please do not retry more
-**than once per minute. Additionally the system will lock (block) multiple
-**concurrent requests for the same property.
+You may use either ota_property_id (it may be resolved into a number of
+myallocator ID's) or mya_property_id.
+**IMPORTANT:** please record the myallocator_id for your records. If you implement
+BookingCreate you must also implement retry logic.  Please do not retry more
+than once per minute. Additionally the system will lock (block) multiple
+concurrent requests for the same property.
 
 =cut
 
@@ -768,10 +770,12 @@ clickable link below the instruction text (if present).
 @apiName ARIFullRefresh
 @apiVersion 201707.0.1
 @apiParam (Request) {string} shared_secret secret
-@apiParam (Request) {string} mya_property_id property_id
+@apiParam (Request) {string} mya_property_id myallocator property ID
+@apiParam (Request) {string} ota_property_id property ID on OTA side
 @apiDescription
 This is for technical support on the remote OTA to enqueue a full refresh of the
-property.
+property. You may use either ota_property_id (it may be resolved into a number of
+myallocator ID's) or mya_property_id.
 
 =cut
 
@@ -781,15 +785,15 @@ property.
 @api / RoomInfo
 @apiName RoomInfo
 @apiVersion 201707.0.1
-@apiSuccess (Response) {Object[]} RoomInfo Array of room information objects
-@apiSuccess (Response) {Object} RoomInfo   Room information object
-@apiSuccess (Response) {Number} RoomInfo/mya_room_id myallocator room type ID
-@apiSuccess (Response) {Number} [RoomInfo/ota_room_id] channel room ID (if mapped)
-@apiSuccess (Response) {Number} RoomInfo/beds Number of beds in the room type
-@apiSuccess (Response) {Number} RoomInfo/units Number of rooms of this type
-@apiSuccess (Response) {Boolean} RoomInfo/dormitory Whether it's a dorm (shared room) or private room.
-@apiSuccess (Response) {String} RoomInfo/label Short name referencing the room type.
-@apiSuccess (Response) {String} [RoomInfo/description] A longer description of the room.
+@apiSuccess (Response) {object[]} RoomInfo Array of room information objects
+@apiSuccess (Response) {object} RoomInfo   Room information object
+@apiSuccess (Response) {number} RoomInfo/mya_room_id myallocator room type ID
+@apiSuccess (Response) {number} [RoomInfo/ota_room_id] channel room ID (if mapped)
+@apiSuccess (Response) {number} RoomInfo/beds Number of beds in the room type
+@apiSuccess (Response) {number} RoomInfo/units Number of rooms of this type
+@apiSuccess (Response) {boolean} RoomInfo/dormitory Whether it's a dorm/shared room (true) or private room (false).
+@apiSuccess (Response) {string} RoomInfo/label Room name/title.
+@apiSuccess (Response) {string} [RoomInfo/description] A longer description of the room.
 
 @apiSuccessExample {json} Room Info example
 {
