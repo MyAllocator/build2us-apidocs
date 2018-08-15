@@ -1,7 +1,7 @@
 define({
   "name": "Myallocator Build-To-Us API Documentation",
   "version": "201707.0.1",
-  "description": "myallocator Build-To-Us API for OTA.",
+  "description": "Myallocator Build-To-Us API for channels",
   "title": "Build-To-Us",
   "url": "http://your.endpoint.com",
   "callback_url": "https://api.myallocator.com",
@@ -17,7 +17,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-08-01T15:56:15.797Z",
+    "time": "2018-08-15T09:58:12.303Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
