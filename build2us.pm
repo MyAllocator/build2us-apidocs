@@ -209,6 +209,50 @@ always be a 1:1 mapping between ota_property_id and mya_property_id.
 =pod
 
 @apiGroup SDK Reference
+@api {POST} / GetSubProperties
+@apiName GetSubProperties
+@apiVersion 201707.0.1
+@apiExample Request
+    {
+        "verb":"GetSubProperties"
+        "mya_property_id":"",
+        "ota_property_id":"",
+        "shared_secret":""
+    }
+@apiSuccessExample {json} Response
+    {
+        "success":true,
+        "SubProperties":[
+            { "ota_property_sub_id": "", "title":"" },
+            { "ota_property_sub_id": "", "title":"" },
+        ]
+    }
+@apiDescription
+
+Purpose: Some OTAs only allow one property for a specific login
+username/password where the username is also the ota_property_id. Others allow
+for one username/password to be associate with multiple properties. In this
+second case, each OTA property identifier is stored as an ota_property_sub_id in
+order to be handled separately from the client's OTA username. This method
+call provides all of the properties (ota_property_sub_ids) associated with the
+client's username/password so that the correct ota_property_sub_id can be
+linked with our mya_property_id for a specific property.
+
+IMPORTANT: Please contact us to enable this capability for your OTA. It is NOT
+enabled by default. It is only necessary if your OTA allows for multiple
+properties associated with one login username/password.
+
+Implementation suggestions: ota_property_sub_id will be the OTA identifier for
+a specific property managed by a client while the title is that property's
+name. This method will allow the client to map their MyAllocator property with
+the OTA's ota_property_sub_id when setting up the property-OTA association
+on MyAllocator.
+
+=cut
+
+=pod
+
+@apiGroup SDK Reference
 @api {POST} / GetRoomTypes (required)
 @apiName GetRoomTypes (required)
 @apiVersion 201707.0.1
@@ -443,13 +487,15 @@ errors.
 @apiVersion 201707.0.1
 @apiExample {json} Request
     {
-        "verb":"ARIUpdate"
-        "ota_property_id":"",
-        "mya_property_id":"",
-        "guid":"",
-        "currency":"USD",
-        "shared_secret":"",
-        "Inventory": [
+        "verb":"ARIUpdate",
+        "ota_property_id" : "CID_123",
+        "ota_property_password" : "very:secret-password",
+        "mya_property_id" : "25678",
+        "guid" : "",
+        "currency" : "USD",
+        "ota_cid" : "",
+        "shared_secret" : "",
+        "Inventory" : [
             {
                 "ota_room_id" : "61365",     // always passed
                 "ota_rate_id" : "rate_456",  // only if rateplans are supported
@@ -681,7 +727,7 @@ clickable link below the instruction text (if present).
 @apiName RoomInfo
 @apiVersion 201707.0.1
 @apiParam (Request) {string} shared_secret secret
-@apiParam (Request) {string} mya_property_id property_id
+@apiParam (Request) {string} mya_property_id myallocator property ID
 @apiHeaderExample {json} Response Header
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
@@ -697,9 +743,10 @@ clickable link below the instruction text (if present).
 @api {POST|GET} /callback/ota/{cid}/v201506/BookingCreate BookingCreate
 @apiName BookingCreate
 @apiVersion 201707.0.1
-@apiParam (Request) {String} shared_secret secret
-@apiParam (Request) {String} mya_property_id property_id
-@apiParam (Request) {String} booking_json see booking samples
+@apiParam (Request) {string} shared_secret secret
+@apiParam (Request) {string} mya_property_id myallocator property ID
+@apiParam (Request) {string} ota_property_id property ID on OTA side
+@apiParam (Request) {string} booking_json see booking samples
 @apiHeaderExample {json} Response Header
 {"Content-type":"application/json"}
 @apiSuccessExample {json} Response
@@ -707,6 +754,8 @@ clickable link below the instruction text (if present).
         "success":true
 }
 @apiDescription
+You may use either ota_property_id (it may be resolved into a number of
+myallocator ID's) or mya_property_id.
 
 **IMPORTANT**: If you implement BookingCreate you must also implement retry
 logic. Please do not retry more than once per minute. Additionally the system
@@ -721,10 +770,12 @@ will block multiple concurrent requests for the same property.
 @apiName ARIFullRefresh
 @apiVersion 201707.0.1
 @apiParam (Request) {string} shared_secret secret
-@apiParam (Request) {string} mya_property_id property_id
+@apiParam (Request) {string} mya_property_id myallocator property ID
+@apiParam (Request) {string} ota_property_id property ID on OTA side
 @apiDescription
 This is for technical support on the remote OTA to enqueue a full refresh of the
-property.
+property. You may use either ota_property_id (it may be resolved into a number of
+myallocator ID's) or mya_property_id.
 
 =cut
 
@@ -736,7 +787,7 @@ property.
 @apiVersion 201707.0.1
 @apiSuccess (Response) {Object[]} RoomInfo Array of room information objects
 @apiSuccess (Response) {Object} RoomInfo   Room information object
-@apiSuccess (Response) {Number} RoomInfo/mya_room_id Myallocator room type ID
+@apiSuccess (Response) {Number} RoomInfo/mya_room_id myallocator room type ID
 @apiSuccess (Response) {Number} [RoomInfo/ota_room_id] channel room ID (if mapped)
 @apiSuccess (Response) {Number} RoomInfo/beds Number of beds in the room type
 @apiSuccess (Response) {Number} RoomInfo/units Number of rooms of this type

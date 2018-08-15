@@ -11,56 +11,56 @@
         "Response": [
           {
             "group": "Response",
-            "type": "Object[]",
+            "type": "object[]",
             "optional": false,
             "field": "RoomInfo",
             "description": "<p>Array of room information objects</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": false,
             "field": "RoomInfo/mya_room_id",
             "description": "<p>myallocator room type ID</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": true,
             "field": "RoomInfo/ota_room_id",
             "description": "<p>channel room ID (if mapped)</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": false,
             "field": "RoomInfo/beds",
             "description": "<p>Number of beds in the room type</p>"
           },
           {
             "group": "Response",
-            "type": "Number",
+            "type": "number",
             "optional": false,
             "field": "RoomInfo/units",
             "description": "<p>Number of rooms of this type</p>"
           },
           {
             "group": "Response",
-            "type": "Boolean",
+            "type": "boolean",
             "optional": false,
             "field": "RoomInfo/dormitory",
-            "description": "<p>Whether it's a dorm (shared room) or private room.</p>"
+            "description": "<p>Whether it's a dorm/shared room (true) or private room (false).</p>"
           },
           {
             "group": "Response",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "RoomInfo/label",
-            "description": "<p>Short name referencing the room type.</p>"
+            "description": "<p>Room name/title.</p>"
           },
           {
             "group": "Response",
-            "type": "String",
+            "type": "string",
             "optional": true,
             "field": "RoomInfo/description",
             "description": "<p>A longer description of the room.</p>"
@@ -123,12 +123,19 @@
             "type": "string",
             "optional": false,
             "field": "mya_property_id",
-            "description": "<p>property_id</p>"
+            "description": "<p>myallocator property ID</p>"
+          },
+          {
+            "group": "Request",
+            "type": "string",
+            "optional": false,
+            "field": "ota_property_id",
+            "description": "<p>property ID on OTA side</p>"
           }
         ]
       }
     },
-    "description": "<p>This is for technical support on the remote OTA to enqueue a full refresh of the property.</p>",
+    "description": "<p>This is for technical support on the remote OTA to enqueue a full refresh of the property. You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },
@@ -144,21 +151,28 @@
         "Request": [
           {
             "group": "Request",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "shared_secret",
             "description": "<p>secret</p>"
           },
           {
             "group": "Request",
-            "type": "String",
+            "type": "string",
             "optional": false,
             "field": "mya_property_id",
-            "description": "<p>property_id</p>"
+            "description": "<p>myallocator property ID</p>"
           },
           {
             "group": "Request",
-            "type": "String",
+            "type": "string",
+            "optional": false,
+            "field": "ota_property_id",
+            "description": "<p>property ID on OTA side</p>"
+          },
+          {
+            "group": "Request",
+            "type": "string",
             "optional": false,
             "field": "booking_json",
             "description": "<p>see booking samples</p>"
@@ -179,12 +193,12 @@
       "examples": [
         {
           "title": "Response",
-          "content": "{\n        \"myallocator_id\":\"12345\",\n        \"success\":true\n}",
+          "content": "{\n        \"success\":true\n}",
           "type": "json"
         }
       ]
     },
-    "description": "<p>**IMPORTANT: please record the myallocator_id for your records. If you implement **BookingCreate you must also implement retry logic.  Please do not retry more **than once per minute. Additionally the system will lock (block) multiple **concurrent requests for the same property.</p>",
+    "description": "<p>You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id. <strong>IMPORTANT:</strong> please record the myallocator_id for your records. If you implement BookingCreate you must also implement retry logic.  Please do not retry more than once per minute. Additionally the system will lock (block) multiple concurrent requests for the same property.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },
@@ -238,7 +252,7 @@
             "type": "string",
             "optional": false,
             "field": "mya_property_id",
-            "description": "<p>property_id</p>"
+            "description": "<p>myallocator property ID</p>"
           }
         ]
       }
@@ -340,7 +354,7 @@
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"ARIUpdate\"\n    \"ota_property_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"currency\":\"USD\",\n    \"shared_secret\":\"\",\n    \"Inventory\": [\n        {\n            \"ota_room_id\" : \"61365\",     // always passed\n            \"ota_rate_id\" : \"rate_456\",  // only if rateplans are supported\n            \"start_date\" : \"2018-01-22\", // always passed\n            \"end_date\" : \"2018-02-12\",   // always passed\n            \"units\" : 5,                 // conditionally passed\n            \"rate\" : \"0.00\",             // conditionally passed\n            \"max_los\" : 14,              // *only if ota capable\n            \"min_los\" : 2,               // *only if ota capable\n            \"closearr\" : false,          // *only if ota capable\n            \"closedep\": false,           // *only if ota capable\n            \"close\" : false              // *only if ota capable\n        },\n        {\n            \"ota_room_id\" : \"61365\",\n            \"ota_rate_id\" : \"rate_456\",\n            \"start_date\" : \"2018-02-13\"\n            \"end_date\" : \"2018-02-14\",\n            \"units\" : 0,\n            \"rate\" : \"309.00\",\n            \"max_los\" : 14,              // max length of stay\n            \"min_los\" : 2,               // min length of stay\n            \"closearr\": false,           // do not allow arrivals in this range\n            \"closedep\": false,           // do not allow departures in this range\n            \"close\": false               // do not allow bookings\n        }\n    ]\n}",
+        "content": "{\n    \"verb\":\"ARIUpdate\",\n    \"ota_property_id\" : \"CID_123\",\n    \"ota_property_password\" : \"very:secret-password\",\n    \"mya_property_id\" : \"25678\",\n    \"guid\" : \"\",\n    \"currency\" : \"USD\",\n    \"ota_cid\" : \"\",\n    \"shared_secret\" : \"\",\n    \"Inventory\" : [\n        {\n            \"ota_room_id\" : \"61365\",     // always passed\n            \"ota_rate_id\" : \"rate_456\",  // only if rateplans are supported\n            \"start_date\" : \"2018-01-22\", // always passed\n            \"end_date\" : \"2018-02-12\",   // always passed\n            \"units\" : 5,                 // conditionally passed\n            \"rate\" : \"0.00\",             // conditionally passed\n            \"max_los\" : 14,              // *only if ota capable\n            \"min_los\" : 2,               // *only if ota capable\n            \"closearr\" : false,          // *only if ota capable\n            \"closedep\": false,           // *only if ota capable\n            \"close\" : false              // *only if ota capable\n        },\n        {\n            \"ota_room_id\" : \"61365\",\n            \"ota_rate_id\" : \"rate_456\",\n            \"start_date\" : \"2018-02-13\"\n            \"end_date\" : \"2018-02-14\",\n            \"units\" : 0,\n            \"rate\" : \"309.00\",\n            \"max_los\" : 14,              // max length of stay\n            \"min_los\" : 2,               // min length of stay\n            \"closearr\": false,           // do not allow arrivals in this range\n            \"closedep\": false,           // do not allow departures in this range\n            \"close\": false               // do not allow bookings\n        }\n    ]\n}",
         "type": "json"
       }
     ],
@@ -489,6 +503,33 @@
       ]
     },
     "description": "<p>Purpose: gets a list of rooms configured on the OTA.</p> <p>Notes: occupancy should be the maximum number of people who can fit in the room. dorm indicates the room is shared with other guests.</p>",
+    "filename": "./build2us.pm",
+    "groupTitle": "SDK_Reference"
+  },
+  {
+    "group": "SDK_Reference",
+    "type": "POST",
+    "url": "/",
+    "title": "GetSubProperties",
+    "name": "GetSubProperties",
+    "version": "201707.0.1",
+    "examples": [
+      {
+        "title": "Request",
+        "content": "{\n    \"verb\":\"GetSubProperties\"\n    \"mya_property_id\":\"\",\n    \"ota_property_id\":\"\",\n    \"shared_secret\":\"\"\n}",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response",
+          "content": "{\n    \"success\":true,\n    \"SubProperties\":[\n        { \"ota_property_sub_id\": \"\", \"title\":\"\" },\n        { \"ota_property_sub_id\": \"\", \"title\":\"\" },\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "description": "<p>Purpose: Some OTAs only allow one property for a specific login username/password where the username is also the ota_property_id. Others allow for one username/password to be associate with multiple properties. In this second case, each OTA property identifier is stored as an ota_property_sub_id in order to be handled separately from the client's OTA username. This method call provides all of the properties (ota_property_sub_ids) associated with the client's username/password so that the correct ota_property_sub_id can be linked with our mya_property_id for a specific property.</p> <p>IMPORTANT: Please contact us to enable this capability for your OTA. It is NOT enabled by default. It is only necessary if your OTA allows for multiple properties associated with one login username/password.</p> <p>Implementation suggestions: ota_property_sub_id will be the OTA identifier for a specific property managed by a client while the title is that property's name. This method will allow the client to map their MyAllocator property with the OTA's ota_property_sub_id when setting up the property-OTA association on MyAllocator.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "SDK_Reference"
   },
