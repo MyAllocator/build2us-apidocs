@@ -244,9 +244,9 @@ properties associated with one login username/password.
 
 Implementation suggestions: ota_property_sub_id will be the OTA identifier for
 a specific property managed by a client while the title is that property's
-name. This method will allow the client to map their MyAllocator property with
+name. This method will allow the client to map their myallocator property with
 the OTA's ota_property_sub_id when setting up the property-OTA association
-on MyAllocator.
+on myallocator.
 
 =cut
 
