@@ -6,15 +6,15 @@
 @apiVersion 201707.0.1
 @apiDescription
 
-This API allows an OTA (travel booking website) to integrate with MyAllocator by
-implementing a public-facing API receiver in their environment.
+This API allows a channel/OTA (travel booking website) to integrate with
+myallocator by implementing a public-facing API receiver in their environment.
 
 The API integration may be developed in any language, however, we have provided
 a PHP SDK library and receiver that you may drop into your PHP environment to
 speed up integration. The PHP SDK may be found
 [here](https://github.com/MyAllocator/myallocator-ota-php).
 
-Its as simple as:
+It's as simple as:
 
 <img src="/build2us-apidocs/img/image3.png" width="700" alt="Alt text">
 
@@ -31,7 +31,7 @@ Its as simple as:
 * Setup a FREE trial account at inbox.myallocator.com
 * Send an email to devhelp@myallocator.com and introduce yourself. Include the following details:
     * Your Domain Name/URL
-    * API Receiver URL (the script on your servers which will receive requests from MyAllocator) -- this can be a development machine/test environment.
+    * API Receiver URL (the script on your servers which will receive requests from myallocator) -- this can be a development machine/test environment.
     * Attach a 36x36 Icon (for our user interface)
     * Signup/Registration URL for clients:
     * Special signup instructions: (will be displayed in our interface, and should help the hotel understand how to obtain setup credentials).
@@ -49,7 +49,7 @@ Its as simple as:
         * Closed Arrivals : can the property block arrivals on certain days
         * Closed Departures : can the property block departures on certain days
     * Developer timezone, and estimated completion date.
-    * RoomInfo [Y/N] - Will RoomInfo (label, types, images) from MyAllocator be imported? (See Appendix)
+    * RoomInfo [Y/N] - Will RoomInfo (label, types, images) from myallocator be imported? (See Appendix)
     * Any special input fields you require during signup, or pre-development questions you have.  Examples:
         * Multi Currency not supported - ex: please only send rates in Kyrgyzstanian Som (KGS)
 * We'll review your answers and create a definition for the OTA.
@@ -101,8 +101,8 @@ Hotel MA Daily Flow
 4. Proceed to Booking Received Flow
 
 OTA Booking Notification (optional)
-1. New Booking arrives for property, notify MyAllocator via OTA API
-2. MyAllocator will call GetBookingId and download Booking
+1. New Booking arrives for property, notify myallocator via OTA API
+2. myallocator will call GetBookingId and download Booking
 3. Proceed to Booking Received Flow
 
 Booking Received Flow
@@ -120,7 +120,7 @@ Booking Received Flow
 @apiVersion 201707.0.1
 @apiDescription
 
-Requests MyAllocator to immediately request a booking based on the
+Requests myallocator to immediately request a booking based on the
 ota_property_id. This should be fired/hit on any new booking OR any changes such
 as cancellations to an existing booking.
 
@@ -137,7 +137,7 @@ connected to other channel managers.
 @apiVersion 201707.0.1
 @apiDescription
 
-OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)
+OUTBOUND rest api calls (json post to api_url) (from myallocator to OTA)
 
 <img src="/build2us-apidocs/img/image4.png" width="700" alt="Alt text">
 
@@ -439,10 +439,10 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 [Booking Examples](https://github.com/MyAllocator/bookingsamples)
 
 **IMPORTANT**: The github BookingSamples link above is intended for a PMS
-Integrating into MyAllocator. As an OTA there are a few key differences in the
+Integrating into myallocator. As an OTA there are a few key differences in the
 format.  OTA Bookings should _NEVER_ include RoomTypeIds:[] node, instead pass
 "ChannelRoomType":"123".  Do not attempt to pass "channel", or any field
-labelled starting with Myallocator* or myallocator_* (all those will be setup
+labelled starting with MyAllocator* or myallocator_* (all those will be setup
 automatically).
 
 Most fields are optional. The minimal booking example below lists which fields
@@ -461,7 +461,7 @@ Currency codes: Make sure they are valid ISO-4217 (uppercase).
 Make sure to provide OrderDate and OrderTime. Tell us which timezone the date
 and time is in before the certification. We recommend UTC.
 
-Implementation suggestions: when testing make sure the MyAllocator test property
+Implementation suggestions: when testing make sure the myallocator test property
 has "download bookings" enabled or the booking will be saved in a queue and not
 visible during testing.  To enable login and go to Manage / General / Download
 new bookings. Default setting is "off/disabled".  Once enabled please allow 30
@@ -756,10 +756,10 @@ clickable link below the instruction text (if present).
 @apiDescription
 You may use either ota_property_id (it may be resolved into a number of
 myallocator ID's) or mya_property_id.
-**IMPORTANT:** please record the myallocator_id for your records. If you implement
-BookingCreate you must also implement retry logic.  Please do not retry more
-than once per minute. Additionally the system will lock (block) multiple
-concurrent requests for the same property.
+
+**IMPORTANT**: If you implement BookingCreate you must also implement retry
+logic. Please do not retry more than once per minute. Additionally the system
+will block multiple concurrent requests for the same property.
 
 =cut
 
@@ -785,15 +785,15 @@ myallocator ID's) or mya_property_id.
 @api / RoomInfo
 @apiName RoomInfo
 @apiVersion 201707.0.1
-@apiSuccess (Response) {object[]} RoomInfo Array of room information objects
-@apiSuccess (Response) {object} RoomInfo   Room information object
-@apiSuccess (Response) {number} RoomInfo/mya_room_id myallocator room type ID
-@apiSuccess (Response) {number} [RoomInfo/ota_room_id] channel room ID (if mapped)
-@apiSuccess (Response) {number} RoomInfo/beds Number of beds in the room type
-@apiSuccess (Response) {number} RoomInfo/units Number of rooms of this type
-@apiSuccess (Response) {boolean} RoomInfo/dormitory Whether it's a dorm/shared room (true) or private room (false).
-@apiSuccess (Response) {string} RoomInfo/label Room name/title.
-@apiSuccess (Response) {string} [RoomInfo/description] A longer description of the room.
+@apiSuccess (Response) {Object[]} RoomInfo Array of room information objects
+@apiSuccess (Response) {Object} RoomInfo   Room information object
+@apiSuccess (Response) {Number} RoomInfo/mya_room_id myallocator room type ID
+@apiSuccess (Response) {Number} [RoomInfo/ota_room_id] channel room ID (if mapped)
+@apiSuccess (Response) {Number} RoomInfo/beds Number of beds in the room type
+@apiSuccess (Response) {Number} RoomInfo/units Number of rooms of this type
+@apiSuccess (Response) {Boolean} RoomInfo/dormitory Whether it's a dorm (shared room) or private room.
+@apiSuccess (Response) {String} RoomInfo/label Short name referencing the room type.
+@apiSuccess (Response) {String} [RoomInfo/description] A longer description of the room.
 
 @apiSuccessExample {json} Room Info example
 {
@@ -831,9 +831,9 @@ RoomInfo (if enabled for your OTA by us) is conditionally returned in the
 SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo
 Callback. To save bandwidth RoomInfo is only returned in
 SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration
-on MyAllocator.  The RoomInfo callback is always available. RoomInfo is only
+on myallocator.  The RoomInfo callback is always available. RoomInfo is only
 necessary for deep integrations or situations where the OTA plans to
-automatically/create destroy rooms using MyAllocator configuration. In a normal
+automatically/create destroy rooms using myallocator configuration. In a normal
 integration this isn't very usual.
 
 =cut
@@ -869,7 +869,7 @@ gzip compression and keepalives will be used if supported.
 |mya_property_id|the myallocator property id (included for debugging requests and support tickets)|
 |ota_property_id|the property id on the ota|
 |guid|a unique 36 character code which identifies a request. for highest security an ota should only accept/process a guid once (to avoid replay attacks).  useful for seeing if a request is a retry.   this is mostly used to introduce entropy into the request.|
-|shared_secret|a shared secret between the OTA and MyAllocator.|
+|shared_secret|a shared secret between the OTA and myallocator.|
 |booking_id|the booking id on the ota of a particular reservation|
 
 **HTTPS Request:**

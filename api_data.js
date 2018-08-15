@@ -11,56 +11,56 @@ define({ "api": [
         "Response": [
           {
             "group": "Response",
-            "type": "object[]",
+            "type": "Object[]",
             "optional": false,
             "field": "RoomInfo",
             "description": "<p>Array of room information objects</p>"
           },
           {
             "group": "Response",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "RoomInfo/mya_room_id",
             "description": "<p>myallocator room type ID</p>"
           },
           {
             "group": "Response",
-            "type": "number",
+            "type": "Number",
             "optional": true,
             "field": "RoomInfo/ota_room_id",
             "description": "<p>channel room ID (if mapped)</p>"
           },
           {
             "group": "Response",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "RoomInfo/beds",
             "description": "<p>Number of beds in the room type</p>"
           },
           {
             "group": "Response",
-            "type": "number",
+            "type": "Number",
             "optional": false,
             "field": "RoomInfo/units",
             "description": "<p>Number of rooms of this type</p>"
           },
           {
             "group": "Response",
-            "type": "boolean",
+            "type": "Boolean",
             "optional": false,
             "field": "RoomInfo/dormitory",
-            "description": "<p>Whether it's a dorm/shared room (true) or private room (false).</p>"
+            "description": "<p>Whether it's a dorm (shared room) or private room.</p>"
           },
           {
             "group": "Response",
-            "type": "string",
+            "type": "String",
             "optional": false,
             "field": "RoomInfo/label",
-            "description": "<p>Room name/title.</p>"
+            "description": "<p>Short name referencing the room type.</p>"
           },
           {
             "group": "Response",
-            "type": "string",
+            "type": "String",
             "optional": true,
             "field": "RoomInfo/description",
             "description": "<p>A longer description of the room.</p>"
@@ -75,7 +75,7 @@ define({ "api": [
         }
       ]
     },
-    "description": "<p>RoomInfo (if enabled for your OTA by us) is conditionally returned in the SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo Callback. To save bandwidth RoomInfo is only returned in SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration on MyAllocator.  The RoomInfo callback is always available. RoomInfo is only necessary for deep integrations or situations where the OTA plans to automatically/create destroy rooms using MyAllocator configuration. In a normal integration this isn't very usual.</p>",
+    "description": "<p>RoomInfo (if enabled for your OTA by us) is conditionally returned in the SetupProperty and GetRoomTypes call, and can also be accessed via the RoomInfo Callback. To save bandwidth RoomInfo is only returned in SetupProperty/GetRoomTypes if it is explicitly enabled in the OTA configuration on myallocator.  The RoomInfo callback is always available. RoomInfo is only necessary for deep integrations or situations where the OTA plans to automatically/create destroy rooms using myallocator configuration. In a normal integration this isn't very usual.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
@@ -97,7 +97,7 @@ define({ "api": [
     "title": "Terminology",
     "name": "Terminology",
     "version": "201707.0.1",
-    "description": "<table> <thead> <tr> <th> </th> <th> </th> </tr> </thead> <tbody> <tr> <td>ota</td> <td>online travel agency (ex: booking.com, or competitor)</td> </tr> <tr> <td>cid</td> <td>Channel ID - a four digit code used by myallocator uniquely identify a OTA.</td> </tr> <tr> <td>verb</td> <td>the action being performed. HealthCheck, SetupProperty, GetRoomTypes, GetBookingList, GetBookingId, SetAvailability</td> </tr> <tr> <td>mya_property_id</td> <td>the myallocator property id (included for debugging requests and support tickets)</td> </tr> <tr> <td>ota_property_id</td> <td>the property id on the ota</td> </tr> <tr> <td>guid</td> <td>a unique 36 character code which identifies a request. for highest security an ota should only accept/process a guid once (to avoid replay attacks).  useful for seeing if a request is a retry.   this is mostly used to introduce entropy into the request.</td> </tr> <tr> <td>shared_secret</td> <td>a shared secret between the OTA and MyAllocator.</td> </tr> <tr> <td>booking_id</td> <td>the booking id on the ota of a particular reservation</td> </tr> </tbody> </table> <p><strong>HTTPS Request:</strong> json payload will be transmitted in a json form parameter via form-data, and with Content-Type of &quot;application/json&quot; json response should be of type &quot;application/json&quot;</p>",
+    "description": "<table> <thead> <tr> <th> </th> <th> </th> </tr> </thead> <tbody> <tr> <td>ota</td> <td>online travel agency (ex: booking.com, or competitor)</td> </tr> <tr> <td>cid</td> <td>Channel ID - a four digit code used by myallocator uniquely identify a OTA.</td> </tr> <tr> <td>verb</td> <td>the action being performed. HealthCheck, SetupProperty, GetRoomTypes, GetBookingList, GetBookingId, SetAvailability</td> </tr> <tr> <td>mya_property_id</td> <td>the myallocator property id (included for debugging requests and support tickets)</td> </tr> <tr> <td>ota_property_id</td> <td>the property id on the ota</td> </tr> <tr> <td>guid</td> <td>a unique 36 character code which identifies a request. for highest security an ota should only accept/process a guid once (to avoid replay attacks).  useful for seeing if a request is a retry.   this is mostly used to introduce entropy into the request.</td> </tr> <tr> <td>shared_secret</td> <td>a shared secret between the OTA and myallocator.</td> </tr> <tr> <td>booking_id</td> <td>the booking id on the ota of a particular reservation</td> </tr> </tbody> </table> <p><strong>HTTPS Request:</strong> json payload will be transmitted in a json form parameter via form-data, and with Content-Type of &quot;application/json&quot; json response should be of type &quot;application/json&quot;</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
@@ -198,7 +198,7 @@ define({ "api": [
         }
       ]
     },
-    "description": "<p>You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id. <strong>IMPORTANT:</strong> please record the myallocator_id for your records. If you implement BookingCreate you must also implement retry logic.  Please do not retry more than once per minute. Additionally the system will lock (block) multiple concurrent requests for the same property.</p>",
+    "description": "<p>You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id.</p> <p><strong>IMPORTANT</strong>: If you implement BookingCreate you must also implement retry logic. Please do not retry more than once per minute. Additionally the system will block multiple concurrent requests for the same property.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },
@@ -285,7 +285,7 @@ define({ "api": [
     "title": "Step 1",
     "name": "Step_1",
     "version": "201707.0.1",
-    "description": "<ul> <li>Setup a FREE trial account at inbox.myallocator.com</li> <li>Send an email to devhelp@myallocator.com and introduce yourself. Include the following details: <ul> <li>Your Domain Name/URL</li> <li>API Receiver URL (the script on your servers which will receive requests from MyAllocator) -- this can be a development machine/test environment.</li> <li>Attach a 36x36 Icon (for our user interface)</li> <li>Signup/Registration URL for clients:</li> <li>Special signup instructions: (will be displayed in our interface, and should help the hotel understand how to obtain setup credentials).</li> <li>Administrative Contact (Name, Email, Phone, Skype, etc.)</li> <li>Technical/Developer Contact</li> <li>Update Years: how many years in the future can availability be uploaded</li> <li>Core Features: <ul> <li>Minimum Length of Stay  [Y/N]  (# days)</li> <li>Maximum Length of Stay  [Y/N]</li> <li>Dormitories (shared rooms) [Y/N]</li> <li>Single Use Rates : special rates for a single person to take an entire dorm room [Y/N]</li> </ul> </li> <li>Rate Plan/Packages [Y/N] <ul> <li>NOTE: rate plans/packages allow one hotel room type to have multiple prices &amp; restrictions, and sometimes separate availability.</li> <li>Close Outs : do you support special &quot;close out&quot; flags which enable rooms to be closed for specific days without setting availability or rates to zero.</li> <li>Closed Arrivals : can the property block arrivals on certain days</li> <li>Closed Departures : can the property block departures on certain days</li> </ul> </li> <li>Developer timezone, and estimated completion date.</li> <li>RoomInfo [Y/N] - Will RoomInfo (label, types, images) from MyAllocator be imported? (See Appendix)</li> <li>Any special input fields you require during signup, or pre-development questions you have.  Examples: <ul> <li>Multi Currency not supported - ex: please only send rates in Kyrgyzstanian Som (KGS)</li> </ul> </li> </ul> </li> <li>We'll review your answers and create a definition for the OTA. <ul> <li>We will send you the cid, and shared_secret that is required for the API calls.</li> <li>The API calls will not work until the definition is live, which will happen on our next development update (normally every two weeks).</li> </ul> </li> <li>At that point <ul> <li>The channel will display as &quot;in development&quot; for all clients to see.</li> <li>You will be able to use your trial account as a test harness for sending updates to your OTA.</li> <li>You may take as long as you need in development however as a courtesy we request you update our development team at least once every two weeks while in development with your current estimated completion date.</li> <li>OTA's which fail to provide an estimated completion date may have their participation eligibility rescinded.</li> <li>When you are finished with development please let us know and we'll change the status on the OTA to live so clients can use it.</li> </ul> </li> </ul>",
+    "description": "<ul> <li>Setup a FREE trial account at inbox.myallocator.com</li> <li>Send an email to devhelp@myallocator.com and introduce yourself. Include the following details: <ul> <li>Your Domain Name/URL</li> <li>API Receiver URL (the script on your servers which will receive requests from myallocator) -- this can be a development machine/test environment.</li> <li>Attach a 36x36 Icon (for our user interface)</li> <li>Signup/Registration URL for clients:</li> <li>Special signup instructions: (will be displayed in our interface, and should help the hotel understand how to obtain setup credentials).</li> <li>Administrative Contact (Name, Email, Phone, Skype, etc.)</li> <li>Technical/Developer Contact</li> <li>Update Years: how many years in the future can availability be uploaded</li> <li>Core Features: <ul> <li>Minimum Length of Stay  [Y/N]  (# days)</li> <li>Maximum Length of Stay  [Y/N]</li> <li>Dormitories (shared rooms) [Y/N]</li> <li>Single Use Rates : special rates for a single person to take an entire dorm room [Y/N]</li> </ul> </li> <li>Rate Plan/Packages [Y/N] <ul> <li>NOTE: rate plans/packages allow one hotel room type to have multiple prices &amp; restrictions, and sometimes separate availability.</li> <li>Close Outs : do you support special &quot;close out&quot; flags which enable rooms to be closed for specific days without setting availability or rates to zero.</li> <li>Closed Arrivals : can the property block arrivals on certain days</li> <li>Closed Departures : can the property block departures on certain days</li> </ul> </li> <li>Developer timezone, and estimated completion date.</li> <li>RoomInfo [Y/N] - Will RoomInfo (label, types, images) from myallocator be imported? (See Appendix)</li> <li>Any special input fields you require during signup, or pre-development questions you have.  Examples: <ul> <li>Multi Currency not supported - ex: please only send rates in Kyrgyzstanian Som (KGS)</li> </ul> </li> </ul> </li> <li>We'll review your answers and create a definition for the OTA. <ul> <li>We will send you the cid, and shared_secret that is required for the API calls.</li> <li>The API calls will not work until the definition is live, which will happen on our next development update (normally every two weeks).</li> </ul> </li> <li>At that point <ul> <li>The channel will display as &quot;in development&quot; for all clients to see.</li> <li>You will be able to use your trial account as a test harness for sending updates to your OTA.</li> <li>You may take as long as you need in development however as a courtesy we request you update our development team at least once every two weeks while in development with your current estimated completion date.</li> <li>OTA's which fail to provide an estimated completion date may have their participation eligibility rescinded.</li> <li>When you are finished with development please let us know and we'll change the status on the OTA to live so clients can use it.</li> </ul> </li> </ul>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -307,7 +307,7 @@ define({ "api": [
     "title": "Step 3: Integrate SDK",
     "name": "Step_3__Integrate_SDK",
     "version": "201707.0.1",
-    "description": "<img src=\"/build2us-apidocs/img/image2.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel MA Daily Flow</p> <ol> <li>ARIUpdates are sent to OTA handler for Rates, Availability</li> <li>Periodic (30 minute) calls to GetBookingList</li> <li>GetBookingId is called for each BookingId</li> <li>Proceed to Booking Received Flow</li> </ol> <p>OTA Booking Notification (optional)</p> <ol> <li>New Booking arrives for property, notify MyAllocator via OTA API</li> <li>MyAllocator will call GetBookingId and download Booking</li> <li>Proceed to Booking Received Flow</li> </ol> <p>Booking Received Flow</p> <ol> <li>Notify PMS</li> <li>AutoAdjust</li> <li>ARIUpdate of new inventory to all OTA's</li> </ol>",
+    "description": "<img src=\"/build2us-apidocs/img/image2.png\" width=\"700\" alt=\"Alt text\"> <p>Hotel MA Daily Flow</p> <ol> <li>ARIUpdates are sent to OTA handler for Rates, Availability</li> <li>Periodic (30 minute) calls to GetBookingList</li> <li>GetBookingId is called for each BookingId</li> <li>Proceed to Booking Received Flow</li> </ol> <p>OTA Booking Notification (optional)</p> <ol> <li>New Booking arrives for property, notify myallocator via OTA API</li> <li>myallocator will call GetBookingId and download Booking</li> <li>Proceed to Booking Received Flow</li> </ol> <p>Booking Received Flow</p> <ol> <li>Notify PMS</li> <li>AutoAdjust</li> <li>ARIUpdate of new inventory to all OTA's</li> </ol>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -318,7 +318,7 @@ define({ "api": [
     "title": "Step 4: NotifyBooking",
     "name": "Step_4__NotifyBooking",
     "version": "201707.0.1",
-    "description": "<p>Requests MyAllocator to immediately request a booking based on the ota_property_id. This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking.</p> <p>It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.</p>",
+    "description": "<p>Requests myallocator to immediately request a booking based on the ota_property_id. This should be fired/hit on any new booking OR any changes such as cancellations to an existing booking.</p> <p>It is acceptable to fire this for all bookings - even for properties which are connected to other channel managers.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -329,7 +329,7 @@ define({ "api": [
     "title": "Step 5: Get your first booking",
     "name": "Step_5",
     "version": "201707.0.1",
-    "description": "<p>OUTBOUND rest api calls (json post to api_url) (from MyAllocator to OTA)</p> <img src=\"/build2us-apidocs/img/image4.png\" width=\"700\" alt=\"Alt text\">",
+    "description": "<p>OUTBOUND rest api calls (json post to api_url) (from myallocator to OTA)</p> <img src=\"/build2us-apidocs/img/image4.png\" width=\"700\" alt=\"Alt text\">",
     "filename": "./build2us.pm",
     "groupTitle": "Getting_Started"
   },
@@ -340,7 +340,7 @@ define({ "api": [
     "title": "",
     "name": "Overview",
     "version": "201707.0.1",
-    "description": "<p>This API allows an OTA (travel booking website) to integrate with MyAllocator by implementing a public-facing API receiver in their environment.</p> <p>The API integration may be developed in any language, however, we have provided a PHP SDK library and receiver that you may drop into your PHP environment to speed up integration. The PHP SDK may be found <a href=\"https://github.com/MyAllocator/myallocator-ota-php\">here</a>.</p> <p>Its as simple as:</p> <img src=\"/build2us-apidocs/img/image3.png\" width=\"700\" alt=\"Alt text\">",
+    "description": "<p>This API allows a channel/OTA (travel booking website) to integrate with myallocator by implementing a public-facing API receiver in their environment.</p> <p>The API integration may be developed in any language, however, we have provided a PHP SDK library and receiver that you may drop into your PHP environment to speed up integration. The PHP SDK may be found <a href=\"https://github.com/MyAllocator/myallocator-ota-php\">here</a>.</p> <p>It's as simple as:</p> <img src=\"/build2us-apidocs/img/image3.png\" width=\"700\" alt=\"Alt text\">",
     "filename": "./build2us.pm",
     "groupTitle": "Overview"
   },
@@ -421,7 +421,7 @@ define({ "api": [
         }
       ]
     },
-    "description": "<p><a href=\"https://github.com/MyAllocator/bookingsamples\">Booking Examples</a></p> <p><strong>IMPORTANT</strong>: The github BookingSamples link above is intended for a PMS Integrating into MyAllocator. As an OTA there are a few key differences in the format.  OTA Bookings should <em>NEVER</em> include RoomTypeIds:[] node, instead pass &quot;ChannelRoomType&quot;:&quot;123&quot;.  Do not attempt to pass &quot;channel&quot;, or any field labelled starting with Myallocator* or myallocator_* (all those will be setup automatically).</p> <p>Most fields are optional. The minimal booking example below lists which fields are required for a Build-to-us integration.</p> <p>Prices: Send us sell rates (rates including taxes and fees). The sum of all room prices should equal the TotalPrice field. Day rates should be per unit, so the sum of all day rates multiplied by the number of units should equal the room price.</p> <p>Country codes: For CustomerCountry and CustomerNationality (if you include those fields) make sure to pass the country code as uppercase Alpha-2 ISO-3166 codes.</p> <p>Currency codes: Make sure they are valid ISO-4217 (uppercase).</p> <p>Make sure to provide OrderDate and OrderTime. Tell us which timezone the date and time is in before the certification. We recommend UTC.</p> <p>Implementation suggestions: when testing make sure the MyAllocator test property has &quot;download bookings&quot; enabled or the booking will be saved in a queue and not visible during testing.  To enable login and go to Manage / General / Download new bookings. Default setting is &quot;off/disabled&quot;.  Once enabled please allow 30 minutes for the backend to start processing bookings. Also there may be a normal 1-2 minute period after a GetBookingId response before the booking is visible in the inbox.myallocator.com interface (the bookings are held in a temporary queue on our backend).</p> <p>For testing please use: <em>http://api.myallocator.com/callback/ota/{CID}/v201503/NotifyBooking?ota_property_id={OTA_PID}&amp;booking_id={OTA_ID}&amp;output=json&amp;debug=1</em></p> <p>That url (specifically the &amp;output=json&amp;debug=1 on the URL) will return additional debugging messaging which will provide insight into validation errors.</p>",
+    "description": "<p><a href=\"https://github.com/MyAllocator/bookingsamples\">Booking Examples</a></p> <p><strong>IMPORTANT</strong>: The github BookingSamples link above is intended for a PMS Integrating into myallocator. As an OTA there are a few key differences in the format.  OTA Bookings should <em>NEVER</em> include RoomTypeIds:[] node, instead pass &quot;ChannelRoomType&quot;:&quot;123&quot;.  Do not attempt to pass &quot;channel&quot;, or any field labelled starting with MyAllocator* or myallocator_* (all those will be setup automatically).</p> <p>Most fields are optional. The minimal booking example below lists which fields are required for a Build-to-us integration.</p> <p>Prices: Send us sell rates (rates including taxes and fees). The sum of all room prices should equal the TotalPrice field. Day rates should be per unit, so the sum of all day rates multiplied by the number of units should equal the room price.</p> <p>Country codes: For CustomerCountry and CustomerNationality (if you include those fields) make sure to pass the country code as uppercase Alpha-2 ISO-3166 codes.</p> <p>Currency codes: Make sure they are valid ISO-4217 (uppercase).</p> <p>Make sure to provide OrderDate and OrderTime. Tell us which timezone the date and time is in before the certification. We recommend UTC.</p> <p>Implementation suggestions: when testing make sure the myallocator test property has &quot;download bookings&quot; enabled or the booking will be saved in a queue and not visible during testing.  To enable login and go to Manage / General / Download new bookings. Default setting is &quot;off/disabled&quot;.  Once enabled please allow 30 minutes for the backend to start processing bookings. Also there may be a normal 1-2 minute period after a GetBookingId response before the booking is visible in the inbox.myallocator.com interface (the bookings are held in a temporary queue on our backend).</p> <p>For testing please use: <em>http://api.myallocator.com/callback/ota/{CID}/v201503/NotifyBooking?ota_property_id={OTA_PID}&amp;booking_id={OTA_ID}&amp;output=json&amp;debug=1</em></p> <p>That url (specifically the &amp;output=json&amp;debug=1 on the URL) will return additional debugging messaging which will provide insight into validation errors.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "SDK_Reference"
   },
