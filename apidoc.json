@@ -1,7 +1,7 @@
 {
   "name": "Myallocator Build-To-Us API Documentation",
   "version": "201707.0.1",
-  "description": "myallocator Build-To-Us API for OTA.",
+  "description": "Myallocator Build-To-Us API for channels",
   "title": "Build-To-Us",
   "url" : "http://your.endpoint.com",
   "callback_url" : "https://api.myallocator.com",
