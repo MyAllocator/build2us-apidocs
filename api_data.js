@@ -375,6 +375,42 @@ define({ "api": [
     "group": "SDK_Reference",
     "type": "POST",
     "url": "/",
+    "title": "CancelBooking",
+    "name": "CancelBooking",
+    "version": "201707.0.1",
+    "examples": [
+      {
+        "title": "Request",
+        "content": "{\n    \"verb\":\"CancelBooking\",\n    \"ota_property_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"shared_secret\":\"\",\n    \"booking_id\":\"\",\n    \"reason\":\"\"\n}",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response",
+          "content": "{\n    \"success\":true,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response",
+          "content": "{\n    \"success\":false,\n    \"errors\":[\n        { \"id\":\"4002\", \"msg\":\"Booking is already canceled\" }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "description": "<p>Allows a property to cancel a booking on your system from the myallocator side.</p> <p>IMPORTANT: Please contact us to enable this capability for your channel. It is NOT enabled by default.</p> <p>The reason why the booking is to be canceled is given in the <em>reason</em> field. If the booking cannot be canceled the error code should be provided. Here are possible error codes</p> <ul> <li>4001 - booking has already departed</li> <li>4002 - booking is already canceled</li> <li>4003 - booking cannot be canceled. The reason is provided in the <em>msg</em> field.</li> </ul>",
+    "filename": "./build2us.pm",
+    "groupTitle": "SDK_Reference"
+  },
+  {
+    "group": "SDK_Reference",
+    "type": "POST",
+    "url": "/",
     "title": "CreateProperty",
     "name": "CreateProperty",
     "version": "201707.0.1",
