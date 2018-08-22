@@ -361,6 +361,47 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 
 =cut
 
+=pod
+
+@apiGroup SDK Reference
+@api {POST} / CancelBooking
+@apiName CancelBooking
+@apiVersion 201707.0.1
+@apiExample {json} Request
+{
+    "verb":"CancelBooking",
+    "ota_property_id":"",
+    "mya_property_id":"",
+    "shared_secret":"",
+    "booking_id":"",
+    "reason":""
+}
+@apiSuccessExample {json} Response
+    {
+        "success":true,
+    }
+@apiErrorExample {json} Response
+    {
+        "success":false,
+        "errors":[
+            { "id":"4002", "msg":"Booking is already canceled" }
+        ]
+    }
+
+@apiDescription Allows a property to cancel a booking on your system from the myallocator side.
+
+IMPORTANT: Please contact us to enable this capability for your channel. It is NOT enabled by default. 
+
+The reason why the booking is to be canceled is given in the *reason* field.
+If the booking cannot be canceled the error code should be provided. Here
+are possible error codes
+
+* 4001 - booking has already departed
+* 4002 - booking is already canceled
+* 4003 - booking cannot be canceled. The reason is provided in the *msg* field.
+
+
+=cut
 
 =pod
 
