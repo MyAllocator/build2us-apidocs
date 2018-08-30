@@ -178,7 +178,14 @@
             "description": "<p>see booking samples</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Format of Payment Data",
+          "content": "\"Payments\" : [\n      {\n      \"CardCode\" : \"VI\", // Required. See above link for accepted card codes\n      \"CardNumber\" : 5111111111111111, // Required\n      \"SeriesCode\" : 111, // Three digit CVV number from back of card\n      \"ExpireDate\" : 0417,\n      \"CardHolderName\" : \"John Smith\",\n      \"Address\" : {\n         \"AddressLine\" : \"123 Street Lane\",\n         \"CityName\" : \"City\",\n         \"StateCode\" : \"LA\",\n         \"CountryCode\" : \"USA\",\n         \"PostalCode\" : 12345\n      }\n   }\n]",
+          "type": "json"
+        }
+      ]
     },
     "header": {
       "examples": [
@@ -198,7 +205,7 @@
         }
       ]
     },
-    "description": "<p>You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id.</p> <p><strong>IMPORTANT</strong>: If you implement BookingCreate you must also implement retry logic. Please do not retry more than once per minute. Additionally the system will block multiple concurrent requests for the same property.</p>",
+    "description": "<p>You may use either ota_property_id (it may be resolved into a number of myallocator ID's) or mya_property_id. You can also send payment information in the booking_json field that will be encrypted and stored in myallocator. Please see an example of the format (or see the appropriate booking example using the link above. If including payment data, the only required fields are CardCode and CardNumber. The remaining fields aren't required, but encouraged. Here is a list of <a href=\"https://github.com/MyAllocator/apidocs/blob/gh-pages/card-list.md\">accepted card codes</a>.</p> <p><strong>IMPORTANT</strong>: If you implement BookingCreate you must also implement retry logic. Please do not retry more than once per minute. Additionally the system will block multiple concurrent requests for the same property.</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Callback_URLs__Optional_"
   },

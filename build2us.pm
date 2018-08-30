@@ -749,13 +749,35 @@ clickable link below the instruction text (if present).
 @apiParam (Request) {string} booking_json see booking samples
 @apiHeaderExample {json} Response Header
 {"Content-type":"application/json"}
+@apiParamExample {json} Format of Payment Data
+"Payments" : [
+      {
+      "CardCode" : "VI", // Required. See above link for accepted card codes
+      "CardNumber" : 5111111111111111, // Required
+      "SeriesCode" : 111, // Three digit CVV number from back of card
+      "ExpireDate" : 0417,
+      "CardHolderName" : "John Smith",
+      "Address" : {
+         "AddressLine" : "123 Street Lane",
+         "CityName" : "City",
+         "StateCode" : "LA",
+         "CountryCode" : "USA",
+         "PostalCode" : 12345
+      }
+   }
+]
 @apiSuccessExample {json} Response
 {
         "success":true
 }
 @apiDescription
 You may use either ota_property_id (it may be resolved into a number of
-myallocator ID's) or mya_property_id.
+myallocator ID's) or mya_property_id. You can also send payment information
+in the booking_json field that will be encrypted and stored in myallocator.
+Please see an example of the format (or see the appropriate booking example
+using the link above. If including payment data, the only required fields are
+CardCode and CardNumber. The remaining fields aren't required, but encouraged.
+Here is a list of [accepted card codes](https://github.com/MyAllocator/apidocs/blob/gh-pages/card-list.md).
 
 **IMPORTANT**: If you implement BookingCreate you must also implement retry
 logic. Please do not retry more than once per minute. Additionally the system
