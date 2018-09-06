@@ -369,7 +369,16 @@ define({ "api": [
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\":\"true\",\n    \"errors\": [\n        {\n            id:\"\",\n            type:\"\",\n            msg:\"\"\n        }\n    ]\n}",
+          "content": "{\n    \"success\":true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response",
+          "content": "{\n    \"success\":false,\n    \"errors\": [\n        {\n            id:\"\",\n            type:\"\",\n            msg:\"\"\n        }\n    ]\n}",
           "type": "json"
         }
       ]

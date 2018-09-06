@@ -567,7 +567,11 @@ errors.
     }
 @apiSuccessExample {json} Response
     {
-        "success":"true",
+        "success":true
+    }
+@apiErrorExample {json} Response
+    {
+        "success":false,
         "errors": [
             {
                 id:"",
