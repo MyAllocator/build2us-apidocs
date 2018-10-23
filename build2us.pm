@@ -446,7 +446,7 @@ are possible error codes
 
         "Rooms": [
             {
-                "ChannelRoomType": "abcdef",
+                "ChannelRoomType": "abcdef", // This is the room identifier on your channel
                 "Currency": "USD",
                 "DayRates": [
                     {
