@@ -425,6 +425,9 @@ are possible error codes
     "success": true,
     "booking_id": "123456789", // should be same as OrderId
     "ota_property_id": "",
+    "ota_property_sub_id": "", // Required only if your channel uses the
+                               // GetSubProperties method. This field must be
+                               // set to the unique channel property identifier.
     "mya_property_id": "",
 
     "Booking": {
