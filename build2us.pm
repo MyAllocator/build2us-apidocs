@@ -474,7 +474,7 @@ are possible error codes
                 "Price": 134,
                 "Units": 2
             }
-        ]
+        ],
 	"Payments": [] // Include this field only if supplying payment data.
                        // Please see BookingCreate section below for required fields.
     }
