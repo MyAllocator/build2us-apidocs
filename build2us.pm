@@ -824,11 +824,11 @@ clickable link below the instruction text (if present).
 You may use either ota_property_id (it may be resolved into a number of
 myallocator ID's) or mya_property_id. You can also send payment information
 in the booking_json field that will be encrypted and stored in myallocator.
-Please see the example of format below (or see a full booking example
-using the link above). If including payment data, insert the Payments Array
-inside the Booking hash (see Minimal Booking Example above). The only required
-fields are CardCode and CardNumber. The remaining fields aren't required, but
-encouraged.
+Please see the example of format below (or see a full booking examples
+[here](https://github.com/MyAllocator/bookingsamples)). If including payment data,
+insert the Payments Array inside the Booking hash (see Minimal Booking Example
+above). The only required fields are CardCode and CardNumber. The remaining fields
+aren't required, but encouraged.
 Here is a list of [accepted card codes](https://github.com/MyAllocator/apidocs/blob/gh-pages/card-list.md).
 
 **IMPORTANT**: If you implement BookingCreate you must also implement retry
