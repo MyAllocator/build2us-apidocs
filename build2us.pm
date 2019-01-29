@@ -826,8 +826,8 @@ myallocator ID's) or mya_property_id. You can also send payment information
 in the booking_json field that will be encrypted and stored in myallocator.
 Please see the example of format below (or see full booking examples
 [here](https://github.com/MyAllocator/bookingsamples)). If including payment data,
-insert the Payments Array inside the Booking hash (see the [Minimal Booking Example]
-(https://myallocator.github.io/build2us-apidocs/index.html#success-examples-SDK_Reference-GetBookingId-201707_0_1-0)). 
+insert the Payments Array inside the Booking hash (see the
+[Minimal Booking Example](https://myallocator.github.io/build2us-apidocs/index.html#success-examples-SDK_Reference-GetBookingId-201707_0_1-0)). 
 The only required fields are CardCode and CardNumber. The remaining fields aren't
 required, but encouraged.
 Here is a list of [accepted card codes](https://github.com/MyAllocator/apidocs/blob/gh-pages/card-list.md).
