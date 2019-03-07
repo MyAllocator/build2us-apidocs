@@ -927,6 +927,9 @@ which begins with an Uppercase First Letter will return an array of hashes.
 HTTP response codes should always be 200, with a content-type application/json,
 gzip compression and keepalives will be used if supported.
 
+Note that "success" field should have boolean type. All other datat types in
+"success" field will cause FAULT.API.INVALID_SUCCESS error
+
 =cut
 
 =pod
