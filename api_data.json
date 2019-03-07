@@ -86,7 +86,7 @@
     "title": "Special Considerations",
     "name": "Special_Considerations",
     "version": "201707.0.1",
-    "description": "<p>JSON is a typeless language, by convention any associative array (hash) key which begins with an Uppercase First Letter will return an array of hashes. (These are not typos, they are intentional)</p> <p>HTTP response codes should always be 200, with a content-type application/json, gzip compression and keepalives will be used if supported.</p>",
+    "description": "<p>JSON is a typeless language, by convention any associative array (hash) key which begins with an Uppercase First Letter will return an array of hashes. (These are not typos, they are intentional)</p> <p>HTTP response codes should always be 200, with a content-type application/json, gzip compression and keepalives will be used if supported.</p> <p>Note that &quot;success&quot; field should have boolean type. All other datat types in &quot;success&quot; field will cause FAULT.API.INVALID_SUCCESS error</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
