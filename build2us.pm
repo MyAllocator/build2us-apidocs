@@ -158,7 +158,7 @@ OUTBOUND rest api calls (json post to api_url) (from myallocator to OTA)
     }
 @apiSuccessExample {json} Response
 {
-    "success":"true|false"
+    "success":true|false
 }
 @apiDescription
 
@@ -185,7 +185,7 @@ proper operation. Should always return true.
     }
 @apiSuccessExample {json} Response
     {
-        "success":"true",
+        "success":true,
         "ota_property_id":""
     }
 @apiDescription

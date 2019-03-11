@@ -603,7 +603,7 @@
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\":\"true|false\"\n}",
+          "content": "{\n    \"success\":true|false\n}",
           "type": "json"
         }
       ]
@@ -630,7 +630,7 @@
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\":\"true\",\n    \"ota_property_id\":\"\"\n}",
+          "content": "{\n    \"success\":true,\n    \"ota_property_id\":\"\"\n}",
           "type": "json"
         }
       ]
