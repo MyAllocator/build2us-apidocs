@@ -482,10 +482,15 @@ are possible error codes
 
 @apiDescription
 
+The booking format is described
+[here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+
+We also have a page with
 [Booking Examples](https://github.com/MyAllocator/bookingsamples)
+from different channels.
 
 **IMPORTANT**: The github BookingSamples link above is intended for a PMS
-Integrating into myallocator. As an OTA there are a few key differences in the
+integrating into myallocator. As an OTA there are a few key differences in the
 format.  OTA Bookings should _NEVER_ include RoomTypeIds:[] node, instead pass
 "ChannelRoomType":"123".  Do not attempt to pass "channel", or any field
 labelled starting with MyAllocator* or myallocator_* (all those will be setup
