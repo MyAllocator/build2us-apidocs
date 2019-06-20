@@ -11,5 +11,10 @@
       "SDK_Reference",
       "Callback_URLs__Optional_",
       "Appendix"
-  ]
+  ],
+  "template": {
+    "withCompare": false,
+    "withGenerator": false
+  }
+
 }

@@ -12,12 +12,16 @@
     "Callback_URLs__Optional_",
     "Appendix"
   ],
+  "template": {
+    "withCompare": false,
+    "withGenerator": false
+  },
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2019-06-20T13:20:55.578Z",
+    "time": "2019-06-20T13:23:16.310Z",
     "url": "http://apidocjs.com",
     "version": "0.2.0"
   }
