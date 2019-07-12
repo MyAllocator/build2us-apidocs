@@ -422,6 +422,8 @@ are possible error codes
 
 @apiSuccessExample Minimal Booking Example
 {
+    // Any orange text is a JSON Boolean value, NOT a string value.
+    // Do not surround these field values in double quotes.
     "success": true,
     "booking_id": "123456789", // should be same as OrderId
     "ota_property_id": "",
