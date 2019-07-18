@@ -12,6 +12,10 @@ define({
     "Callback_URLs__Optional_",
     "Appendix"
   ],
+  "template": {
+    "withCompare": false,
+    "withGenerator": false
+  },
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
@@ -19,6 +23,6 @@ define({
     "name": "apidoc",
     "time": "2019-07-18T17:03:00.680Z",
     "url": "http://apidocjs.com",
-    "version": "0.17.7"
+    "version": "0.2.0"
   }
 });
