@@ -3,6 +3,17 @@ define({ "api": [
     "group": "Appendix",
     "type": "",
     "url": "/",
+    "title": "Booking Format",
+    "name": "Booking_Format",
+    "version": "201907.0.1",
+    "description": "<p>Please <a href=\"https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md\">check this document</a> for all possible booking fields, their meanings and the pricing relations.</p>",
+    "filename": "./build2us.pm",
+    "groupTitle": "Appendix"
+  },
+  {
+    "group": "Appendix",
+    "type": "",
+    "url": "/",
     "title": "RoomInfo",
     "name": "RoomInfo",
     "version": "201707.0.1",
