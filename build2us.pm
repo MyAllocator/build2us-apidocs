@@ -862,6 +862,21 @@ myallocator ID's) or mya_property_id.
 =pod
 
 @apiGroup Appendix
+@api / Booking Format
+@apiName Booking Format
+@apiVersion 201907.0.1
+@apiDescription
+
+Please [check this
+document](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md)
+for all possible booking fields, their meanings and the pricing relations.
+
+=cut
+
+
+=pod
+
+@apiGroup Appendix
 @api / RoomInfo
 @apiName RoomInfo
 @apiVersion 201707.0.1
