@@ -108,7 +108,7 @@ define({ "api": [
     "title": "Terminology",
     "name": "Terminology",
     "version": "201707.0.1",
-    "description": "<table> <thead> <tr> <th> </th> <th> </th> </tr> </thead> <tbody> <tr> <td>ota</td> <td>online travel agency (ex: booking.com, or competitor)</td> </tr> <tr> <td>cid</td> <td>Channel ID - a four digit code used by myallocator uniquely identify a OTA.</td> </tr> <tr> <td>verb</td> <td>the action being performed. HealthCheck, SetupProperty, GetRoomTypes, GetBookingList, GetBookingId, SetAvailability</td> </tr> <tr> <td>mya_property_id</td> <td>the myallocator property id (included for debugging requests and support tickets)</td> </tr> <tr> <td>ota_property_id</td> <td>the property id on the ota</td> </tr> <tr> <td>guid</td> <td>a unique 36 character code which identifies a request. for highest security an ota should only accept/process a guid once (to avoid replay attacks).  useful for seeing if a request is a retry.   this is mostly used to introduce entropy into the request.</td> </tr> <tr> <td>shared_secret</td> <td>a shared secret between the OTA and myallocator.</td> </tr> <tr> <td>booking_id</td> <td>the booking id on the ota of a particular reservation</td> </tr> </tbody> </table> <p><strong>HTTPS Request:</strong> json payload will be transmitted in a json form parameter via form-data, and with Content-Type of &quot;application/json&quot; json response should be of type &quot;application/json&quot;</p>",
+    "description": "<table> <thead> <tr> <th> </th> <th> </th> </tr> </thead> <tbody> <tr> <td>ota</td> <td>online travel agency (ex: booking.com, or competitor)</td> </tr> <tr> <td>cid</td> <td>Channel ID - a four digit code used by myallocator uniquely identify a OTA.</td> </tr> <tr> <td>verb</td> <td>the action being performed. HealthCheck, SetupProperty, GetRoomTypes, GetBookingList, GetBookingId, SetAvailability</td> </tr> <tr> <td>mya_property_id</td> <td>the myallocator property id (included for debugging requests and support tickets)</td> </tr> <tr> <td>ota_property_id</td> <td>the property id on the ota (can be a user name or similar alphanumeric ID)</td> </tr> <tr> <td>guid</td> <td>a unique 36 character code which identifies a request. for highest security an ota should only accept/process a guid once (to avoid replay attacks).  useful for seeing if a request is a retry.   this is mostly used to introduce entropy into the request.</td> </tr> <tr> <td>shared_secret</td> <td>a shared secret between the OTA and myallocator.</td> </tr> <tr> <td>booking_id</td> <td>the booking id on the ota of a particular reservation</td> </tr> </tbody> </table> <p><strong>HTTPS Request:</strong> json payload will be transmitted in a json form parameter via form-data, and with Content-Type of &quot;application/json&quot; json response should be of type &quot;application/json&quot;</p>",
     "filename": "./build2us.pm",
     "groupTitle": "Appendix"
   },
@@ -372,7 +372,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"ARIUpdate\",\n    \"ota_property_id\" : \"CID_123\",\n    \"ota_property_password\" : \"very:secret-password\",\n    \"mya_property_id\" : \"25678\",\n    \"guid\" : \"\",\n    \"currency\" : \"USD\",\n    \"ota_cid\" : \"\",\n    \"shared_secret\" : \"\",\n    \"Inventory\" : [\n        {\n            \"ota_room_id\" : \"61365\",     // always passed\n            \"ota_rate_id\" : \"rate_456\",  // only if rateplans are supported\n            \"start_date\" : \"2018-01-22\", // always passed\n            \"end_date\" : \"2018-02-12\",   // always passed\n            \"units\" : 5,                 // conditionally passed\n            \"rate\" : \"0.00\",             // conditionally passed\n            \"max_los\" : 14,              // *only if ota capable\n            \"min_los\" : 2,               // *only if ota capable\n            \"closearr\" : false,          // *only if ota capable\n            \"closedep\": false,           // *only if ota capable\n            \"close\" : false              // *only if ota capable\n        },\n        {\n            \"ota_room_id\" : \"61365\",\n            \"ota_rate_id\" : \"rate_456\",\n            \"start_date\" : \"2018-02-13\"\n            \"end_date\" : \"2018-02-14\",\n            \"units\" : 0,\n            \"rate\" : \"309.00\",\n            \"max_los\" : 14,              // max length of stay\n            \"min_los\" : 2,               // min length of stay\n            \"closearr\": false,           // do not allow arrivals in this range\n            \"closedep\": false,           // do not allow departures in this range\n            \"close\": false               // do not allow bookings\n        }\n    ]\n}",
+        "content": "{\n    \"verb\":\"ARIUpdate\",\n    \"ota_property_id\": \"CID_123\",\n    \"ota_property_password\" : \"very:secret-password\",\n    \"mya_property_id\" : \"25678\",\n    \"guid\" : \"\",\n    \"currency\" : \"USD\",\n    \"ota_cid\" : \"\",\n    \"shared_secret\" : \"\",\n    \"Inventory\" : [\n        {\n            \"ota_room_id\" : \"61365\",     // always passed\n            \"ota_rate_id\" : \"rate_456\",  // only if rateplans are supported\n            \"start_date\" : \"2018-01-22\", // always passed\n            \"end_date\" : \"2018-02-12\",   // always passed\n            \"units\" : 5,                 // conditionally passed\n            \"rate\" : \"0.00\",             // conditionally passed\n            \"max_los\" : 14,              // *only if ota capable\n            \"min_los\" : 2,               // *only if ota capable\n            \"closearr\" : false,          // *only if ota capable\n            \"closedep\": false,           // *only if ota capable\n            \"close\" : false              // *only if ota capable\n        },\n        {\n            \"ota_room_id\" : \"61365\",\n            \"ota_rate_id\" : \"rate_456\",\n            \"start_date\" : \"2018-02-13\"\n            \"end_date\" : \"2018-02-14\",\n            \"units\" : 0,\n            \"rate\" : \"309.00\",\n            \"max_los\" : 14,              // max length of stay\n            \"min_los\" : 2,               // min length of stay\n            \"closearr\": false,           // do not allow arrivals in this range\n            \"closedep\": false,           // do not allow departures in this range\n            \"close\": false               // do not allow bookings\n        }\n    ]\n}",
         "type": "json"
       }
     ],
@@ -408,7 +408,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"CancelBooking\",\n    \"ota_property_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"shared_secret\":\"\",\n    \"booking_id\":\"\",\n    \"reason\":\"\"\n}",
+        "content": "{\n    \"verb\":\"CancelBooking\",\n    \"ota_property_id\": \"CID_123\",\n    \"mya_property_id\":\"\",\n    \"shared_secret\":\"\",\n    \"booking_id\":\"\",\n    \"reason\":\"\"\n}",
         "type": "json"
       }
     ],
@@ -452,7 +452,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\": true,\n    \"ota_property_id\": 1234,                    // Your (new) property ID\n    \"ota_property_password\": 1234,              // Optional additional parameter to allow connection\n    \"instruction_text\": \"It worked!\\n\\nNow click the link.\",   // Optional instructions\n    \"instruction_link\": \"http://ota.com/instructions\",         // Optional link to be displayed below instruction text\n\n    \"room_mappings\": [                    // Optional mapping\n        {\n            \"ota_room_id\" : \"11111\",      // Your (new) room ID\n            \"mya_room_id\" : 56789         // MA Room ID\n        },\n        {\n            \"ota_room_id\" : \"22222\",\n            \"mya_room_id\" : 24567\n        }\n    ]\n}",
+          "content": "{\n    \"success\": true,\n    \"ota_property_id\": \"CID_123\",                              // Your (new) property ID\n    \"ota_property_password\": \"secret_password\",                // Optional additional parameter to allow connection\n    \"instruction_text\": \"It worked!\\n\\nNow click the link.\",   // Optional instructions\n    \"instruction_link\": \"http://ota.com/instructions\",         // Optional link to be displayed below instruction text\n\n    \"room_mappings\": [                    // Optional mapping\n        {\n            \"ota_room_id\" : \"11111\",      // Your (new) room ID\n            \"mya_room_id\" : 56789         // MA Room ID\n        },\n        {\n            \"ota_room_id\" : \"22222\",\n            \"mya_room_id\" : 24567\n        }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -471,7 +471,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"GetBookingId\",\n    \"ota_property_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"booking_id\":\"123456789\",\n    \"version\":\"\"\n}",
+        "content": "{\n    \"verb\":\"GetBookingId\",\n    \"ota_property_id\": \"CID_123\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"booking_id\":\"123456789\",\n    \"version\":\"\"\n}",
         "type": "json"
       }
     ],
@@ -479,7 +479,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Minimal Booking Example",
-          "content": "{\n    // Any orange text is a JSON Boolean value, NOT a string value.\n    // Do not surround these field values in double quotes.\n    \"success\": true,\n    \"booking_id\": \"123456789\", // should be same as OrderId\n    \"ota_property_id\": \"\",\n    \"ota_property_sub_id\": \"\", // Required only if your channel uses the\n                               // GetSubProperties method. This field must be\n                               // set to the unique channel property identifier.\n    \"mya_property_id\": \"\",\n\n    \"Booking\": {\n        \"OrderId\": \"123456789\",\n        \"OrderDate\": \"2018-04-22\",\n        \"OrderTime\": \"18:02:58\",\n        \"IsCancellation\": false,\n        \"TotalCurrency\": \"USD\",\n        \"TotalPrice\": 134,\n\n        \"Customers\": [\n            {\n                \"CustomerCountry\": \"US\",\n                \"CustomerEmail\": \"test@test.com\",\n                \"CustomerFName\": \"Test Firstname\",\n                \"CustomerLName\": \"Test Lastname\"\n            }\n        ],\n\n        \"Rooms\": [\n            {\n                \"ChannelRoomType\": \"abcdef\", // This is the room identifier on your channel\n                \"Currency\": \"USD\",\n                \"DayRates\": [\n                    {\n                        \"Date\": \"2017-11-08\",\n                        \"Description\": \"Refundable Rate\",\n                        \"Rate\": 32.5,\n                        \"Currency\": \"USD\",\n                        \"RateId\": \"13649\"\n                    },\n                    {\n                        \"Date\": \"2017-11-09\",\n                        \"Description\": \"Refundable Rate\",\n                        \"Rate\": 34.5,\n                        \"Currency\": \"USD\",\n                        \"RateId\": \"13649\"\n                    }\n                ],\n                \"StartDate\": \"2017-11-08\",\n                \"EndDate\": \"2017-11-09\", // Set equal to last full day of stay\n                                         // (departure date minus 1)\n                                         // In this example, the booking is for two nights\n                \"Price\": 134,\n                \"Units\": 2\n            }\n        ],\n\t\"Payments\": [] // Include this field only if supplying payment data.\n                       // Please see BookingCreate section below for required fields.\n    }\n}",
+          "content": "{\n    // Any orange text is a JSON Boolean value, NOT a string value.\n    // Do not surround these field values in double quotes.\n    \"success\": true,\n    \"booking_id\": \"123456789\", // should be same as OrderId\n    \"ota_property_id\": \"CID_123\",\n    \"ota_property_sub_id\": \"\", // Required only if your channel uses the\n                               // GetSubProperties method. This field must be\n                               // set to the unique channel property identifier.\n    \"mya_property_id\": \"\",\n\n    \"Booking\": {\n        \"OrderId\": \"123456789\",\n        \"OrderDate\": \"2018-04-22\",\n        \"OrderTime\": \"18:02:58\",\n        \"IsCancellation\": false,\n        \"TotalCurrency\": \"USD\",\n        \"TotalPrice\": 134,\n\n        \"Customers\": [\n            {\n                \"CustomerCountry\": \"US\",\n                \"CustomerEmail\": \"test@test.com\",\n                \"CustomerFName\": \"Test Firstname\",\n                \"CustomerLName\": \"Test Lastname\"\n            }\n        ],\n\n        \"Rooms\": [\n            {\n                \"ChannelRoomType\": \"abcdef\", // This is the room identifier on your channel\n                \"Currency\": \"USD\",\n                \"DayRates\": [\n                    {\n                        \"Date\": \"2017-11-08\",\n                        \"Description\": \"Refundable Rate\",\n                        \"Rate\": 32.5,\n                        \"Currency\": \"USD\",\n                        \"RateId\": \"13649\"\n                    },\n                    {\n                        \"Date\": \"2017-11-09\",\n                        \"Description\": \"Refundable Rate\",\n                        \"Rate\": 34.5,\n                        \"Currency\": \"USD\",\n                        \"RateId\": \"13649\"\n                    }\n                ],\n                \"StartDate\": \"2017-11-08\",\n                \"EndDate\": \"2017-11-09\", // Set equal to last full day of stay\n                                         // (departure date minus 1)\n                                         // In this example, the booking is for two nights\n                \"Price\": 134,\n                \"Units\": 2\n            }\n        ],\n\t\"Payments\": [] // Include this field only if supplying payment data.\n                       // Please see BookingCreate section below for required fields.\n    }\n}",
           "type": "json"
         }
       ]
@@ -498,7 +498,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"GetBookingList\",\n    \"ota_property_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"ota_booking_version\":\"2017-06-22 12:09:19\"\n}",
+        "content": "{\n    \"verb\":\"GetBookingList\",\n    \"ota_property_id\": \"CID_123\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"ota_booking_version\":\"2017-06-22 12:09:19\"\n}",
         "type": "json"
       }
     ],
@@ -526,7 +526,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\": \"GetRatePlans\",\n    \"ota_property_id\": \"\",\n    \"mya_property_id\": \"\",\n    \"guid\": \"\",\n    \"shared_secret\": \"\"\n}",
+        "content": "{\n    \"verb\": \"GetRatePlans\",\n    \"ota_property_id\": \"CID_123\",\n    \"mya_property_id\": \"\",\n    \"guid\": \"\",\n    \"shared_secret\": \"\"\n}",
         "type": "json"
       }
     ],
@@ -552,7 +552,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"GetRoomTypes\",\n    \"ota_property_id\":\"\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"RoomInfo\":[ .. ]           // conditional, see RoomInfo Appendix\n}",
+        "content": "{\n    \"verb\":\"GetRoomTypes\",\n    \"ota_property_id\": \"CID_123\",\n    \"mya_property_id\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"RoomInfo\":[ .. ]           // conditional, see RoomInfo Appendix\n}",
         "type": "json"
       }
     ],
@@ -579,7 +579,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"GetSubProperties\"\n    \"mya_property_id\":\"\",\n    \"ota_property_id\":\"\",\n    \"shared_secret\":\"\"\n}",
+        "content": "{\n    \"verb\":\"GetSubProperties\"\n    \"mya_property_id\":\"\",\n    \"ota_property_id\": \"CID_123\",\n    \"shared_secret\":\"\"\n}",
         "type": "json"
       }
     ],
@@ -633,7 +633,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request",
-        "content": "{\n    \"verb\":\"SetupProperty\",\n    \"mya_property_id\":\"\",\n    \"ota_property_id\":\"\",\n    \"ota_property_password\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"RoomInfo\":[ .. ]           // conditional, see RoomInfo Appendix\n}",
+        "content": "{\n    \"verb\":\"SetupProperty\",\n    \"mya_property_id\":\"\",\n    \"ota_property_id\": \"CID_123\",\n    \"ota_property_password\":\"\",\n    \"guid\":\"\",\n    \"shared_secret\":\"\",\n    \"RoomInfo\":[ .. ]           // conditional, see RoomInfo Appendix\n}",
         "type": "json"
       }
     ],
@@ -641,7 +641,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response",
-          "content": "{\n    \"success\":true,\n    \"ota_property_id\":\"\"\n}",
+          "content": "{\n    \"success\":true,\n    \"ota_property_id\": \"CID_123\"\n}",
           "type": "json"
         }
       ]
