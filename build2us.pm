@@ -177,7 +177,7 @@ proper operation. Should always return true.
     {
         "verb":"SetupProperty",
         "mya_property_id":"",
-        "ota_property_id":"",
+        "ota_property_id": "CID_123",
         "ota_property_password":"",
         "guid":"",
         "shared_secret":"",
@@ -186,7 +186,7 @@ proper operation. Should always return true.
 @apiSuccessExample {json} Response
     {
         "success":true,
-        "ota_property_id":""
+        "ota_property_id": "CID_123"
     }
 @apiDescription
 
@@ -216,7 +216,7 @@ always be a 1:1 mapping between ota_property_id and mya_property_id.
     {
         "verb":"GetSubProperties"
         "mya_property_id":"",
-        "ota_property_id":"",
+        "ota_property_id": "CID_123",
         "shared_secret":""
     }
 @apiSuccessExample {json} Response
@@ -259,7 +259,7 @@ on myallocator.
 @apiExample Request
     {
         "verb":"GetRoomTypes",
-        "ota_property_id":"",
+        "ota_property_id": "CID_123",
         "mya_property_id":"",
         "guid":"",
         "shared_secret":"",
@@ -303,7 +303,7 @@ Note that currently myallocator only supports updating one rateplan per room.
 @apiExample {json} Request
     {
         "verb": "GetRatePlans",
-        "ota_property_id": "",
+        "ota_property_id": "CID_123",
         "mya_property_id": "",
         "guid": "",
         "shared_secret": ""
@@ -328,7 +328,7 @@ Note that currently myallocator only supports updating one rateplan per room.
 @apiExample {json} Request
 {
     "verb":"GetBookingList",
-    "ota_property_id":"",
+    "ota_property_id": "CID_123",
     "mya_property_id":"",
     "guid":"",
     "shared_secret":"",
@@ -370,7 +370,7 @@ If *ota_booking_version* is undefined/empty please return all bookings.
 @apiExample {json} Request
 {
     "verb":"CancelBooking",
-    "ota_property_id":"",
+    "ota_property_id": "CID_123",
     "mya_property_id":"",
     "shared_secret":"",
     "booking_id":"",
@@ -412,7 +412,7 @@ are possible error codes
 @apiExample {json} Request
     {
         "verb":"GetBookingId",
-        "ota_property_id":"",
+        "ota_property_id": "CID_123",
         "mya_property_id":"",
         "guid":"",
         "shared_secret":"",
@@ -426,7 +426,7 @@ are possible error codes
     // Do not surround these field values in double quotes.
     "success": true,
     "booking_id": "123456789", // should be same as OrderId
-    "ota_property_id": "",
+    "ota_property_id": "CID_123",
     "ota_property_sub_id": "", // Required only if your channel uses the
                                // GetSubProperties method. This field must be
                                // set to the unique channel property identifier.
@@ -541,7 +541,7 @@ errors.
 @apiExample {json} Request
     {
         "verb":"ARIUpdate",
-        "ota_property_id" : "CID_123",
+        "ota_property_id": "CID_123",
         "ota_property_password" : "very:secret-password",
         "mya_property_id" : "25678",
         "guid" : "",
@@ -716,8 +716,8 @@ Please only parse fields which are included
 @apiSuccessExample {json} Response
 {
     "success": true,
-    "ota_property_id": 1234,                    // Your (new) property ID
-    "ota_property_password": 1234,              // Optional additional parameter to allow connection
+    "ota_property_id": "CID_123",                              // Your (new) property ID
+    "ota_property_password": "secret_password",                // Optional additional parameter to allow connection
     "instruction_text": "It worked!\n\nNow click the link.",   // Optional instructions
     "instruction_link": "http://ota.com/instructions",         // Optional link to be displayed below instruction text
 
@@ -967,7 +967,7 @@ Note that "success" field should have boolean type. All other datat types in
 |cid|Channel ID - a four digit code used by myallocator uniquely identify a OTA.|
 |verb|the action being performed. HealthCheck, SetupProperty, GetRoomTypes, GetBookingList, GetBookingId, SetAvailability|
 |mya_property_id|the myallocator property id (included for debugging requests and support tickets)|
-|ota_property_id|the property id on the ota|
+|ota_property_id|the property id on the ota (can be a user name or similar alphanumeric ID)|
 |guid|a unique 36 character code which identifies a request. for highest security an ota should only accept/process a guid once (to avoid replay attacks).  useful for seeing if a request is a retry.   this is mostly used to introduce entropy into the request.|
 |shared_secret|a shared secret between the OTA and myallocator.|
 |booking_id|the booking id on the ota of a particular reservation|
