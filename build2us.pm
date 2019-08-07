@@ -28,39 +28,21 @@ It's as simple as:
 @apiVersion 201707.0.1
 @apiDescription
 
-* Setup a FREE trial account at inbox.myallocator.com
-* Send an email to devhelp@myallocator.com and introduce yourself. Include the following details:
-    * Your Domain Name/URL
-    * API Receiver URL (the script on your servers which will receive requests from myallocator) -- this can be a development machine/test environment.
-    * Attach a 36x36 Icon (for our user interface)
-    * Signup/Registration URL for clients:
-    * Special signup instructions: (will be displayed in our interface, and should help the hotel understand how to obtain setup credentials).
-    * Administrative Contact (Name, Email, Phone, Skype, etc.)
-    * Technical/Developer Contact
-    * Update Years: how many years in the future can availability be uploaded
-    * Core Features:
-        * Minimum Length of Stay  [Y/N]  (# days)
-        * Maximum Length of Stay  [Y/N]
-        * Dormitories (shared rooms) [Y/N]
-        * Single Use Rates : special rates for a single person to take an entire dorm room [Y/N]
-    * Rate Plan/Packages [Y/N]
-        * NOTE: rate plans/packages allow one hotel room type to have multiple prices & restrictions, and sometimes separate availability.
-        * Close Outs : do you support special "close out" flags which enable rooms to be closed for specific days without setting availability or rates to zero.
-        * Closed Arrivals : can the property block arrivals on certain days
-        * Closed Departures : can the property block departures on certain days
-    * Developer timezone, and estimated completion date.
-    * RoomInfo [Y/N] - Will RoomInfo (label, types, images) from myallocator be imported? (See Appendix)
-    * Any special input fields you require during signup, or pre-development questions you have.  Examples:
-        * Multi Currency not supported - ex: please only send rates in Kyrgyzstanian Som (KGS)
-* We'll review your answers and create a definition for the OTA.
-    * We will send you the cid, and shared_secret that is required for the API calls.
-    * The API calls will not work until the definition is live, which will happen on our next development update (normally every two weeks).
-* At that point
-    * The channel will display as "in development" for all clients to see.
-    * You will be able to use your trial account as a test harness for sending updates to your OTA.
-    * You may take as long as you need in development however as a courtesy we request you update our development team at least once every two weeks while in development with your current estimated completion date.
-    * OTA's which fail to provide an estimated completion date may have their participation eligibility rescinded.
-    * When you are finished with development please let us know and we'll change the status on the OTA to live so clients can use it.
+* To be considered as a partner, please complete our [Partnership form](https://www.cloudbeds.com/partner-with-cloudbeds/). 
+* Once submitted, your application will be placed in queue to be reviewed for fit and compatibility. We will reach out if the partnership is approved. 
+    * In addition to an approval notification, you will be provided with a 72-hour link to our API Credential Request form, which will help you create a test account and define your channel on myallocator.
+    * Upon completion of the API Credential Request form, you will be sent Test Account login information, Channel ID (cid), and the shared_secret that is required for the API calls.
+* At this point...
+    * The channel will be hidden from our user base while in development and only viewable by your designated test account.
+    * You will be able to use your trial account as a test harness for sending updates to your channel.
+    * We request that you update our team at least once every two weeks while in development with your estimated completion date.
+    * Partners that fail to provide an estimated completion date may have their participation eligibility rescinded.
+    * When you are finished with development please email [connectivity@myallocator.com](mailto:connectivity@myallocator.com) to schedule certification.
+* Once certified, our team will inform you of next steps, including providing us with: 
+    * Logos
+    * Information about your serivce
+    * Property setup information (obtaining setup credentials, activating the channel manager, etc.)
+    * Contact Information to various departments of your business (support, marketing, etc.)
 
 =cut
 
