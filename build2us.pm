@@ -946,7 +946,7 @@ Note that "success" field should have boolean type. All other datat types in
 | &nbsp;| &nbsp; |
 | -- | ----- |
 |ota|online travel agency (ex: booking.com, or competitor)|
-|cid|Channel ID - a four digit code used by myallocator uniquely identify a OTA.|
+|cid|Channel ID - a two to four digit code used by myallocator uniquely identify a OTA.|
 |verb|the action being performed. HealthCheck, SetupProperty, GetRoomTypes, GetBookingList, GetBookingId, SetAvailability|
 |mya_property_id|the myallocator property id (included for debugging requests and support tickets)|
 |ota_property_id|the property id on the ota (can be a user name or similar alphanumeric ID)|
