@@ -33,6 +33,7 @@
 | OrderMales | | Int >= 0 | Total number of unique male guests. |
 | OrderModifDate | | YYYY-MM-DD | Date of booking modification, in UTC. Do not pass if booking has not been modified. |
 | OrderModifTime | | HH:MM:SS | Time of booking creation, in UTC. Do not pass if booking has NOT been modified. If seconds are not provided, set value to ":00". Presence of `OrderModifTime` requires presence of `OrderModifDate`. |
+| OrderPets | | Int >= 0 | Number of pets (animals) the guest will bring. |
 | OrderSource | | String | Originating source of guest booking, usually a website. For example, Expedia passes bookings from multiple websites (hotels.com, Travelocity, Orbtiz, etc.). May also refer to travel agent/agency who created the booking. Do NOT provide this field if the value is the same as your channel name. |
 | Payments | | Payment[] | See below in the Payment section |
 | PaymentCollect | | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
@@ -117,6 +118,7 @@ person staying at the property.
 | CustomerCity | | String | City/town/village/locality of the customer. |
 | CustomerCompany | | String | Name of the company of the customer. |
 | CustomerCompanyDepartment | | String | Name of the department within the company of the customer. Example: "Sales". |
+| CustomerDepartureTime | | HH::MM | Estimated time of departure from the property as given by the customer. In the property's timezone. |
 | CustomerFax | | String | Pshhhkkkkkkrrrrkakingkakingkakingtshchchchchchchchcch\*ding\*ding\*ding\*. |
 | CustomerGender | | Enum(MA,FE,MI) | Gender of the customer. `MA` = male, `FE` = female, `MI` = mixed (multiple customers, or gender neutral). |
 | CustomerIP | | IPv4 or IPv6 | IP of the customer. |
@@ -212,10 +214,17 @@ This object holds credit/debit card details of the customer.
 | ----- | -------- | ---- | ----------- |
 | CardNumber | Yes | String | Credit card number. Should really only contain numbers but spaces are fine too. |
 | CardCode | Yes | CardType | See below in the CardType section.  |
+| Card3DSecureCAVV | | String | 3D-Secure Authentication Validation Value. Contains the AAV for Mastercard or CAVV for Visa. |
+| Card3DSecureCAVVAlgorithm | | String | Algorithm used to generate the CAVV. A single digit or letter. |
+| Card3DSecureDSTransactionId | | String | The 3D-Secure Directory Server transaction ID that is used for the 3D Authentication. Mandatory for MasterCard. |
+| Card3DSecureECI | | Int >= 0| Electronic Commerce Indicator provides authentication validation results returned. `0` = Non-3D-Secure transaction (no liability shift), `1` = Authentication attempted (MasterCard), `2` = Successful authentication (MasterCard), `5` = Successful authentication (Visa, Diners Club, Amex), `6` = Authentication attempted (Visa, Diners Club, Amex), `7` = Non-3D-Secure transaction (no liability shift) |
+| Card3DSecureCardNotPresent | | Boolean | False indicates that 3D-Secure authentication was bypassed because the cardholder information was passed verbally. |
+| Card3DSecureVersion | | String | The 3D Secure version used for the authentication. A three part version like so: `1.0.2`, `2.1.0`, `2.2.0`. Mandatory for MasterCard. |
+| Card3DSecureXID | | String| The transaction ID that is used for the 3D Authentication. |
 | Address |  | CreditCardAddress | See below in the CreditCardAddress section. |
 | CardHolderName | | String | Full name of the card holder as it appears on the card. |
 | ExpireDate | | MMYY | Credit card expiration month (first two digits) and year (second two digits). Single digit months need a leading zero. |
-| SeriesCode | | Int >= 0 | CVV (CV2) number from the back of the credit/debit card. Usually three digits. Most properties will need this field to process the card. |
+| SeriesCode | | Int >= 0 | CVV (CV2) number from the back of the credit/debit card. Usually three of four digits. Most properties will need this field to process the card. |
 
 ## CardType
 
@@ -230,11 +239,18 @@ This object holds credit/debit card details of the customer.
 | DC | Diners Club |
 | E  | Electron |
 | EC | EuroCard |
+| EL | Elo Creditcard |
+| ER | enRoute |
+| HC | Hipercard |
+| JA | JAL |
 | JC | Japan Credit Bureau |
 | L  | Delta |
+| LA | Laser |
+| MU | Maestro UK |
 | N  | Dankort |
 | R  | Carte Bleue |
 | S  | Switch |
+| SO | Solo |
 | T  | Carta Si |
 | TO | Maestro |
 | TP | Universal Air Travel Card |
@@ -246,6 +262,6 @@ This object holds credit/debit card details of the customer.
 | ----- | -------- | ---- | ----------- |
 | AddressLine | | String | Address of the card holder. This usually refers to the street name and house number, apartment name or similar. Multiple lines should be added comma-separated (not with newlines). |
 | CityName | | String | City/town/village/locality of the card holder. |
-| CountryCode | | ISO 3166-1 alpha-2 | Code of the country the card holder. Value should be uppercase. |
+| CountryCode | | ISO 3166-1 alpha-2 | Resident country code of card holder, as part of their address. Value should be uppercase. |
 | PostalCode | | String | Postcode (ZIP) of the card holder. |
 | StateCode | | String | State (province, etc.) of the card holder. |
