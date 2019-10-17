@@ -149,6 +149,7 @@ service booked.
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
+| Label | | String | Short free-form name for the type of extra service (eg. Conference Room ). |
 | Description | Yes | String | Description of the extra service. |
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this extra service is applicable. Often the same as the booking's `EndDate`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this extra service is applicable. Often the same as the booking's `StartDate`. |
