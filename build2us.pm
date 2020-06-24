@@ -559,18 +559,17 @@ errors.
             }
         ]
     }
-@apiSuccessExample {json} Response
+@apiSuccessExample {json} Success Response
     {
         "success":true
     }
-@apiErrorExample {json} Response
+@apiErrorExample {json} Error Response (invalid credentials)
     {
         "success":false,
         "errors": [
             {
-                "id":"",
-                "type":"",
-                "msg":""
+                "id": "1001",
+                "msg": "The login details you provided are incorrect. Please update your channel details."
             }
         ]
     }
@@ -857,6 +856,20 @@ for all possible booking fields, their meanings and the pricing relations.
 
 =cut
 
+=pod
+
+@apiGroup Appendix
+@api / Error Codes
+@apiName Error Codes
+@apiVersion 202006.0.1
+@apiDescription
+
+You can respond with error IDs listed in our
+[error code list](https://apidocs.myallocator.com/ota-errors.html). Please use
+the numeric codes in the "ID" column. Only errors whose code starts with
+`FAULT.OTA.` are supported.
+
+=cut
 
 =pod
 
