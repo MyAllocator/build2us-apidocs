@@ -14,6 +14,17 @@ define({ "api": [
     "group": "Appendix",
     "type": "",
     "url": "/",
+    "title": "Error Codes",
+    "name": "Error_Codes",
+    "version": "202006.0.1",
+    "description": "<p>You can respond with error IDs listed in our <a href=\"https://apidocs.myallocator.com/ota-errors.html\">error code list</a>. Please use the numeric codes in the &quot;ID&quot; column. Only errors whose code starts with <code>FAULT.OTA.</code> are supported.</p>",
+    "filename": "./build2us.pm",
+    "groupTitle": "Appendix"
+  },
+  {
+    "group": "Appendix",
+    "type": "",
+    "url": "/",
     "title": "RoomInfo",
     "name": "RoomInfo",
     "version": "201707.0.1",
@@ -379,7 +390,7 @@ define({ "api": [
     "success": {
       "examples": [
         {
-          "title": "Response",
+          "title": "Success Response",
           "content": "{\n    \"success\":true\n}",
           "type": "json"
         }
@@ -388,8 +399,8 @@ define({ "api": [
     "error": {
       "examples": [
         {
-          "title": "Response",
-          "content": "{\n    \"success\":false,\n    \"errors\": [\n        {\n            \"id\":\"\",\n            \"type\":\"\",\n            \"msg\":\"\"\n        }\n    ]\n}",
+          "title": "Error Response (invalid credentials)",
+          "content": "{\n    \"success\":false,\n    \"errors\": [\n        {\n            \"id\": \"1001\",\n            \"msg\": \"The login details you provided are incorrect. Please update your channel details.\"\n        }\n    ]\n}",
           "type": "json"
         }
       ]
