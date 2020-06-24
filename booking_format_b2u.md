@@ -176,6 +176,7 @@ If a tax is specific to a specific room put it in the `Rooms` section.
 | IsPerNight | Yes | Enum(0,1) | Whether the value in `Amount` applies for each night. Only really matters if `IsPercent` is `0`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this extra tax is applicable. |
 | TotalAmount | Yes | Currency | Total amount of tax applicable to the booking. The result of applying the rules below to the booking. |
+| RemittedBy | | Enum(...) | Who is responsible for remitting this tax to the tax-collecting agency? Can be `Property` or `Channel`. |
 | Description | | String | Description of the tax as provided by the channel. |
 
 ## TaxBreakdown
@@ -226,6 +227,7 @@ This object holds credit/debit card details of the customer.
 | CardHolderName | | String | Full name of the card holder as it appears on the card. |
 | ExpireDate | | MMYY | Credit card expiration month (first two digits) and year (second two digits). Single digit months need a leading zero. |
 | SeriesCode | | Int >= 0 | CVV (CV2) number from the back of the credit/debit card. Usually three of four digits. Most properties will need this field to process the card. |
+| CardBalance | | Currency | Balance on the card. |
 
 ## CardType
 
