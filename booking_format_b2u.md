@@ -23,6 +23,7 @@
 | CommissionCurrency | | CurrencyCode | Currency code for the `Commission` field. Required if `Commission` is present. |
 | Deposit | | Currency | Amount of deposit this booking has already received. Included in `TotalPrice` |
 | DepositCurrency | | CurrencyCode | Currency code for the `Deposit` field. Required if `Deposit` is present. |
+| ExternalReferences | | ExternalReference[] | See below in the ExternalReference section |
 | ExtraServices | | ExtraService[] | See below in the ExtraService section |
 | ExtraTaxes | | ExtraTax[] | See below in the ExtraTax section |
 | IsTentative | | Enum(0,1) | `1` if the booking is not yet confirmed and availability should not yet be reduced. This can apply to booking enquiries where the property owner needs to confirm the booking first. |
@@ -42,6 +43,7 @@
 | TaxBreakdown | | TaxBreakdown[] | See below in the TaxBreakdown section |
 | TotalTaxes | | Currency | Amount of taxes for this booking. The amount is included in `TotalPrice`. If there are different types of taxes applicable to a booking then this is the sum of those taxes. |
 | TotalTaxesCurrency | | CurrencyCode | Currency code for the `TotalTaxes` field. Required if `TotalTaxes` is present. |
+| TravelAgencies | | TravelAgency[] | See below in the TravelAgency section |
 
 ### Relation of fields
 
@@ -142,6 +144,16 @@ person staying at the property.
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this discount is applicable. Often the same as the booking's `EndDate`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this discount is applicable. Often the same as the booking's `StartDate`. |
 
+## ExternalReference
+
+List of further identifiers for the booking. For example, the booking ID a travel
+agency provides might be different from the channel's booking ID.
+
+| Field | Required | Type | Description |
+| ----- | -------- | ---- | ----------- |
+| Type | Yes | String | Identifies which system the booking reference refers to (eg. `IATA` or `CRS`). There is no predefined list for this. |
+| Reference | Yes | String | ID on the system referred to by `Type`. |
+
 ## ExtraService
 
 Extra services can contain extra fees like breakfasts, extra beds or any other
@@ -208,6 +220,21 @@ extend them.
 * `room-type`
 * `service`
 
+## TravelAgency
+
+This object holds information about involved travel agencies.
+
+| Field | Required | Type | Description |
+| ----- | -------- | ---- | ----------- |
+| Name | | String | Name of the travel agency. |
+| Phone | | String | Phone number of the travel agency. |
+| Email | | Email-Address | Email address of the travel agency. |
+| Address | | String | Address of the travel agency. |
+| City | | String | City of the travel agency. |
+| PostCode | | String | Postcode (ZIP) of the travel agency. |
+| State | | String | State (province, etc.) of the travel agency. |
+| Country | | ISO 3166-1 alpha-2 | Country code of the travel agency. Value is uppercase. |
+
 ## Payment
 
 This object holds credit/debit card details of the customer.
@@ -227,7 +254,8 @@ This object holds credit/debit card details of the customer.
 | CardHolderName | | String | Full name of the card holder as it appears on the card. |
 | ExpireDate | | MMYY | Credit card expiration month (first two digits) and year (second two digits). Single digit months need a leading zero. |
 | SeriesCode | | Int >= 0 | CVV (CV2) number from the back of the credit/debit card. Usually three of four digits. Most properties will need this field to process the card. |
-| CardBalance | | Currency | Balance on the card. |
+| CardBalance | | Currency | Balance on the card. Usually just for virtual cards. |
+| CardActivationDate | | YYYY-MM-DD | The card can be charged starting on this date. Relates to virtual cards that cannot be charged right away. |
 
 ## CardType
 
