@@ -181,7 +181,7 @@ If a tax is specific to a specific room put it in the `Rooms` section.
 | ----- | ------ | ---- | ----------- |
 | Amount | Yes | Float >= 0 | Tax amount used for calculation. Can refer to an absolute value or percentage. If percentage needs to be a value between 0 and 100. |
 | AppliesPer | Yes | TaxAppliesPer | What does the tax apply to? E.g. `booking`, `guest`, `room`.  For codes see below in the TaxAppliesPer section. |
-| Category | Yes | TaxCategory | What type of tax is it (VAT, GST, etc.). If unknown/unspecified set to `Other`, but should be avoided. For codes see below in the TaxCategory section. |
+| Category | Yes | Enum(...) | What type of tax is it? Can be `authority_fee` or `tax`. |
 | Currency | Yes | CurrencyCode | Currency code for the `Amount` and `TotalAmount` field. |
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this extra tax is applicable. |
 | IsPercent | Yes | Enum(0,1) | Whether value in `Amount` refers to a percentage. |
@@ -255,6 +255,7 @@ This object holds credit/debit card details of the customer.
 | ExpireDate | | MMYY | Credit card expiration month (first two digits) and year (second two digits). Single digit months need a leading zero. |
 | SeriesCode | | Int >= 0 | CVV (CV2) number from the back of the credit/debit card. Usually three of four digits. Most properties will need this field to process the card. |
 | CardBalance | | Currency | Balance on the card. Usually just for virtual cards. |
+| CardBalanceCurrency | | CurrencyCode | Currency of the `CardBalance` field. |
 | CardActivationDate | | YYYY-MM-DD | The card can be charged starting on this date. Relates to virtual cards that cannot be charged right away. |
 
 ## CardType
