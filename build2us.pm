@@ -967,6 +967,30 @@ Note that the `success` field should have boolean type. All other data types in
 =pod
 
 @apiGroup Appendix
+@api / Rate plan support
+@apiName Rate plan support
+@apiVersion 201707.0.1
+@apiDescription
+
+If your OTA supports rate plans make sure that:
+1) You've implemented the `GetRatePlans` API call.
+2) You've told us that you support rate plans, and that we've enabled rate plan support for your OTA.
+3) You've implemented the "close" restriction for `ARIUpdate` calls.
+4) You return rate plan details in the bookings. Specifically `RateId`/`RateDesc` on the `Rooms` level, and `RateId` on the `Rooms/DayRates` level.
+
+On myallocator rooms and rate plans have a one-to-many relationship. This means
+that a room has one or more rate plans, and each rate plan has exactly one room.
+For the `ARIUpdate` calls we can send different `ota_rate_id` values for the
+same `ota_room_id`. Rates and restrictions are tied to rate plans, while
+availability is tied to rooms, so the `units` will be constant across different
+rate plans for the same dates and for the same room, but rates and restrictions
+can vary. To close off a rate plan we are using the `close` flag.
+
+=cut
+
+=pod
+
+@apiGroup Appendix
 @api / Terminology
 @apiName Terminology
 @apiVersion 201707.0.1

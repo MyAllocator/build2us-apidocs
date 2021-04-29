@@ -25,6 +25,17 @@ define({ "api": [
     "group": "Appendix",
     "type": "",
     "url": "/",
+    "title": "Rate plan support",
+    "name": "Rate_plan_support",
+    "version": "201707.0.1",
+    "description": "<p>If your OTA supports rate plans make sure that:</p> <ol> <li>You've implemented the <code>GetRatePlans</code> API call.</li> <li>You've told us that you support rate plans, and that we've enabled rate plan support for your OTA.</li> <li>You've implemented the &quot;close&quot; restriction for <code>ARIUpdate</code> calls.</li> <li>You return rate plan details in the bookings. Specifically <code>RateId</code>/<code>RateDesc</code> on the <code>Rooms</code> level, and <code>RateId</code> on the <code>Rooms/DayRates</code> level.</li> </ol> <p>On myallocator rooms and rate plans have a one-to-many relationship. This means that a room has one or more rate plans, and each rate plan has exactly one room. For the <code>ARIUpdate</code> calls we can send different <code>ota_rate_id</code> values for the same <code>ota_room_id</code>. Rates and restrictions are tied to rate plans, while availability is tied to rooms, so the <code>units</code> will be constant across different rate plans for the same dates and for the same room, but rates and restrictions can vary. To close off a rate plan we are using the <code>close</code> flag.</p>",
+    "filename": "./build2us.pm",
+    "groupTitle": "Appendix"
+  },
+  {
+    "group": "Appendix",
+    "type": "",
+    "url": "/",
     "title": "RoomInfo",
     "name": "RoomInfo",
     "version": "201707.0.1",
