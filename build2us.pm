@@ -651,6 +651,18 @@ level.
                 "country": "DE"
             },
 
+            "images" : [
+                {
+                    "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg",
+                    "description": "Outside View",
+                    "sort_order": 1
+                },
+                {
+                    "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg",
+                    "description": "Reception Area",
+                    "sort_order": 2
+                }
+            ],
 
             "rooms" : [
                 {
@@ -661,9 +673,21 @@ level.
                     "label" : "Double Room",
                     "description" : "A potentially long description about the room",
                     "images" : [
-                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg",
-                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg",
-                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c39.jpg"
+                        {
+                            "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg",
+                            "description": "Double bed",
+                            "sort_order": 1
+                        },
+                        {
+                            "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg",
+                            "description": "Bath room",
+                            "sort_order": 2
+                        },
+                        {
+                            "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c99.jpg",
+                            "description": "Balcony",
+                            "sort_order": 3
+                        }
                     ]
                 },
                 {
@@ -683,7 +707,11 @@ level.
                     "label" : "3-person private",
                     "description" : "Best three bed room in town",
                     "images" : [
-                        "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg"
+                        {
+                            "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg",
+                            "description": "3-bed room",
+                            "sort_order": 1
+                        }
                     ]
                 },
                 {
@@ -904,9 +932,17 @@ the numeric codes in the `ID` column. Only errors whose code starts with
 {
     "RoomInfo": [
         {
-            "Images": [
-                "http://path.to/image1.png",
-                "http://path.to/image2.png"
+            "images": [
+                {
+                    "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg",
+                    "description": "View from balcony",
+                    "sort_order": 1
+                },
+                {
+                    "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg",
+                    "description": "Inside View",
+                    "sort_order": 2
+                }
             ],
             "beds": 1,
             "dormitory": false,
@@ -917,9 +953,17 @@ the numeric codes in the `ID` column. Only errors whose code starts with
             "units": 10
         },
         {
-            "Images": [
-                "http://path.to/image3.png",
-                "http://path.to/image4.png"
+            "images": [
+                {
+                    "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c39.jpg",
+                    "description": "Jacuzzi",
+                    "sort_order": 1
+                },
+                {
+                    "url": "https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c40.jpg",
+                    "description": "Double Bed",
+                    "sort_order": 2
+                }
             ],
             "beds": 2,
             "dormitory": false,
