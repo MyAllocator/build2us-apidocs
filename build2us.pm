@@ -688,6 +688,23 @@ level.
                             "description": "Balcony",
                             "sort_order": 3
                         }
+                    ],
+                    "rateplans" : [
+                       {
+                          "mya_rate_id" : 0,
+                          "label_public" : "Default Rate Plan",
+                          "label_private" : "Default Rate Plan"
+                       },
+                       {
+                          "label_public" : "Non-refundable",
+                          "label_private" : "NR",
+                          "mya_rate_id" : 850
+                       },
+                       {
+                          "label_public" : "With Breakfast",
+                          "label_private" : "BR",
+                          "mya_rate_id" : 851
+                       }
                     ]
                 },
                 {
@@ -697,7 +714,14 @@ level.
                     "dormitory" : false,
                     "label" : "4-person private",
                     "description" : null,
-                    "images" : []
+                    "images" : [],
+                    "rateplans" : [
+                       {
+                          "label_private" : "Default Rate Plan",
+                          "label_public" : "Default Rate Plan",
+                          "mya_rate_id" : 0
+                       }
+                    ]
                 },
                 {
                     "mya_room_id" : 329,
@@ -712,6 +736,18 @@ level.
                             "description": "3-bed room",
                             "sort_order": 1
                         }
+                    ],
+                    "rateplans" : [
+                       {
+                          "label_public" : "Default Rate Plan",
+                          "label_private" : "Default Rate Plan",
+                          "mya_rate_id" : 0
+                       },
+                       {
+                          "mya_rate_id" : 853,
+                          "label_private" : "NR",
+                          "label_public" : "Non-refundable"
+                       }
                     ]
                 },
                 {
@@ -722,7 +758,19 @@ level.
                     "gender" : "MIXED",             // Can be MIXED, FEMALE, MALE
                     "label" : "30-person mixed shared",
                     "description" : null,
-                    "images" : []
+                    "images" : [],
+                    "rateplans" : [
+                       {
+                          "mya_rate_id" : 0,
+                          "label_public" : "Default Rate Plan",
+                          "label_private" : "Default Rate Plan"
+                       },
+                       {
+                          "mya_rate_id" : 852,
+                          "label_public" : "Non-refundable",
+                          "label_private" : "NR"
+                       }
+                    ]
                 }
             ]
         }
@@ -735,14 +783,36 @@ level.
     "instruction_text": "It worked!\n\nNow click the link.",   // Optional instructions
     "instruction_link": "http://ota.com/instructions",         // Optional link to be displayed below instruction text
 
-    "room_mappings": [                    // Optional mapping
+    "room_mappings": [                    // Automatic room/rate plan mapping
         {
             "ota_room_id" : "11111",      // Your (new) room ID
-            "mya_room_id" : 56789         // Myallocator Room ID
+            "mya_room_id" : 45829,        // Myallocator room ID
+            "ota_rate_id" : "rp6623",     // Your (new) rate plan ID
+            "mya_rate_id" : 0             // Myallocator rate plan ID, always 0 for default rate plan
+        },
+        {
+            "ota_room_id" : "11111",
+            "mya_room_id" : 45829,
+            "ota_rate_id" : "rp6624",
+            "mya_rate_id" : 850
+        },
+        {
+            "ota_room_id" : "11111",
+            "mya_room_id" : 45829,
+            "ota_rate_id" : "rp6624",
+            "mya_rate_id" : 851
         },
         {
             "ota_room_id" : "22222",
-            "mya_room_id" : 24567
+            "mya_room_id" : 290,
+            "ota_rate_id" : "rp6625",
+            "mya_rate_id" : 0
+        },
+        {
+            "ota_room_id" : "22222",
+            "mya_room_id" : 290,
+            "ota_rate_id" : "rp6626",
+            "mya_rate_id" : 853
         }
     ]
 }
@@ -752,17 +822,23 @@ level.
 Can be used to create a new property (including rooms) on your OTA based on the
 details that we have in myallocator (eg. property name, address, images, room
 details, etc). This call needs to be activated explicitly from our side before
-you can use it. Please talk to your myallocator contact before implementing this
-call!
+you can use it. Please talk to your myallocator contact before implementing
+this call!
+
+Rate plan information was added at a later date and is only transmitted for new
+build-to-us implementations or if the feature has been enabled explicitly. Note
+that every room has a default rate plan, and the ID (even across different
+rooms) is always `0`.
 
 Once approved please provide us with your terms & conditions for us to display
-to a property.
+to a property. You should provide them as a HTML file with only basic styling.
 
 We cannot guarantee that all of the following request fields will really be
 filled in.
 
 You need to return `room_mappings` to make the automatic full refresh work after
-successful property creation.
+successful property creation. If you do not support rate plans you do not need
+to return `ota_rate_id` and `mya_rate_id`.
 
 The **instruction text** (`instruction_text`) will be displayed to the hotel
 after the property creation is complete. We will escape any HTML characters, so
