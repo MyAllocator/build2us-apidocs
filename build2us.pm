@@ -627,7 +627,8 @@ level.
             "timezone" : "Asia/Thimphu",
 
             "address" : {
-                "street" : "Main St",
+                "address_line_1" : "Main St",
+                "address_line_2" : "Annex",
                 "city" : "San Diego",
                 "zip" : "92120",
                 "state" : "CA",
@@ -644,7 +645,8 @@ level.
                 "company_name": "Hostels Inc.",
                 "account_manager_name": "Hillary Jackson",
                 "vat_id": "US2345678",
-                "street": "Office Street",
+                "address_line_1": "Office Street",
+                "address_line_2": "3rd floor",
                 "state": "Office State",
                 "zip": "22222",
                 "city": "Office City",
