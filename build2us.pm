@@ -538,7 +538,8 @@ For testing please use:
                 "start_date" : "2018-01-22", // always passed
                 "end_date" : "2018-02-12",   // always passed
                 "units" : 5,                 // conditionally passed
-                "rate" : "0.00",             // conditionally passed
+                "rate" : "15.00",            // conditionally passed
+                "rdef_single" : "2.00",      // conditionally passed, single use rate
                 "max_los" : 14,              // *only if ota capable
                 "min_los" : 2,               // *only if ota capable
                 "closearr" : false,          // *only if ota capable
@@ -585,6 +586,15 @@ your rate plan ID. Note that myallocator only supports availability on the room
 level, so for the same `ota_room_id` and the same date range the availability
 will always be the same. Only restrictions and rates are sent on the rate plan
 level.
+
+`units` refers to the number or rooms bookable (available) for private rooms,
+or for the number of beds for shared/dorm rooms.
+
+`rate` refers to the price per unit. `rdef_single` is the single use rate, if
+only one person is staying. This will only be present for private rooms, and
+only if the occupancy of this room is higher than 1. If the value is 0 we
+recommend to not make the single use rate available, or to just use the same
+price as in `rate`.
 
 
 =cut
