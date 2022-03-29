@@ -184,6 +184,7 @@ If a tax is specific to a specific room put it in the `Rooms` section.
 | Category | Yes | Enum(...) | What type of tax is it? Can be `authority_fee` or `tax`. |
 | Currency | Yes | CurrencyCode | Currency code for the `Amount` and `TotalAmount` field. |
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this extra tax is applicable. |
+| IsInclusive | Yes | Enum(0,1) | Whether the tax is included in the rates provided by the channel. |
 | IsPercent | Yes | Enum(0,1) | Whether value in `Amount` refers to a percentage. |
 | IsPerNight | Yes | Enum(0,1) | Whether the value in `Amount` applies for each night. Only really matters if `IsPercent` is `0`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this extra tax is applicable. |
