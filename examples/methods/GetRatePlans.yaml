@@ -1,0 +1,43 @@
+---
+rq:
+  GetRatePlans:
+    summary: GetRatePlans
+    value:
+      verb: GetRatePlans
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+rs:
+  Success:
+    summary: Success - specific rate plans per room
+    value:
+      success: true
+      RatePlans:
+        - ota_room_id: DR_556
+          ota_rate_id: DEF_9910
+          title: Default Rate Plan
+        - ota_room_id: PR_1952
+          ota_rate_id: NRF_7001
+          title: Non-refundable rate
+  Success2:
+    summary: Success - global rate plans
+    value:
+      success: true
+      RatePlans:
+        - ota_room_id: '0'
+          ota_rate_id: DEF_9910
+          title: Default Rate Plan
+        - ota_room_id: '0'
+          ota_rate_id: NRF_7001
+          title: Non-refundable rate
+  Failure:
+    summary: Invalid credentials sent
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.

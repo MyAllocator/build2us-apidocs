@@ -1,0 +1,17 @@
+---
+rq:
+  ARIFullRefresh:
+    summary: ARIFullRefresh
+    value:
+      mya_property_id: 998201
+      shared_secret : "s3cr3ts4uc3"
+rs:
+  Success:
+    summary: Success
+    value:
+      UpdateId: 99277138491
+  Failure:
+    summary: Failure
+    value:
+      Error: 1031
+      ErrorMsg: Channel not enabled for property

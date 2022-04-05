@@ -1,0 +1,2834 @@
+info:
+  title: Myallocator Build-To-US API
+  version: "4.0"
+  contact:
+    url: https://www.cloudbeds.com/partner-with-cloudbeds/
+  description: >
+    # Introduction
+
+
+    This API allows a OTA ("Online Travel Agency", also called "channel",
+
+    or "travel booking website") to integrate with the myallocator channel
+
+    manager by implementing an API receiver in their environment.
+
+
+    If you are a property management system (PMS), this is not the API you are
+
+    looking for. Instead please review our
+
+    [PMS API documentation](http://apidocs.myallocator.com/) instead.
+
+
+    # Getting Started
+
+
+    ## Becoming A Partner
+
+
+    To be considered as a partner, please complete our
+
+    [partnership form](https://www.cloudbeds.com/partner-with-cloudbeds/).
+
+    Once submitted, your application will be placed in queue to be reviewed for
+
+    fit and compatibility. We will reach out if the partnership is approved.
+
+
+    In addition to an approval notification, you will be provided with a 72-hour
+
+    link to our API Credential Request form, which will help you create a test
+
+    account and define your channel on myallocator. Upon completion of the API
+
+    Credential Request form, you will be sent Test Account login information,
+
+    Channel ID (`cid`), and the `shared_secret` that is required for the API
+
+    calls.
+
+
+    At this point the channel will be hidden from our user base while in
+
+    development and only viewable by your designated test account. You will be
+
+    able to use your trial account as a test harness for sending updates to
+
+    your channel. We request that you update our team at least once every two
+
+    weeks while in development with your estimated completion date. Partners
+
+    that fail to provide an estimated completion date may have their
+
+    participation eligibility rescinded. When you are finished with development
+
+    please email
+
+    [connectivity@myallocator.com](mailto:connectivity@myallocator.com) to
+
+    schedule certification.
+
+
+    Once certified, our team will inform you of next steps, including
+
+    providing us with:
+
+    * Logos
+
+    * Information about your service
+
+    * Property setup information (obtaining setup credentials, activating the channel manager, etc.)
+
+    * Contact Information to various departments of your business (support, marketing, etc.)
+
+
+    ## Flow
+
+
+    For a new property to connect to the OTA they will go to the channel setup
+
+    on myallocator, and either enter their OTA credentials, or go through some
+
+    activation process, where the OTA is automatically emailed to enable the
+
+    property and a support team member of myallocator sets the credentials.
+
+
+    The property owner then maps the rooms, and if supported, rate plans to
+
+    complete the connection.
+
+
+    After a property has been setup, myallocator will push a full refresh to the
+
+    OTA. This means myallocator sends all availability, rates and restrictions
+
+    for the next 2+ years (depending on how many years of ARI data the OTA
+
+    supports) for all rooms and rate plans. After this initial sync has been
+
+    completed myallocator will update the OTA whenever there is a change to
+
+    ARI, eg. because a booking has been imported or pricing has been altered.
+
+
+    Myallocator will poll for bookings in regular configurable intervals.
+
+    Bookings can and should be sent via a callback to myallocator to speed up
+
+    the import.
+
+
+    # Booking Format
+
+
+    The full booking format is
+
+    [documented here](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+
+    Please take note of which fields are required and which fields are optional.
+
+
+    # Error Codes
+
+
+    You can respond with error IDs listed in our
+
+    [error code](https://apidocs.myallocator.com/ota-errors.html) list. Please
+
+    use the numeric codes in the `ID` column. Only errors whose code starts with
+
+    `FAULT.OTA.` are supported.
+
+
+    # Rate Plan Support
+
+
+    If your OTA supports rate plans make sure that:
+
+
+    1. You've implemented the `GetRatePlans` API call.
+
+    2. You've told us that you support rate plans, and that we've enabled rate plan support for your OTA.
+
+    3. You've implemented the `close` restriction for `ARIUpdate` calls.
+
+    4. You return rate plan details in the bookings. Specifically `RateId`/`RateDesc` on the `Rooms` level, and `RateId` on the `Rooms/DayRates` level.
+
+
+    On myallocator rooms and rate plans have a one-to-many relationship. This
+
+    means that a room has one or more rate plans, and each rate plan has
+
+    exactly one room. For the `ARIUpdate` calls we can send different
+
+    `ota_rate_id` values for the same `ota_room_id`. Rates and restrictions are
+
+    tied to rate plans, while availability is tied to rooms, so the `units`
+
+    will be constant across different rate plans for the same dates and for the
+
+    same room, but rates and restrictions can vary. To close off a rate plan we
+
+    are using the `close` flag.
+
+
+    # FAQ
+
+
+    ## Terminlogy
+
+
+    | OTA | Online travel agency (ex: booking.com, or competitor)|
+
+    | cid | Channel ID - a two to four character code used by myallocator uniquely identify a OTA.|
+
+    | guid | Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging. |
+
+
+    ## Requests
+
+
+    Myallocator will send requests to the OTA with content-type
+
+    `application/json`, with the payload being in the body of the request. Gzip
+
+    compression and keep-alives will be used if supported. HTTPS
+
+    (SSL encryption) is required for the OTA's endpoint.
+
+
+    HTTP response codes from myallocator should always be 200. They have the
+
+    content-type `application/json`.
+
+
+    ## Required API calls
+
+
+    As a minimum these API calls need to be implemented on the OTA side:
+
+
+    * HealthCheck
+
+    * SetupProperty
+
+    * GetRoomTypes
+
+    * ARIUpdate
+
+    * GetBookingList
+
+    * GetBookingId
+
+
+    If rate plans are supported these API calls are required in addition:
+
+
+    * GetRatePlans
+
+
+    If the OTA has multiple properties under one user account these API calls
+
+    are required in addition:
+
+
+    * GetSubProperties
+openapi: 3.0.0
+servers:
+  - url: https://api.your-ota.com/myallocator
+    description: OTA endpoint
+paths:
+  /HealthCheck:
+    post:
+      operationId: health_check
+      description: >
+        Called prior to `SetupProperty` or other configuration requests to
+        verify proper operation. Should always return true.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              HealthCheck:
+                summary: HealthCheck
+                value:
+                  verb: HealthCheck
+                  ota_property_id: ""
+                  ota_property_password: ""
+                  ota_property_sub_id: ""
+                  mya_property_id: ""
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              type: object
+              properties:
+                mya_property_id:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                ota_property_id:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                ota_property_password:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                ota_property_sub_id:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by myallocator
+                  type: string
+                  pattern: ^[a-z0-9]+$
+                verb:
+                  type: string
+                  enum:
+                    - HealthCheck
+              required:
+                - verb
+                - guid
+                - mya_property_id
+                - ota_property_id
+                - ota_property_password
+                - ota_property_sub_id
+                - shared_secret
+                - ota_cid
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                Failure:
+                  summary: Failure
+                  value:
+                    success: false
+                    errors:
+                      - id: 1003
+                        msg: Problems processing requests
+              schema:
+                type: object
+                title: Standard Response
+                properties:
+                  errors:
+                    description: Array of error objects. Required when `success` is `false`.
+                    type: array
+                    items:
+                      description: Error object
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          minimum: 1
+                          description: >
+                            Error code. Check the "Error Codes" section of the
+                            specification for valid codes.
+                        msg:
+                          type: string
+                          description: >
+                            Optional error string to give more details about the
+                            error. Myallocator localises errors into different
+                            langauges, so this field is generally ignored and
+                            only useful for debugging.
+                      required:
+                        - id
+                  success:
+                    type: boolean
+                    enum:
+                      - true
+                      - false
+                required:
+                  - success
+          description: HealthCheck
+      summary: HealthCheck
+  /SetupProperty:
+    post:
+      operationId: setup_property
+      description: >-
+        Check/verify/validate the credentials stored in `ota_property_id` and
+
+        `ota_property_password`. If the credentials are invalid return with error
+
+        ID `1001`. If the connection needs to be enabled from the OTA side first
+
+        return with error ID `1002`.
+
+
+        On myallocator the hotel will go to the OTA setup by selecting the OTA.
+
+        There the user will be prompted to put in the credentials
+
+        (`ota_property_id` and `ota_property_password`), which are provided by your
+
+        OTA. Both `ota_property_id` and `ota_property_password` will be retained by
+
+        us and passed in every call. Should you not need two identification fields
+
+        please let us know and we can set it to only ask for `ota_property_id`.
+
+        However, this would mean that some kind of activation process is required
+
+        where our customer support team enters the ID on behalf of the hotel.
+
+        Otherwise it would be possible for the hotel to enter someone else's
+
+        credentials.
+
+
+        Implementation suggestions: `ota_property_id` should typically be a username
+
+        or hotel ID on your OTA. The `ota_property_password` is typically a
+
+        password used by the hotel to access your OTA's extranet or a token
+
+        specifically for a channel manager.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              SetupProperty:
+                summary: SetupProperty (normal)
+                value:
+                  verb: SetupProperty
+                  ota_property_id: ""
+                  ota_property_password: ""
+                  ota_property_sub_id: ""
+                  mya_property_id: 14524
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+              SetupProperty2:
+                summary: SetupProperty (with RoomInfo)
+                value:
+                  verb: SetupProperty
+                  ota_property_id: ""
+                  ota_property_password: ""
+                  ota_property_sub_id: ""
+                  mya_property_id: 14524
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  RoomInfo:
+                    - mya_room_id: 45829
+                      units: 5
+                      beds: 2
+                      dormitory: false
+                      label: Double Room
+                      description: A potentially long description about the room
+                    - mya_room_id: 290
+                      units: 25
+                      beds: 4
+                      dormitory: false
+                      label: 4-person private
+                      description: null
+            schema:
+              type: object
+              properties:
+                mya_property_id:
+                  description: Username or property ID on the myallocator
+                  type: integer
+                  minimum: 1
+                ota_property_id:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                ota_property_password:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                ota_property_sub_id:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by myallocator
+                  type: string
+                  pattern: ^[a-z0-9]+$
+                verb:
+                  type: string
+                  enum:
+                    - SetupProperty
+                RoomInfo:
+                  type: array
+                  description: >
+                    This list of rooms will only be returned if enabled for the
+                    OTA by myallocator. By default this is not present. It's
+                    only necessary for deep integrations or situations where the
+                    OTA plans to automatically/create destroy rooms using
+                    myallocator configuration. In a normal integration this
+                    isn't very usual.
+                  items:
+                    type: object
+                    properties:
+                      mya_room_id:
+                        type: integer
+                        minimum: 1
+                        description: Room ID on myallocator
+                      units:
+                        type: integer
+                        minimum: 1
+                        description: How many rooms of this type there are.
+                      beds:
+                        type: integer
+                        minimum: 1
+                        description: Number people that can stay in this room.
+                      dormitory:
+                        type: boolean
+                        description: >
+                          If `true` it's a dormitory (shared room), `false` for
+                          private rooms.
+                      label:
+                        type: string
+                        description: >
+                          Short string that describes the room for displaying
+                          purposes.
+                      description:
+                        type: string
+                        nullable: true
+                        description: >
+                          Longer description of the room which describes a room
+                          to a potential guest.
+                    required:
+                      - mya_room_id
+                      - units
+                      - beds
+                      - dormitory
+                      - label
+                      - description
+              required:
+                - verb
+                - guid
+                - mya_property_id
+                - ota_property_id
+                - ota_property_password
+                - ota_property_sub_id
+                - shared_secret
+                - ota_cid
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                Failure:
+                  summary: Failure (invalid credentials)
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+                Failure2:
+                  summary: Failure (CM not enabled)
+                  value:
+                    success: false
+                    errors:
+                      - id: 1002
+                        msg: Credentials not enabled for channel management.
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: SetupProperty
+      summary: SetupProperty
+  /GetRoomTypes:
+    post:
+      operationId: get_room_types
+      description: Returns a list of rooms configured for the passed credentials.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              GetRoomTypes:
+                summary: GetRoomTypes (normal)
+                value:
+                  verb: GetRoomTypes
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+              GetRoomTypes2:
+                summary: GetRoomTypes (with RoomInfo)
+                value:
+                  verb: GetRoomTypes
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  RoomInfo:
+                    - mya_room_id: 45829
+                      units: 5
+                      beds: 2
+                      dormitory: false
+                      label: Double Room
+                      description: A potentially long description about the room
+                    - mya_room_id: 290
+                      units: 25
+                      beds: 4
+                      dormitory: false
+                      label: 4-person private
+                      description: null
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    mya_property_id:
+                      description: Username or property ID on the myallocator
+                      type: integer
+                      minimum: 1
+                    ota_property_id:
+                      description: Username, login or property ID on the OTA
+                      type: string
+                    ota_property_password:
+                      description: Password for property on your OTA. In case the OTA does not use
+                        passwords this will be an empty string.
+                      type: string
+                    ota_property_sub_id:
+                      type: string
+                      description: >
+                        Property ID on the OTA, if OTA supports multiple
+                        properties under one
+                        `ota_property_id`/`ota_property_password` combination.
+                        See `GetSubProperties` for more details.
+                    guid:
+                      description: Request reference ID, used for debugging and support requests.
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                    shared_secret:
+                      description: Authentication between the OTA and the channel. Identical for all
+                        requests. Not to be shared with customers.
+                      type: string
+                    ota_cid:
+                      description: OTA ID as given by myallocator
+                      type: string
+                      pattern: ^[a-z0-9]+$
+                  required:
+                    - guid
+                    - mya_property_id
+                    - ota_property_id
+                    - ota_property_password
+                    - ota_property_sub_id
+                    - shared_secret
+                    - ota_cid
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - GetRoomTypes
+                    RoomInfo:
+                      type: array
+                      description: >
+                        This list of rooms will only be returned if enabled for
+                        the OTA by myallocator. By default this is not present.
+                        It's only necessary for deep integrations or situations
+                        where the OTA plans to automatically/create destroy
+                        rooms using myallocator configuration. In a normal
+                        integration this isn't very usual.
+                      items:
+                        $ref: "#/paths/~1SetupProperty/post/requestBody/content/application~1json/schem\
+                          a/properties/RoomInfo/items"
+              required:
+                - verb
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                    Rooms:
+                      - ota_room_id: DR_556
+                        title: 6-bed shared dorm
+                        occupancy: 6
+                        dorm: true
+                      - ota_room_id: PR_1952
+                        title: 5-person private
+                        occupancy: 5
+                        dorm: false
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                oneOf:
+                  - type: object
+                    title: Successful room retrieval
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      Rooms:
+                        type: array
+                        description: |
+                          List of rooms on the OTA.
+                        items:
+                          type: object
+                          properties:
+                            ota_room_id:
+                              type: string
+                              description: Room ID on the OTA
+                            title:
+                              type: string
+                              description: Name, label or short summary of the room type
+                            occupancy:
+                              type: integer
+                              minimum: 1
+                              description: Number of people that can stay in this room.
+                            dorm:
+                              type: boolean
+                              description: If `true` the room is a dormitory/shared room.
+                          required:
+                            - ota_room_id
+                            - title
+                    required:
+                      - success
+                      - Rooms
+                  - type: object
+                    title: Error Response
+                    properties:
+                      errors:
+                        description: Array of error objects.
+                        type: array
+                        items:
+                          description: Error object
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: 1
+                              description: >
+                                Error code. Check the "Error Codes" section of
+                                the specification for valid codes.
+                            msg:
+                              type: string
+                              description: >
+                                Optional error string to give more details about
+                                the error. Myallocator localises errors into
+                                different langauges, so this field is generally
+                                ignored and only useful for debugging.
+                          required:
+                            - id
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                    required:
+                      - errors
+                      - success
+          description: GetRoomTypes
+      summary: GetRoomTypes
+  /GetRatePlans:
+    post:
+      operationId: get_rate_plans
+      description: >-
+        If your OTA supports different rates per room and if we enabled the OTA
+        for
+
+        rate plan support, we'll make a `GetRatePlans` call to the OTA to retrieve
+
+        which rate plans you have configured for the passed credentials.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              GetRatePlans:
+                summary: GetRatePlans
+                value:
+                  verb: GetRatePlans
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - GetRatePlans
+              required:
+                - verb
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success - specific rate plans per room
+                  value:
+                    success: true
+                    RatePlans:
+                      - ota_room_id: DR_556
+                        ota_rate_id: DEF_9910
+                        title: Default Rate Plan
+                      - ota_room_id: PR_1952
+                        ota_rate_id: NRF_7001
+                        title: Non-refundable rate
+                Success2:
+                  summary: Success - global rate plans
+                  value:
+                    success: true
+                    RatePlans:
+                      - ota_room_id: "0"
+                        ota_rate_id: DEF_9910
+                        title: Default Rate Plan
+                      - ota_room_id: "0"
+                        ota_rate_id: NRF_7001
+                        title: Non-refundable rate
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                oneOf:
+                  - type: object
+                    title: Successful rate plan retrieval
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      RatePlans:
+                        type: array
+                        description: |
+                          List of rate plans on the OTA.
+                        items:
+                          type: object
+                          properties:
+                            ota_room_id:
+                              type: string
+                              description: >
+                                Room ID on the OTA tied to the rate plan. If the
+                                rate plan is available to all rooms set this to
+                                `0`.
+                            ota_rate_id:
+                              type: string
+                              description: Rate plan ID on the OTA
+                            title:
+                              type: string
+                              description: Name, label or short summary of the rate plan
+                          required:
+                            - ota_room_id
+                            - ota_rate_id
+                            - title
+                    required:
+                      - success
+                      - RatePlans
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
+          description: GetRatePlans
+      summary: GetRatePlans
+  /ARIUpdate:
+    post:
+      operationId: ari_update
+      description: >-
+        This call is used to send availability, rates and restrictions to your
+        OTA.
+
+        We will combine the updates into as few date ranges as possible, and we
+
+        split bigger updates into several API requests. We also cache data and will
+
+        not send ARI updates if the ARI data has not changed within a certain
+
+        timeframe. You can ask us to alter the numer of `Inventory` objects we send
+
+        per request. It's also possible to ask us to restrict maximum number of days
+
+        per date range.
+
+
+        Note that myallocator only supports availability on the room level, so for
+
+        the same `ota_room_id` and the same date range the availability will always
+
+        be the same. Only restrictions and rates are sent on the rate plan level.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ARIUpdate:
+                summary: ARIUpdate
+                value:
+                  verb: ARIUpdate
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  currency: USD
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  Inventory:
+                    - ota_room_id: "61365"
+                      ota_rate_id: rate_456
+                      start_date: 2025-01-22
+                      end_date: 2025-02-12
+                      units: 5
+                      rate: "15.00"
+                      rdef_single: "2.00"
+                      max_los: 14
+                      min_los: 2
+                      closearr: false
+                      closedep: false
+                      close: false
+                    - ota_room_id: "61365"
+                      ota_rate_id: rate_888
+                      start_date: 2025-01-22
+                      end_date: 2025-02-12
+                      units: 5
+                      rate: "30.00"
+                      close: true
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - ARIUpdate
+                    currency:
+                      type: string
+                      pattern: ^[A-Z]{3}$
+                      description: >
+                        3-letter ISO 4217 currency code. This is the currency
+                        the property has set for the channel connection, and may
+                        differ from the property's native currency. The OTA can
+                        use this field to assert that rates are sent in the
+                        correct currency.
+                    Inventory:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          ota_room_id:
+                            type: string
+                            description: Room ID on the OTA.
+                          ota_rate_id:
+                            type: string
+                            description: Rate plan ID on the OTA, if OTA supports rate plans.
+                          start_date:
+                            type: string
+                            format: date
+                            description: Start date for when the sent ARI is applicable.
+                          end_date:
+                            type: string
+                            format: date
+                            description: >
+                              End date for when the sent ARI is applicable. Note
+                              that this date is inclusive. For example, if the
+                              `end_date` is 2028-08-29 and we send `rate` =
+                              `20.15`, then this rate is applicable for someone
+                              staying/arriving on 2028-08-29.
+                          units:
+                            type: integer
+                            minimum: 0
+                            description: >
+                              Number or rooms bookable (available) for private
+                              rooms, or for the number of beds for shared/dorm
+                              rooms.
+                          rate:
+                            type: string
+                            pattern: ^\d+(\.\d+)?$
+                            description: |
+                              Price per unit for a single night.
+                          rdef_single:
+                            type: string
+                            pattern: ^\d+(\.\d+)?$
+                            description: >
+                              The single use rate, if only one person is
+                              staying. This will only be present for private
+                              rooms, and only if the occupancy of this room is
+                              higher than `1`. If the value is `0` we recommend
+                              to not make the single use rate available, or to
+                              just use the same price as for `rate`.
+                          max_los:
+                            type: integer
+                            minimum: 0
+                            description: >-
+                              Maximum length of stay. A guest should not be able
+                              to
+
+                              book if they selected more nights than this value. A
+
+                              value of `0` means that there is no restriction.
+
+
+                              There are two ways to restrict bookings by this value:
+
+                              a) Check the `max_los` value for the arrival date,
+
+                              or b) check the `max_los` value for all days the guest
+
+                              is intending to stay and restrict by the lowest value.
+                          min_los:
+                            type: integer
+                            minimum: 1
+                            description: >-
+                              Minimum length of stay. A guest should not be able
+                              to
+
+                              book if they selected fewer nights than this value.
+
+
+                              There are two ways to restrict bookings by this value:
+
+                              a) Check the `min_los` value for the arrival date,
+
+                              or b) check the `min_los` value for all days the guest
+
+                              is intending to stay and restrict by the lowest value.
+                          closearr:
+                            type: boolean
+                            description: >
+                              Restricts whether a guest can arrive within the
+                              specified date range. If `true` the guest can stay
+                              and depart within the date range, but not arrive.
+                          closedep:
+                            type: boolean
+                            description: >
+                              Restricts whether a guest can depart within the
+                              specified date range. If `true` the guest can stay
+                              and arrive within the date range, but not depart.
+                          close:
+                            type: boolean
+                            description: >
+                              Restricts whether a guest can stay within the
+                              specified date range. If `true` the guest cannot
+                              arrive, stay or depart within the date range. In
+                              many cases this is equivalent to `units` = 0,
+                              however it can be used to make specific rate plans
+                              unavailable while leaving others bookable.
+                        required:
+                          - ota_room_id
+                          - start_date
+                          - end_date
+                          - units
+                          - rate
+              required:
+                - verb
+                - currency
+                - Inventory
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                Failure:
+                  summary: Incorrect currency settings
+                  value:
+                    success: false
+                    errors:
+                      - id: 1102
+                        msg: >
+                          Your currency setting doesn't match the channel's
+                          currency setting. Transmitted: EUR. Setting on OTA:
+                          USD.
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: ARIUpdate
+      summary: ARIUpdate
+  /GetBookingList:
+    post:
+      operationId: get_booking_list
+      description: >-
+        Returns a list of bookings/reservations which have not been previously
+
+        downloaded or have been modified.
+
+
+        The pull interval can be freely set. For channels that do not support the
+
+        `CreateBooking` callback the interval is usually set to pull bookings every
+
+        5 minutes. If `CreateBooking` is supported then the `GetBookingList` will
+
+        be used as a fallback every 30 minutes.
+
+
+        The OTA can also send myallocator a `NotifyBooking` callback to inform about
+
+        new bookings available to be polled.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              GetBookingList:
+                summary: GetBookingList
+                value:
+                  verb: GetBookingList
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  ota_booking_version: 2022-03-22 12:09:19
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - GetBookingList
+                    ota_booking_version:
+                      type: string
+                      nullable: true
+                      description: >-
+                        With each request we send along `ota_booking_version`,
+                        which
+
+                        has the format `YYYY-MM-DD HH:MM:SS` and indicates the time
+
+                        in UTC we last successfully requested bookings. It can be
+
+                        `null` if no successful response has been received so
+
+                        far. Please use `ota_booking_version` to only return to us
+
+                        new or modified bookings made since then. To ensure that no
+
+                        booking are skipped due to a time-offset between your and
+
+                        our servers make sure to always reduce 5 or more minutes
+
+                        from the time given. Example: we provide 2017-06-22
+
+                        12:09:19, then please return all new/modified/cancalled
+
+                        bookings since 2017-06-22 12:04:19 (5 minutes before the
+
+                        time sent).
+
+
+                        If `ota_booking_version` is `null` please return all bookings.
+              required:
+                - verb
+                - ota_booking_version
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                    Bookings:
+                      - booking_id: B84372-281192312
+                        version: "1"
+                      - booking_id: B84372-281192314
+                        version: "2"
+                      - booking_id: H1238-99825634
+                        version: "1"
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                oneOf:
+                  - type: object
+                    title: Successful booking list retrieval
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      Bookings:
+                        type: array
+                        description: |
+                          List of bookings to be retrieved with `GetBookingId`.
+                        items:
+                          type: object
+                          properties:
+                            booking_id:
+                              type: string
+                              description: Unique booking ID on the OTA. Maximum of 64 characters.
+                            version:
+                              type: string
+                              description: >
+                                Most recent version number of the booking, if
+                                the OTA wants to support retrieval of different
+                                versions of bookings. Not commonly implemented.
+                          required:
+                            - booking_id
+                    required:
+                      - success
+                      - Bookings
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
+          description: GetBookingList
+      summary: GetBookingList
+  /GetBookingId:
+    post:
+      operationId: get_booking_id
+      description: >-
+        Returns detailed bookings made on the OTA.
+
+
+        The booking format is described
+
+        [here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+
+
+        Most fields are optional. This specification lists only the minimum required
+
+        fields to be eligable for a successful Build-To-Us integration.
+
+
+        Prices: Send us sell rates (rates including taxes and fees). The sum of all
+
+        room prices should equal the `TotalPrice` field. Day rates should be per
+
+        unit, so the sum of all day rates multiplied by the number of units should
+
+        equal the room price.
+
+
+        Country codes: For CustomerCountry and CustomerNationality (if you include
+
+        those fields) make sure to pass the country code as uppercase Alpha-2
+
+        ISO-3166 codes.
+
+
+        Currency codes: Make sure they are valid ISO-4217 (uppercase).
+
+
+        Make sure to provide `OrderDate` and `OrderTime`. They have be provided in
+
+        UTC.
+
+
+        Guest's credit/debit card details can be provided with the `Payments` field.
+
+
+        Implementation suggestions: when testing make sure the myallocator test
+
+        property has "download bookings" enabled or the booking will be saved in a
+
+        queue and not visible during testing. To enable login and go to MANAGE /
+
+        General Details / Download new bookings from channels. Default setting
+
+        is "Off". Once enabled please allow 30 minutes for the backend to start
+
+        processing bookings. Also there may be a normal 1-2 minute period after a
+
+        `GetBookingId` response before the booking is visible in the
+
+        inbox.myallocator.com interface (the bookings are held in a temporary queue
+
+        on our backend).
+      requestBody:
+        content:
+          application/json:
+            examples:
+              GetBookingId:
+                summary: GetBookingId
+                value:
+                  verb: GetBookingId
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  booking_id: H7736-29385551
+                  reason: Guest called and requested cancellation
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - GetBookingId
+                    booking_id:
+                      type: string
+                      description: |
+                        OTA booking ID of the booking to be retrieved.
+                    version:
+                      type: string
+                      description: >
+                        Versioning string if returned by `GetBookingList`. May
+                        be used to retrieve a specific version of the booking.
+              required:
+                - verb
+                - booking_id
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                    Booking:
+                      OrderId: "123456789"
+                      OrderDate: 2018-04-22
+                      OrderTime: 18:02:58
+                      IsCancellation: 0
+                      TotalCurrency: USD
+                      TotalPrice: 134
+                      Customers:
+                        - CustomerCountry: US
+                          CustomerEmail: test@test.com
+                          CustomerFName: Test Firstname
+                          CustomerLName: Test Lastname
+                      Rooms:
+                        - ChannelRoomType: abcdef
+                          Currency: USD
+                          DayRates:
+                            - Date: 2017-11-08
+                              Description: Refundable Rate
+                              Rate: 32.5
+                              Currency: USD
+                              RateId: "13649"
+                            - Date: 2017-11-09
+                              Description: Refundable Rate
+                              Rate: 34.5
+                              Currency: USD
+                              RateId: "13649"
+                          StartDate: 2017-11-08
+                          EndDate: 2017-11-09
+                          Price: 134
+                          Units: 2
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                oneOf:
+                  - type: object
+                    title: Successful booking retrieval
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      Booking:
+                        type: object
+                        description: >
+                          Object describing the booking. The fields listed here
+                          are just the minimum required fields.
+                        properties:
+                          OrderId:
+                            type: string
+                            description: Unique booking ID on the OTA. Maximum of 64 characters.
+                          OrderDate:
+                            type: string
+                            format: date
+                            description: Date of booking creation, in UTC (not date when modified!).
+                          OrderTime:
+                            type: string
+                            pattern: ^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$
+                            description: >
+                              Time of booking creation, in UTC. If seconds are
+                              not provided, set value to ":00". Presence of
+                              `OrderTime` requires presence of `OrderDate`.
+                          IsCancellation:
+                            type: integer
+                            enum:
+                              - 0
+                              - 1
+                            description: "`1` if booking is cancelled."
+                          TotalCurrency:
+                            type: string
+                            pattern: ^[A-Z]{3}$
+                            description: >
+                              3-letter ISO 4217 currency code for the
+                              `TotalPrice` field.
+                          TotalPrice:
+                            type: number
+                            description: >
+                              Total price of the booking, including taxes,
+                              commission and deposit, after discounts. It should
+                              reflect the price the guest will have to pay in
+                              total (or has already paid).
+                          Customers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                CustomerCountry:
+                                  type: string
+                                  pattern: ^[A-Z]{2}$
+                                  description: 2-letter ISO 3166-1 alpha-2 country code in which the customer
+                                    resides, corresponding to their address.
+                                    Value is uppercase.
+                                CustomerEmail:
+                                  type: string
+                                  format: email
+                                  description: Email address of the customer.
+                                CustomerFName:
+                                  type: string
+                                  description: >
+                                    First name(s) of the customer. If the name
+                                    is not stored separated by first and last
+                                    name, provide full name in `CustomerLName`.
+                                CustomerLName:
+                                  type: string
+                                  description: Last (family) name or full name of the customer.
+                          Rooms:
+                            type: array
+                            description: List of rooms booked
+                            items:
+                              type: object
+                              properties:
+                                ChannelRoomType:
+                                  type: string
+                                  description: The ID of the room on the OTA.
+                                Currency:
+                                  type: string
+                                  pattern: ^[A-Z]{3}$
+                                  description: >
+                                    3-letter ISO 4217 currency code for the
+                                    `Price` field.
+                                DayRates:
+                                  type: array
+                                  description: >
+                                    Contains as many objects as the number of
+                                    nights of the room stay. They need to be
+                                    sorted by date.
+                                  items:
+                                    type: object
+                                    properties:
+                                      Date:
+                                        type: string
+                                        format: date
+                                        description: Date of day rate.
+                                      Description:
+                                        type: string
+                                        description: >
+                                          Name or short description of the
+                                          rateplan booked. Example:
+                                          "Non-refundable rate" or "10% festival
+                                          discount".
+                                      Rate:
+                                        type: number
+                                        description: >
+                                          Price for this day, including
+                                          `Commission` and `Tax`.
+                                      Currency:
+                                        type: string
+                                        pattern: ^[A-Z]{3}$
+                                        description: >
+                                          3-letter ISO 4217 currency code for
+                                          the `Rate` field.
+                                StartDate:
+                                  type: string
+                                  format: date
+                                  description: Arrival date of the customer.
+                                EndDate:
+                                  type: string
+                                  format: date
+                                  description: >
+                                    The date of the last night of stay (equal to
+                                    departure date minus one).
+                                Price:
+                                  type: number
+                                  minimum: 0
+                                  description: >
+                                    Total price of the room, for all units and
+                                    all days, including taxes and fees. Example:
+                                    stay is for two days and three units and a
+                                    single night costs €10 (including tax), then
+                                    `Price` is 2 * 3 * 10 = 60.
+                                Units:
+                                  type: integer
+                                  minimum: 1
+                                  description: >
+                                    Number of rooms booked (for private rooms)
+                                    or number of beds booked (for dorms/shared
+                                    rooms).
+                    required:
+                      - success
+                      - Booking
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
+          description: GetBookingId
+      summary: GetBookingId
+  /CancelBooking:
+    post:
+      operationId: cancel_booking
+      description: >-
+        Allows a property to cancel a booking on your OTA from the myallocator
+        side.
+
+
+        *IMPORTANT*: Please contact us to enable this capability for your channel. It
+
+        is NOT enabled by default.
+
+
+        The reason why the booking is to be canceled is given in the reason field.
+
+        If the booking cannot be canceled the error code should be provided. Here
+
+        are possible error codes:
+
+
+        * 4001 - booking has already departed
+
+        * 4002 - booking is already canceled
+
+        * 4003 - booking cannot be canceled. The reason is provided in the `msg` field.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              CancelBooking:
+                summary: CancelBooking
+                value:
+                  verb: CancelBooking
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  booking_id: H7736-29385551
+                  reason: Guest called and requested cancellation
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - CancelBooking
+                    booking_id:
+                      type: string
+                      description: |
+                        OTA booking ID of the booking to be cancelled.
+                    reason:
+                      type: string
+                      description: >
+                        Free text reason given by property as to why the booking
+                        was cancelled.
+              required:
+                - verb
+                - booking_id
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Booking has already departed
+                  value:
+                    success: false
+                    errors:
+                      - id: 4001
+                        msg: Booking has already departed
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: CancelBooking
+      summary: CancelBooking
+  /CreateProperty:
+    post:
+      operationId: create_property
+      description: >-
+        Can be used to create a new property (including rooms) on your OTA based
+        on
+
+        the details that we have in myallocator (eg. property name, address, images,
+
+        room details, etc). This call needs to be activated explicitly from our side
+
+        before you can use it. Please talk to your myallocator contact before
+
+        implementing this call!
+
+
+        Rate plan information was added at a later date and is only transmitted for
+
+        new build-to-us implementations or if the feature has been enabled
+
+        explicitly. Note that every room has a default rate plan, and the ID
+
+        (even across different rooms) is always `0`.
+
+
+        Once approved please provide us with your terms & conditions for us to
+
+        display to a property. You should provide them as a HTML file with only
+
+        basic styling.
+
+
+        We cannot guarantee that all of the following request fields will always be
+
+        filled in, as many are optional within myallocator.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              CreateProperty:
+                summary: CreateProperty
+                value:
+                  ota_property_id: ""
+                  ota_property_password: ""
+                  ota_property_sub_id: ""
+                  mya_property_id: 12345
+                  ota_cid: ota
+                  verb: CreateProperty
+                  shared_secret: s3cr3ts4uc3
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  Property:
+                    name: Sample Hostel
+                    country: US
+                    currency: EUR
+                    email_default: someone@example.com
+                    email_channel_booking: bookings@example.com
+                    default_min_los: 3
+                    default_max_los: 0
+                    breakfast: ""
+                    weekend:
+                      - tuesday
+                      - saturday
+                      - sunday
+                    firstname: John
+                    lastname: Smith
+                    timezone: Asia/Thimphu
+                    address:
+                      address_line_1: Main St
+                      address_line_2: Annex
+                      city: San Diego
+                      zip: "92120"
+                      state: CA
+                      country: US
+                      website: http://example.com
+                      lon: "32.715736"
+                      lat: "-117.161087"
+                      phone: "+1 123123123 "
+                      fax: +1 123123123
+                    business_contact:
+                      main_contact_name: Jeff Johnson
+                      company_name: Hostels Inc.
+                      account_manager_name: Hillary Jackson
+                      vat_id: US2345678
+                      address_line_1: Office Street
+                      address_line_2: 3rd floor
+                      state: Office State
+                      zip: "22222"
+                      city: Office City
+                      country: DE
+                    images:
+                      - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+                        description: Outside View
+                        sort_order: 1
+                      - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg
+                        description: Reception Area
+                        sort_order: 2
+                    rooms:
+                      - mya_room_id: 45829
+                        units: 5
+                        beds: 2
+                        dormitory: false
+                        label: Double Room
+                        description: A potentially long description about the room
+                        images:
+                          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+                            description: Double bed
+                            sort_order: 1
+                          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg
+                            description: Bath room
+                            sort_order: 2
+                          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c99.jpg
+                            description: Balcony
+                            sort_order: 3
+                        rateplans:
+                          - mya_rate_id: 0
+                            label_public: Default Rate Plan
+                            label_private: Default Rate Plan
+                          - label_public: Non-refundable
+                            label_private: NR
+                            mya_rate_id: 850
+                          - label_public: With Breakfast
+                            label_private: BR
+                            mya_rate_id: 851
+                      - mya_room_id: 290
+                        units: 25
+                        beds: 4
+                        dormitory: false
+                        label: 4-person private
+                        description: null
+                        images: []
+                        rateplans:
+                          - label_private: Default Rate Plan
+                            label_public: Default Rate Plan
+                            mya_rate_id: 0
+                      - mya_room_id: 329
+                        units: 7
+                        beds: 3
+                        dormitory: false
+                        label: 3-person private
+                        description: Best three bed room in town
+                        images:
+                          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+                            description: 3-bed room
+                            sort_order: 1
+                        rateplans:
+                          - label_public: Default Rate Plan
+                            label_private: Default Rate Plan
+                            mya_rate_id: 0
+                          - mya_rate_id: 853
+                            label_private: NR
+                            label_public: Non-refundable
+                      - mya_room_id: 52
+                        units: 3
+                        beds: 30
+                        dormitory: true
+                        gender: MIXED
+                        label: 30-person mixed shared
+                        description: null
+                        images: []
+                        rateplans:
+                          - mya_rate_id: 0
+                            label_public: Default Rate Plan
+                            label_private: Default Rate Plan
+                          - mya_rate_id: 852
+                            label_public: Non-refundable
+                            label_private: NR
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    mya_property_id:
+                      description: Property ID on the myallocator
+                      type: integer
+                      minimum: 1
+                    guid:
+                      description: Request reference ID, used for debugging and support requests.
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                    shared_secret:
+                      description: Authentication between the OTA and the channel. Identical for all
+                        requests. Not to be shared with customers.
+                      type: string
+                    ota_cid:
+                      description: OTA ID as given by myallocator
+                      type: string
+                      pattern: ^[a-z0-9]+$
+                    verb:
+                      type: string
+                      enum:
+                        - CreateProperty
+                    Property:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Property name
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{2}$
+                          description: >
+                            2-letter ISO 3166-1 alpha-2 country code. This is
+                            the country the property is located in.
+                        currency:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          description: >
+                            3-letter ISO 4217 currency code. This is the default
+                            currency of the property.
+                        timezone:
+                          type: string
+                          description: >
+                            Timezone the property is located in. Check (this
+                            document)[https://apidocs.myallocator.com/timezone-list.html]
+                            for valid values.
+                        email_default:
+                          type: string
+                          format: email
+                          description: >
+                            The default property email address. Defaults to
+                            default user email.
+                        email_channel_booking:
+                          type: string
+                          format: email
+                          description: >
+                            The email address used when forwarding channel
+                            booking emails. Defaults to default user email.
+                        default_min_los:
+                          type: integer
+                          minimum: 1
+                          description: >
+                            Default minimum length of stay setting for this
+                            property. See the description for `min_los` in the
+                            `ARIUpdate` call for more details on this
+                            restriction.
+                        default_max_los:
+                          type: integer
+                          minimum: 0
+                          description: >-
+                            Default maximum length of stay setting for this
+                            property.
+
+                            See the description for `max_los` in the `ARIUpdate` call
+
+                            for more details on this restriction.
+
+
+                            `0` means there is no restriction.
+                        breakfast:
+                          type: string
+                          enum:
+                            - ""
+                            - IN
+                            - EX
+                          description: >-
+                            Default breakfast setting for the property. Empty
+                            string
+
+                            means no breakfast is available, `IN` means breakfast is
+
+                            included in the day rates and `EX` means breakfast is
+
+                            excluded from day rates.
+
+
+                            Note that this setting is likely not very useful and too
+
+                            broad.
+                        weekend:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                              - monday
+                              - tuesday
+                              - wednesday
+                              - thursday
+                              - friday
+                              - saturday
+                              - sunday
+                          description: >-
+                            List of weekdays that the property considers to be
+                            their
+
+                            weekend.
+
+
+                            Note that this setting is likely not very useful.
+                        firstname:
+                          type: string
+                          description: |
+                            First name of property owner/manager.
+                        lastname:
+                          type: string
+                          description: |
+                            First name of property owner/manager.
+                        address:
+                          type: object
+                          description: Address of the property.
+                          properties:
+                            address_line_1:
+                              type: string
+                              nullable: true
+                              description: First address line of the property (usually the street name and
+                                house number)
+                            address_line_2:
+                              type: string
+                              nullable: true
+                              description: Second address line of the property (if applicable)
+                            city:
+                              type: string
+                              nullable: true
+                              description: City or locality the property is located in
+                            zip:
+                              type: string
+                              nullable: true
+                              description: Post Code (ZIP) of the property
+                            state:
+                              type: string
+                              nullable: true
+                              description: State of the property (if applicable)
+                            country:
+                              type: string
+                              pattern: ^[A-Z]{2}$
+                              description: >
+                                2-letter ISO 3166-1 alpha-2 country code. This
+                                is the country the property is located in. Same
+                                as `country` on the top level.
+                            website:
+                              type: string
+                              nullable: true
+                              description: Homepage of the property
+                            lon:
+                              type: string
+                              nullable: true
+                              description: >
+                                Geographic longitude of the property, given as
+                                decimal degrees. Positive for east, negative for
+                                west. Example: `-117.15292`
+                            lat:
+                              type: string
+                              nullable: true
+                              description: >
+                                Geographic latitude of the property, given as
+                                decimal degrees. Positive for north, negative
+                                for south. Example: `32.70954`
+                            phone:
+                              type: string
+                              nullable: true
+                              description: >
+                                Phone number for the property with international
+                                country code (eg. `+44 350 5697864`)
+                            fax:
+                              type: string
+                              nullable: true
+                              description: >
+                                Fax number for the property with international
+                                country code (eg. `+44 350 5697864`)
+                          required:
+                            - country
+                        business_contact:
+                          type: object
+                          description: Contact information for invoicing
+                          properties:
+                            main_contact_name:
+                              type: string
+                              nullable: true
+                              description: Name of the main contact for the property
+                            company_name:
+                              type: string
+                              nullable: true
+                              description: Name of the company owning the property
+                            account_manager_name:
+                              type: string
+                              nullable: true
+                              description: Name of the account manager responsible for the property
+                            vat_id:
+                              type: string
+                              nullable: true
+                              description: Tax ID for the property
+                            address_line_1:
+                              type: string
+                              nullable: true
+                              description: First address line of the company or property owner (usually the
+                                street name and house number)
+                            address_line_2:
+                              type: string
+                              nullable: true
+                              description: Second address line of the company or property owner (if
+                                applicable)
+                            state:
+                              type: string
+                              nullable: true
+                              description: State of the company or property owner (if applicable)
+                            zip:
+                              type: string
+                              nullable: true
+                              description: Post Code (ZIP) of the company or property owner
+                            city:
+                              type: string
+                              nullable: true
+                              description: City or locality the company or property owner is located in
+                            country:
+                              type: string
+                              pattern: ^[A-Z]{2}$
+                              description: >
+                                2-letter ISO 3166-1 alpha-2 country code. This
+                                is the country the the company or property owner
+                                is located in.
+                          required:
+                            - country
+                        images:
+                          type: array
+                          description: List of property-level images
+                          items:
+                            type: object
+                            properties:
+                              url:
+                                type: string
+                                description: Publicly accessible URL to the full resolution image
+                              description:
+                                type: string
+                                description: Description of the image to show on a channel (max. 2000
+                                  characters)
+                              sort_order:
+                                type: integer
+                                minimum: 0
+                                description: >
+                                  Number indicating the displayed sort order.
+                                  Lower numbers means further left/top. Defaults
+                                  to 0.
+                        rooms:
+                          type: array
+                          description: List of rooms configured for the property
+                          items:
+                            type: object
+                            properties:
+                              mya_room_id:
+                                type: integer
+                                minimum: 1
+                                description: Room ID on myallocator
+                              units:
+                                type: integer
+                                minimum: 1
+                                description: How many rooms of this type there are.
+                              beds:
+                                type: integer
+                                minimum: 1
+                                description: Number of people that can stay in this room.
+                              dormitory:
+                                type: boolean
+                                description: >
+                                  `true` if it's a dormitory (shared room),
+                                  `false` for private rooms.
+                              label:
+                                type: string
+                                description: >
+                                  Short string that describes the room for
+                                  displaying purposes.
+                              description:
+                                type: string
+                                nullable: true
+                                description: >
+                                  Longer description of the room which describes
+                                  a room to a potential guest.
+                              images:
+                                type: array
+                                description: List of room-level images.
+                                items:
+                                  type: object
+                                  properties:
+                                    url:
+                                      type: string
+                                      description: Publicly accessible URL to the full resolution image
+                                    description:
+                                      type: string
+                                      nullable: true
+                                      description: Description of the image to show on a channel (max. 2000
+                                        characters)
+                                    sort_order:
+                                      type: integer
+                                      minimum: 0
+                                      description: >
+                                        Number indicating the displayed sort
+                                        order. Lower numbers means further
+                                        left/top. Defaults to 0.
+                                  required:
+                                    - url
+                                    - description
+                                    - sort_order
+                              rateplans:
+                                type: array
+                                description: List of rate plans configured for the room
+                                items:
+                                  type: object
+                                  properties:
+                                    mya_rate_id:
+                                      type: integer
+                                      minimum: 0
+                                      description: >
+                                        Rate plan ID on myallocator. Every room
+                                        has a default rate plan, and the ID
+                                        (even across different rooms) is always
+                                        `0`. Any non-default rate plans have a
+                                        higher ID.
+                                    label_public:
+                                      type: string
+                                      nullable: true
+                                      description: >
+                                        Name or short summary of the rate plan,
+                                        suitable for display to guests. The
+                                        label is chosen by the property.
+                                    label_private:
+                                      type: string
+                                      nullable: true
+                                      description: >
+                                        Name or short summary of the rate plan,
+                                        aimed to be shown just to the property.
+                                        This could for example be a code like
+                                        `NF` for "Non-refundable". The label is
+                                        chosen by the property.
+                                  required:
+                                    - mya_rate_id
+                                    - label_public
+                                    - label_private
+                            required:
+                              - mya_room_id
+                              - units
+                              - beds
+                              - dormitory
+                              - label
+                              - description
+                              - images
+                      required:
+                        - name
+                        - country
+                        - currency
+                        - timezone
+                        - email_default
+                        - email_channel_booking
+                        - default_min_los
+                        - default_max_los
+                        - breakfast
+                        - weekend
+                        - firstname
+                        - lastname
+                        - address
+                        - business_contact
+                        - images
+                        - rooms
+              required:
+                - guid
+                - mya_property_id
+                - shared_secret
+                - ota_cid
+                - verb
+                - Property
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Uncategorised error
+                  value:
+                    success: false
+                    errors:
+                      - id: 3
+                        msg: Property already exists
+                Success with room mapping:
+                  summary: Success
+                  value:
+                    success: true
+                    ota_property_id: CID_123
+                    ota_property_password: secret_password
+                    instruction_text: |-
+                      It worked!
+
+                      Now click the link.
+                    instruction_link: https://ota.com/instructions
+                    room_mappings:
+                      - ota_room_id: "11111"
+                        mya_room_id: 45829
+                        ota_rate_id: rp6623
+                        mya_rate_id: 0
+                      - ota_room_id: "11111"
+                        mya_room_id: 45829
+                        ota_rate_id: rp6624
+                        mya_rate_id: 850
+                      - ota_room_id: "11111"
+                        mya_room_id: 45829
+                        ota_rate_id: rp6624
+                        mya_rate_id: 851
+                      - ota_room_id: "22222"
+                        mya_room_id: 290
+                        ota_rate_id: rp6625
+                        mya_rate_id: 0
+                      - ota_room_id: "22222"
+                        mya_room_id: 290
+                        ota_rate_id: rp6626
+                        mya_rate_id: 853
+              schema:
+                oneOf:
+                  - type: object
+                    title: Successful creation
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      ota_property_id:
+                        type: string
+                        description: New property ID on the OTA
+                      ota_property_password:
+                        type: string
+                        description: >
+                          If the OTA uses passwords this will authenticate the
+                          property on the OTA. We'll automatically save the
+                          password.
+                      instruction_text:
+                        type: string
+                        description: >
+                          The instruction text will be displayed to the hotel
+                          after the property creation is complete. We will
+                          escape any HTML characters, so please only return
+                          plain text. You can include linebreaks (`\n`) which
+                          will be converted into actual line breaks for HTML
+                          display.
+                      instruction_link:
+                        type: string
+                        description: >
+                          If an instruction link is provided we will display the
+                          clickable link below the instruction text (if
+                          present).
+                      room_mappings:
+                        type: array
+                        description: >
+                          Returning this field will help myallocator to
+                          automatically map the OTA room IDs to myallocator's
+                          room IDs. This is required to automatically send a
+                          full refresh after successful property creation. We
+                          strongly recommend that you return this field. If you
+                          do not support rate plans you do not need to return
+                          `ota_rate_id` and `mya_rate_id`.
+                        items:
+                          type: object
+                          properties:
+                            ota_room_id:
+                              type: string
+                              description: New OTA room ID
+                            mya_room_id:
+                              type: integer
+                              minimum: 1
+                              description: Myallocator room ID
+                            ota_rate_id:
+                              type: string
+                              description: New OTA rate plan ID
+                            mya_rate_id:
+                              type: integer
+                              minimum: 0
+                              description: Myallocator rate plan ID
+                          required:
+                            - ota_room_id
+                            - mya_room_id
+                    required:
+                      - success
+                      - ota_property_id
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
+          description: CreateProperty
+      summary: CreateProperty
+  /GetSubProperties:
+    post:
+      operationId: get_sub_properties
+      description: >-
+        Some OTAs only tie one property to a specific login username/password
+        where
+
+        the username is also the ota_property_id. Others allow for one
+
+        username/password to be associated with multiple properties. In this second
+
+        case, each OTA property identifier is stored as an `ota_property_sub_id` in
+
+        order to be handled separately from the property's OTA username. This method
+
+        call should return all of the properties (ota_property_sub_ids) associated
+
+        with the OTA's username/password so that the correct `ota_property_sub_id`
+
+        can be linked with our `mya_property_id` for a specific property.
+
+
+        *IMPORTANT*: Please contact us to enable this feature for your OTA. It is
+
+        NOT enabled by default. It is only necessary if your OTA allows for
+
+        multiple properties associated with one login username/password.
+
+
+        Implementation suggestions: `ota_property_sub_id` will be the OTA identifier
+
+        for a specific property managed by the hotel while the title is that
+
+        property's name. This method will allow the property to map their
+
+        myallocator property with the OTA's `ota_property_sub_id` when setting up
+
+        the property-OTA association on myallocator.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              GetSubProperties:
+                summary: GetSubProperties
+                value:
+                  verb: GetSubProperties
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: ""
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              type: object
+              properties:
+                mya_property_id:
+                  description: Username or property ID on the myallocator
+                  type: integer
+                  minimum: 1
+                ota_property_id:
+                  description: Username, login or property ID on the OTA
+                  type: string
+                ota_property_password:
+                  description: Password for property on your OTA. In case the OTA does not use
+                    passwords this will be an empty string.
+                  type: string
+                ota_property_sub_id:
+                  type: string
+                  description: Always an empty string for this call
+                  enum:
+                    - ""
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by myallocator
+                  type: string
+                  pattern: ^[a-z0-9]+$
+                verb:
+                  type: string
+                  enum:
+                    - GetSubProperties
+              required:
+                - verb
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                    SubProperties:
+                      - ota_property_sub_id: "10034812"
+                        title: Sea-side Beach Hotel
+                      - ota_property_sub_id: "10034818"
+                        title: Lakeview Apartments
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                oneOf:
+                  - type: object
+                    title: Successful property list retrieval
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      SubProperties:
+                        type: array
+                        description: |
+                          List of properties for the user on the OTA.
+                        items:
+                          type: object
+                          properties:
+                            ota_property_sub_id:
+                              type: string
+                              description: |
+                                Property ID on the OTA.
+                            title:
+                              type: string
+                              description: Name of the property
+                          required:
+                            - ota_property_sub_id
+                            - title
+                    required:
+                      - success
+                      - SubProperties
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
+          description: GetSubProperties
+      summary: GetSubProperties
+  /ARIFullRefresh:
+    post:
+      operationId: ari_full_refresh
+      description: >
+        *Note that the endpoint for this API call is on myallocator!*
+
+        This is for technical support on the remote OTA to enqueue a full refresh of the property. You may use either `ota_property_id` (it may be resolved into a number of myallocator IDs) or `mya_property_id`.
+
+        Note that full refreshes are heavy operations, so only call this when absolutely neccessary. Under no circumstances use this callback on a scheduled basis.
+      servers:
+        - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+          variables:
+            ota:
+              description: OTA channel ID as assigned by myallocator
+              default: replace_with_ota_id
+      requestBody:
+        content:
+          multipart/form-data:
+            examples:
+              ARIFullRefresh:
+                summary: ARIFullRefresh
+                value:
+                  mya_property_id: 998201
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              type: object
+              properties:
+                mya_property_id:
+                  description: Username or property ID on the myallocator
+                  type: integer
+                  minimum: 1
+                ota_property_id:
+                  description: Username, login or property ID on the OTA
+                  type: string
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+              required:
+                - shared_secret
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    UpdateId: 99277138491
+                Failure:
+                  summary: Failure
+                  value:
+                    Error: 1031
+                    ErrorMsg: Channel not enabled for property
+              schema:
+                oneOf:
+                  - title: Successful request
+                    type: object
+                    properties:
+                      UpdateId:
+                        type: integer
+                        minimum: 1
+                        description: >
+                          If present indicates that at least one full refresh
+                          was enqueued into myallocator to be sent to the OTA.
+                  - type: object
+                    title: Error Response
+                    properties:
+                      ErrorCode:
+                        type: integer
+                        minimum: 1
+                        description: >
+                          Error code. Check the "Error Codes" section of the
+                          specification for valid codes.
+                      Error:
+                        type: string
+                        description: Human-readable error message.
+                    required:
+                      - ErrorCode
+                      - Error
+          description: ARIFullRefresh
+      summary: ARIFullRefresh
+      tags:
+        - Callbacks
+  /BookingCreate:
+    post:
+      operationId: booking_create
+      description: >-
+        *Note that the endpoint for this API call is on myallocator!*
+
+
+        Use this callback to send us new bookings. Using this callback ensures that
+
+        there is no delay between the creation of the booking and import on
+
+        myallocator. Therefore it's strongly recommend to implement this callback.
+
+        Even when implemented it's still neccessary to also implement the
+
+        `GetBookingList` and `GetBookingId` calls, which act as fallbacks if
+
+        the `CreateBooking` notification fails, when a reimport due to processing
+
+        issues on myallocator is neccessary, or when a specific booking needs to be
+
+        debugged.
+
+
+        The booking format is identical to what is being returned in the
+
+        `GetBookingId` call. The booking format is described
+
+        [here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+
+
+        See the documentation about `GetBookingId` for more details on the format.
+
+        The specification listed here is not complete and just the minimal
+
+        requirement.
+
+
+        The `booking_json` form field is expected to be JSON encoded. Note that the
+
+        example shown on the right is not rendering correctly due to a bug with the
+
+        specification renderer. `mya_property_id`, `shared_secret` and
+
+        `booking_json` should be submitted as form fields.
+      servers:
+        - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+          variables:
+            ota:
+              description: OTA channel ID as assigned by myallocator
+              default: replace_with_ota_id
+      requestBody:
+        content:
+          multipart/form-data:
+            examples:
+              BookingCreate:
+                summary: BookingCreate
+                value:
+                  mya_property_id: 998201
+                  shared_secret: s3cr3ts4uc3
+                  booking_json:
+                    OrderId: "123456789"
+                    OrderDate: 2018-04-22
+                    OrderTime: 18:02:58
+                    IsCancellation: 0
+                    TotalCurrency: USD
+                    TotalPrice: 134
+                    Customers:
+                      - CustomerCountry: US
+                        CustomerEmail: test@test.com
+                        CustomerFName: Test Firstname
+                        CustomerLName: Test Lastname
+                    Rooms:
+                      - ChannelRoomType: abcdef
+                        Currency: USD
+                        DayRates:
+                          - Date: 2017-11-08
+                            Description: Refundable Rate
+                            Rate: 32.5
+                            Currency: USD
+                            RateId: "13649"
+                          - Date: 2017-11-09
+                            Description: Refundable Rate
+                            Rate: 34.5
+                            Currency: USD
+                            RateId: "13649"
+                        StartDate: 2017-11-08
+                        EndDate: 2017-11-09
+                        Price: 134
+                        Units: 2
+            schema:
+              type: object
+              properties:
+                mya_property_id:
+                  description: Username or property ID on the myallocator
+                  type: integer
+                  minimum: 1
+                ota_property_id:
+                  description: Username, login or property ID on the OTA
+                  type: string
+                ota_property_sub_id:
+                  type: string
+                  description: >
+                    Property ID on the OTA, if OTA supports multiple properties
+                    under one `ota_property_id`/`ota_property_password`
+                    combination. See `GetSubProperties` for more details.
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+                booking_json:
+                  $ref: "#/paths/~1GetBookingId/post/responses/200/content/application~1json/sche\
+                    ma/oneOf/0/properties/Booking"
+              required:
+                - shared_secret
+                - booking_json
+            encoding:
+              booking_json:
+                contentType: application/json
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value: {}
+                Failure:
+                  summary: Failure
+                  value:
+                    Error: 1031
+                    ErrorMsg: Channel not enabled for property
+              schema:
+                oneOf:
+                  - title: Successful Request
+                    type: object
+                    description: >
+                      No returned error means the booking has been enqueued into
+                      myallocator for import. The response will be an empty JSON
+                      object.
+                  - $ref: "#/paths/~1ARIFullRefresh/post/responses/200/content/application~1json/sc\
+                      hema/oneOf/1"
+          description: BookingCreate
+      summary: BookingCreate
+      tags:
+        - Callbacks
+  /NotifyBooking:
+    post:
+      operationId: notify_booking
+      description: >
+        *Note that the endpoint for this API call is on myallocator!*
+
+        With this API call the OTA can notify myallocator to immediately request a `GetBookingList` call based on the `ota_property_id`/`ota_property_sub_id` and the passed `booking_id`. This should be send on any new booking OR any changes such as cancellations to an existing booking.
+
+        If the `BookingCreate` API call has been implemented then `NotifyBooking` is not required.
+
+        Note: at this time we're not only sending a `GetBookingId` call with the `booking_id` given in this API call. Myallocator instead calls `GetBookingList` as usual. However, in the future myallocator might specifically request the booking provided with `NotifyBooking`.
+      servers:
+        - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+          variables:
+            ota:
+              description: OTA channel ID as assigned by myallocator
+              default: replace_with_ota_id
+      requestBody:
+        content:
+          multipart/form-data:
+            examples:
+              NotifyBooking:
+                summary: NotifyBooking
+                value:
+                  ota_property_id: lake_view_hotel
+                  shared_secret: s3cr3ts4uc3
+                  booking_id: "123456789"
+            schema:
+              type: object
+              properties:
+                ota_property_id:
+                  description: Username, login or property ID on the OTA
+                  type: string
+                ota_property_sub_id:
+                  type: string
+                  description: >
+                    Property ID on the OTA, if OTA supports multiple properties
+                    under one `ota_property_id`/`ota_property_password`
+                    combination. See `GetSubProperties` for more details.
+                booking_id:
+                  type: string
+                  description: OTA booking ID of the booking to be retrieved.
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+              required:
+                - shared_secret
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value: {}
+                Failure:
+                  summary: Failure
+                  value:
+                    Error: 1031
+                    ErrorMsg: Channel not enabled for property
+              schema:
+                oneOf:
+                  - title: Successful Request
+                    type: object
+                    description: >
+                      No returned error means the notification has been enqueued
+                      into myallocator for import. The response will be an empty
+                      JSON object.
+                  - $ref: "#/paths/~1ARIFullRefresh/post/responses/200/content/application~1json/sc\
+                      hema/oneOf/1"
+          description: NotifyBooking
+      summary: NotifyBooking
+      tags:
+        - Callbacks
+  /RoomInfo:
+    post:
+      operationId: room_info
+      description: >-
+        *Note that the endpoint for this API call is on myallocator!*
+
+
+        Returns the rooms configured on myallocator. It's only necessary for deep
+
+        integrations or situations where the OTA plans to automatically/create
+
+        destroy rooms using myallocator configuration. In a normal integration this
+
+        isn't very common.
+      servers:
+        - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+          variables:
+            ota:
+              description: OTA channel ID as assigned by myallocator
+              default: replace_with_ota_id
+      requestBody:
+        content:
+          multipart/form-data:
+            examples:
+              RoomInfo:
+                summary: RoomInfo
+                value:
+                  mya_property_id: 998201
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              type: object
+              properties:
+                mya_property_id:
+                  description: Username or property ID on the myallocator
+                  type: integer
+                  minimum: 1
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all
+                    requests. Not to be shared with customers.
+                  type: string
+              required:
+                - mya_property_id
+                - shared_secret
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    RoomInfo:
+                      - mya_room_id: 45829
+                        units: 5
+                        beds: 2
+                        dormitory: false
+                        label: Double Room
+                        description: A potentially long description about the room
+                      - mya_room_id: 290
+                        units: 25
+                        beds: 4
+                        dormitory: false
+                        label: 4-person private
+                        description: null
+                Failure:
+                  summary: Failure
+                  value:
+                    ErrorCode: 9203
+                    Error: mya_property_id is invalid
+              schema:
+                oneOf:
+                  - title: Successful Request
+                    type: object
+                    properties:
+                      RoomInfo:
+                        type: array
+                        description: |
+                          List of rooms configured on myallocator.
+                        items:
+                          $ref: "#/paths/~1SetupProperty/post/requestBody/content/application~1json/schem\
+                            a/properties/RoomInfo/items"
+                    required:
+                      - RoomInfo
+                  - $ref: "#/paths/~1ARIFullRefresh/post/responses/200/content/application~1json/sc\
+                      hema/oneOf/1"
+          description: RoomInfo
+      summary: RoomInfo
+      tags:
+        - Callbacks

@@ -1,0 +1,62 @@
+---
+post:
+  operationId: ari_full_refresh
+  description: >
+    *Note that the endpoint for this API call is on myallocator!*
+
+    This is for technical support on the remote OTA to enqueue a full refresh of
+    the property. You may use either `ota_property_id` (it may be resolved into
+    a number of myallocator IDs) or `mya_property_id`.
+
+    Note that full refreshes are heavy operations, so only call this when
+    absolutely neccessary. Under no circumstances use this callback on a
+    scheduled basis.
+  servers:
+    - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+      variables:
+        ota:
+          description: OTA channel ID as assigned by myallocator
+          default: replace_with_ota_id
+  requestBody:
+    content:
+      multipart/form-data:
+        examples:
+          $ref: ../examples/methods/ARIFullRefresh.yaml#/rq
+        schema:
+          type: object
+          properties:
+            mya_property_id:
+              description: Username or property ID on the myallocator
+              type: integer
+              minimum: 1
+            ota_property_id:
+              description: Username, login or property ID on the OTA
+              type: string
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+          required:
+            - shared_secret
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/ARIFullRefresh.yaml#/rs
+          schema:
+            oneOf:
+              - title: Successful request
+                type: object
+                properties:
+                  UpdateId:
+                    type: integer
+                    minimum: 1
+                    description: >
+                      If present indicates that at least one full refresh was
+                      enqueued into myallocator to be sent to the OTA.
+              - $ref: ../schemas.d/response_callback_error.yaml
+      description: ARIFullRefresh
+  summary: ARIFullRefresh
+  tags:
+    - Callbacks

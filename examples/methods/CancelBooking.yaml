@@ -1,0 +1,27 @@
+---
+rq:
+  CancelBooking:
+    summary: CancelBooking
+    value:
+      verb: CancelBooking
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+      booking_id: H7736-29385551
+      reason: Guest called and requested cancellation
+rs:
+  Failure:
+    summary: Booking has already departed
+    value:
+      success: false
+      errors:
+        - id: 4001
+          msg: Booking has already departed
+  Success:
+    summary: Success
+    value:
+      success: true

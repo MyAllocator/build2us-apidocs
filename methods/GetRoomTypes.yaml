@@ -1,0 +1,74 @@
+---
+post:
+  operationId: get_room_types
+  description: |-
+    Returns a list of rooms configured for the passed credentials.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/GetRoomTypes.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - GetRoomTypes
+                RoomInfo:
+                  type: array
+                  description: >
+                    This list of rooms will only be returned if enabled for the
+                    OTA by myallocator. By default this is not present. It's
+                    only necessary for deep integrations or situations where
+                    the OTA plans to automatically/create destroy rooms using
+                    myallocator configuration. In a normal integration this
+                    isn't very usual.
+                  items:
+                    $ref: ../schemas.d/room_info.yaml
+          required:
+            - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/GetRoomTypes.yaml#/rs
+          schema:
+            oneOf:
+              - type: object
+                title: Successful room retrieval
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  Rooms:
+                    type: array
+                    description: >
+                      List of rooms on the OTA.
+                    items:
+                      type: object
+                      properties:
+                        ota_room_id:
+                          type: string
+                          description: Room ID on the OTA
+                        title:
+                          type: string
+                          description: Name, label or short summary of the room type
+                        occupancy:
+                          type: integer
+                          minimum: 1
+                          description: Number of people that can stay in this room.
+                        dorm:
+                          type: boolean
+                          description: If `true` the room is a dormitory/shared room.
+                      required:
+                        - ota_room_id
+                        - title
+                required:
+                  - success
+                  - Rooms
+              - $ref: ../schemas.d/response_error.yaml
+      description: GetRoomTypes
+  summary: GetRoomTypes

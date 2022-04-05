@@ -1,0 +1,59 @@
+---
+post:
+  operationId: room_info
+  description: |-
+    *Note that the endpoint for this API call is on myallocator!*
+
+    Returns the rooms configured on myallocator. It's only necessary for deep
+    integrations or situations where the OTA plans to automatically/create
+    destroy rooms using myallocator configuration. In a normal integration this
+    isn't very common.
+  servers:
+    - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+      variables:
+        ota:
+          description: OTA channel ID as assigned by myallocator
+          default: replace_with_ota_id
+  requestBody:
+    content:
+      multipart/form-data:
+        examples:
+          $ref: ../examples/methods/RoomInfo.yaml#/rq
+        schema:
+          type: object
+          properties:
+            mya_property_id:
+              description: Username or property ID on the myallocator
+              type: integer
+              minimum: 1
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+          required:
+            - mya_property_id
+            - shared_secret
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/RoomInfo.yaml#/rs
+          schema:
+            oneOf:
+              - title: Successful Request
+                type: object
+                properties:
+                  RoomInfo:
+                    type: array
+                    description: >
+                      List of rooms configured on myallocator.
+                    items:
+                      $ref: ../schemas.d/room_info.yaml
+                required:
+                  - RoomInfo
+              - $ref: ../schemas.d/response_callback_error.yaml
+      description: RoomInfo
+  summary: RoomInfo
+  tags:
+    - Callbacks

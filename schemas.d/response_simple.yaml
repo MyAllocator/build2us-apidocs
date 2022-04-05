@@ -1,0 +1,28 @@
+---
+type: object
+title: Standard Response
+properties:
+  errors:
+    description: Array of error objects. Required when `success` is `false`.
+    type: array
+    items:
+      description: Error object
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          description: >
+            Error code. Check the "Error Codes" section of the specification
+            for valid codes.
+        msg:
+          type: string
+          description: >
+            Optional error string to give more details about the error.
+            Myallocator localises errors into different langauges, so this field
+            is generally ignored and only useful for debugging.
+      required:
+        - id
+  success: { type: boolean, enum: [ true, false ] }
+required:
+  - success

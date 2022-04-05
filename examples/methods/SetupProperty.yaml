@@ -1,0 +1,56 @@
+---
+rq:
+  SetupProperty:
+    summary: SetupProperty (normal)
+    value:
+      verb: SetupProperty
+      ota_property_id: ''
+      ota_property_password: ''
+      ota_property_sub_id: ''
+      mya_property_id: 14524
+      guid: "6C08B96E-450D-4E6A-9933-7D0305730305"
+      ota_cid: "ota"
+      shared_secret : "s3cr3ts4uc3"
+  SetupProperty2:
+    summary: SetupProperty (with RoomInfo)
+    value:
+      verb: SetupProperty
+      ota_property_id: ''
+      ota_property_password: ''
+      ota_property_sub_id: ''
+      mya_property_id: 14524
+      guid: "6C08B96E-450D-4E6A-9933-7D0305730305"
+      ota_cid: "ota"
+      shared_secret : "s3cr3ts4uc3"
+      RoomInfo:
+        - mya_room_id: 45829
+          units: 5
+          beds: 2
+          dormitory: false
+          label: Double Room
+          description: A potentially long description about the room
+        - mya_room_id: 290
+          units: 25
+          beds: 4
+          dormitory: false
+          label: 4-person private
+          description: null
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Failure (invalid credentials)
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.
+  Failure2:
+    summary: Failure (CM not enabled)
+    value:
+      success: false
+      errors:
+        - id: 1002
+          msg: Credentials not enabled for channel management.

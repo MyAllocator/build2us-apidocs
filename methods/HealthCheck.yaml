@@ -1,0 +1,69 @@
+---
+post:
+  operationId: health_check
+  description: >
+    Called prior to `SetupProperty` or other configuration requests to verify
+    proper operation. Should always return true.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/HealthCheck.yaml#/rq
+        schema:
+          type: object
+          properties:
+            mya_property_id:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            ota_property_id:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            ota_property_password:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            ota_property_sub_id:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            guid:
+              description: Request reference ID, used for debugging and support requests.
+              type: string
+              pattern: '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+            ota_cid:
+              description: OTA ID as given by myallocator
+              type: string
+              pattern: '^[a-z0-9]+$'
+            verb:
+              type: string
+              enum:
+                - HealthCheck
+          required:
+            - verb
+            - guid
+            - mya_property_id
+            - ota_property_id
+            - ota_property_password
+            - ota_property_sub_id
+            - shared_secret
+            - ota_cid
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/HealthCheck.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: HealthCheck
+  summary: HealthCheck

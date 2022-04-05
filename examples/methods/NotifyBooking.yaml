@@ -1,0 +1,17 @@
+---
+rq:
+  NotifyBooking:
+    summary: NotifyBooking
+    value:
+      ota_property_id: lake_view_hotel
+      shared_secret : "s3cr3ts4uc3"
+      booking_id: "123456789"
+rs:
+  Success:
+    summary: Success
+    value: {}
+  Failure:
+    summary: Failure
+    value:
+      Error: 1031
+      ErrorMsg: Channel not enabled for property

@@ -1,0 +1,29 @@
+---
+rq:
+  RoomInfo:
+    summary: RoomInfo
+    value:
+      mya_property_id: 998201
+      shared_secret : "s3cr3ts4uc3"
+rs:
+  Success:
+    summary: Success
+    value:
+      RoomInfo:
+        - mya_room_id: 45829
+          units: 5
+          beds: 2
+          dormitory: false
+          label: Double Room
+          description: A potentially long description about the room
+        - mya_room_id: 290
+          units: 25
+          beds: 4
+          dormitory: false
+          label: 4-person private
+          description: null
+  Failure:
+    summary: Failure
+    value:
+      ErrorCode: 9203
+      Error: mya_property_id is invalid

@@ -1,0 +1,57 @@
+---
+rq:
+  GetBookingId:
+    summary: GetBookingId
+    value:
+      verb: GetBookingId
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+      booking_id: H7736-29385551
+      reason: Guest called and requested cancellation
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+      Booking:
+        OrderId: '123456789'
+        OrderDate: '2018-04-22'
+        OrderTime: '18:02:58'
+        IsCancellation: 0
+        TotalCurrency: USD
+        TotalPrice: 134
+        Customers:
+        - CustomerCountry: US
+          CustomerEmail: test@test.com
+          CustomerFName: Test Firstname
+          CustomerLName: Test Lastname
+        Rooms:
+        - ChannelRoomType: abcdef
+          Currency: USD
+          DayRates:
+          - Date: '2017-11-08'
+            Description: Refundable Rate
+            Rate: 32.5
+            Currency: USD
+            RateId: '13649'
+          - Date: '2017-11-09'
+            Description: Refundable Rate
+            Rate: 34.5
+            Currency: USD
+            RateId: '13649'
+          StartDate: '2017-11-08'
+          EndDate: '2017-11-09'
+          Price: 134
+          Units: 2
+  Failure:
+    summary: Invalid credentials sent
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.

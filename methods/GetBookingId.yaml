@@ -1,0 +1,84 @@
+---
+post:
+  operationId: get_booking_id
+  description: |-
+    Returns detailed bookings made on the OTA.
+
+    The booking format is described
+    [here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+
+    Most fields are optional. This specification lists only the minimum required
+    fields to be eligable for a successful Build-To-Us integration.
+
+    Prices: Send us sell rates (rates including taxes and fees). The sum of all
+    room prices should equal the `TotalPrice` field. Day rates should be per
+    unit, so the sum of all day rates multiplied by the number of units should
+    equal the room price.
+
+    Country codes: For CustomerCountry and CustomerNationality (if you include
+    those fields) make sure to pass the country code as uppercase Alpha-2
+    ISO-3166 codes.
+
+    Currency codes: Make sure they are valid ISO-4217 (uppercase).
+
+    Make sure to provide `OrderDate` and `OrderTime`. They have be provided in
+    UTC.
+
+    Guest's credit/debit card details can be provided with the `Payments` field.
+
+    Implementation suggestions: when testing make sure the myallocator test
+    property has "download bookings" enabled or the booking will be saved in a
+    queue and not visible during testing. To enable login and go to MANAGE /
+    General Details / Download new bookings from channels. Default setting
+    is "Off". Once enabled please allow 30 minutes for the backend to start
+    processing bookings. Also there may be a normal 1-2 minute period after a
+    `GetBookingId` response before the booking is visible in the
+    inbox.myallocator.com interface (the bookings are held in a temporary queue
+    on our backend).
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/GetBookingId.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - GetBookingId
+                booking_id:
+                  type: string
+                  description: >
+                    OTA booking ID of the booking to be retrieved.
+                version:
+                  type: string
+                  description: >
+                    Versioning string if returned by `GetBookingList`. May be
+                    used to retrieve a specific version of the booking.
+          required:
+            - verb
+            - booking_id
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/GetBookingId.yaml#/rs
+          schema:
+            oneOf:
+              - type: object
+                title: Successful booking retrieval
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  Booking:
+                    $ref: ../schemas.d/booking.yaml
+                required:
+                  - success
+                  - Booking
+              - $ref: ../schemas.d/response_error.yaml
+      description: GetBookingId
+  summary: GetBookingId

@@ -1,0 +1,176 @@
+---
+info:
+  title: Myallocator Build-To-US API
+  version: "4.0"
+  contact:
+    url: https://www.cloudbeds.com/partner-with-cloudbeds/
+  description: |
+    # Introduction
+
+    This API allows a OTA ("Online Travel Agency", also called "channel",
+    or "travel booking website") to integrate with the myallocator channel
+    manager by implementing an API receiver in their environment.
+
+    If you are a property management system (PMS), this is not the API you are
+    looking for. Instead please review our
+    [PMS API documentation](http://apidocs.myallocator.com/) instead.
+
+    # Getting Started
+
+    ## Becoming A Partner
+
+    To be considered as a partner, please complete our
+    [partnership form](https://www.cloudbeds.com/partner-with-cloudbeds/).
+    Once submitted, your application will be placed in queue to be reviewed for
+    fit and compatibility. We will reach out if the partnership is approved.
+
+    In addition to an approval notification, you will be provided with a 72-hour
+    link to our API Credential Request form, which will help you create a test
+    account and define your channel on myallocator. Upon completion of the API
+    Credential Request form, you will be sent Test Account login information,
+    Channel ID (`cid`), and the `shared_secret` that is required for the API
+    calls.
+
+    At this point the channel will be hidden from our user base while in
+    development and only viewable by your designated test account. You will be
+    able to use your trial account as a test harness for sending updates to
+    your channel. We request that you update our team at least once every two
+    weeks while in development with your estimated completion date. Partners
+    that fail to provide an estimated completion date may have their
+    participation eligibility rescinded. When you are finished with development
+    please email
+    [connectivity@myallocator.com](mailto:connectivity@myallocator.com) to
+    schedule certification.
+
+    Once certified, our team will inform you of next steps, including
+    providing us with:
+    * Logos
+    * Information about your service
+    * Property setup information (obtaining setup credentials, activating the channel manager, etc.)
+    * Contact Information to various departments of your business (support, marketing, etc.)
+
+    ## Flow
+
+    For a new property to connect to the OTA they will go to the channel setup
+    on myallocator, and either enter their OTA credentials, or go through some
+    activation process, where the OTA is automatically emailed to enable the
+    property and a support team member of myallocator sets the credentials.
+
+    The property owner then maps the rooms, and if supported, rate plans to
+    complete the connection.
+
+    After a property has been setup, myallocator will push a full refresh to the
+    OTA. This means myallocator sends all availability, rates and restrictions
+    for the next 2+ years (depending on how many years of ARI data the OTA
+    supports) for all rooms and rate plans. After this initial sync has been
+    completed myallocator will update the OTA whenever there is a change to
+    ARI, eg. because a booking has been imported or pricing has been altered.
+
+    Myallocator will poll for bookings in regular configurable intervals.
+    Bookings can and should be sent via a callback to myallocator to speed up
+    the import.
+
+    # Booking Format
+
+    The full booking format is
+    [documented here](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+    Please take note of which fields are required and which fields are optional.
+
+    # Error Codes
+
+    You can respond with error IDs listed in our
+    [error code](https://apidocs.myallocator.com/ota-errors.html) list. Please
+    use the numeric codes in the `ID` column. Only errors whose code starts with
+    `FAULT.OTA.` are supported.
+
+    # Rate Plan Support
+
+    If your OTA supports rate plans make sure that:
+
+    1. You've implemented the `GetRatePlans` API call.
+    2. You've told us that you support rate plans, and that we've enabled rate plan support for your OTA.
+    3. You've implemented the `close` restriction for `ARIUpdate` calls.
+    4. You return rate plan details in the bookings. Specifically `RateId`/`RateDesc` on the `Rooms` level, and `RateId` on the `Rooms/DayRates` level.
+
+    On myallocator rooms and rate plans have a one-to-many relationship. This
+    means that a room has one or more rate plans, and each rate plan has
+    exactly one room. For the `ARIUpdate` calls we can send different
+    `ota_rate_id` values for the same `ota_room_id`. Rates and restrictions are
+    tied to rate plans, while availability is tied to rooms, so the `units`
+    will be constant across different rate plans for the same dates and for the
+    same room, but rates and restrictions can vary. To close off a rate plan we
+    are using the `close` flag.
+
+    # FAQ
+
+    ## Terminlogy
+
+    | OTA | Online travel agency (ex: booking.com, or competitor)|
+    | cid | Channel ID - a two to four character code used by myallocator uniquely identify a OTA.|
+    | guid | Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging. |
+
+    ## Requests
+
+    Myallocator will send requests to the OTA with content-type
+    `application/json`, with the payload being in the body of the request. Gzip
+    compression and keep-alives will be used if supported. HTTPS
+    (SSL encryption) is required for the OTA's endpoint.
+
+    HTTP response codes from myallocator should always be 200. They have the
+    content-type `application/json`.
+
+    ## Required API calls
+
+    As a minimum these API calls need to be implemented on the OTA side:
+
+    * HealthCheck
+    * SetupProperty
+    * GetRoomTypes
+    * ARIUpdate
+    * GetBookingList
+    * GetBookingId
+
+    If rate plans are supported these API calls are required in addition:
+
+    * GetRatePlans
+
+    If the OTA has multiple properties under one user account these API calls
+    are required in addition:
+
+    * GetSubProperties
+
+openapi: 3.0.0
+servers:
+  - url: https://api.your-ota.com/myallocator
+    description: OTA endpoint
+
+paths:
+  /HealthCheck:
+    $ref: methods/HealthCheck.yaml
+  /SetupProperty:
+    $ref: methods/SetupProperty.yaml
+  /GetRoomTypes:
+    $ref: methods/GetRoomTypes.yaml
+  /GetRatePlans:
+    $ref: methods/GetRatePlans.yaml
+  /ARIUpdate:
+    $ref: ./methods/ARIUpdate.yaml
+  /GetBookingList:
+    $ref: methods/GetBookingList.yaml
+  /GetBookingId:
+    $ref: methods/GetBookingId.yaml
+  /CancelBooking:
+    $ref: ./methods/CancelBooking.yaml
+  /CreateProperty:
+    $ref: methods/CreateProperty.yaml
+  /GetSubProperties:
+    $ref: methods/GetSubProperties.yaml
+
+  /ARIFullRefresh:
+    $ref: methods/ARIFullRefresh.yaml
+  /BookingCreate:
+    $ref: methods/BookingCreate.yaml
+  /NotifyBooking:
+    $ref: methods/NotifyBooking.yaml
+  /RoomInfo:
+    $ref: methods/RoomInfo.yaml

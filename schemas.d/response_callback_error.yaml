@@ -1,0 +1,16 @@
+---
+type: object
+title: Error Response
+properties:
+  ErrorCode:
+    type: integer
+    minimum: 1
+    description: >
+      Error code. Check the "Error Codes" section of the specification for
+      valid codes.
+  Error:
+    type: string
+    description: Human-readable error message.
+required:
+  - ErrorCode
+  - Error

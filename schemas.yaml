@@ -1,0 +1,39 @@
+---
+auth:
+  type: object
+  properties:
+    mya_property_id:
+      description: Username or property ID on the myallocator
+      type: integer
+      minimum: 1
+    ota_property_id:
+      description: Username, login or property ID on the OTA
+      type: string
+    ota_property_password:
+      description: Password for property on your OTA. In case the OTA does not use passwords this will be an empty string.
+      type: string
+    ota_property_sub_id:
+      type: string
+      description: >
+        Property ID on the OTA, if OTA supports multiple properties under one
+        `ota_property_id`/`ota_property_password` combination. See
+        `GetSubProperties` for more details.
+    guid:
+      description: Request reference ID, used for debugging and support requests.
+      type: string
+      pattern: '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+    shared_secret:
+      description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+      type: string
+    ota_cid:
+      description: OTA ID as given by myallocator
+      type: string
+      pattern: '^[a-z0-9]+$'
+  required:
+    - guid
+    - mya_property_id
+    - ota_property_id
+    - ota_property_password
+    - ota_property_sub_id
+    - shared_secret
+    - ota_cid

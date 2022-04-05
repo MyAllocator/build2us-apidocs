@@ -1,0 +1,97 @@
+---
+post:
+  operationId: setup_property
+  description: |-
+    Check/verify/validate the credentials stored in `ota_property_id` and
+    `ota_property_password`. If the credentials are invalid return with error
+    ID `1001`. If the connection needs to be enabled from the OTA side first
+    return with error ID `1002`.
+
+    On myallocator the hotel will go to the OTA setup by selecting the OTA.
+    There the user will be prompted to put in the credentials
+    (`ota_property_id` and `ota_property_password`), which are provided by your
+    OTA. Both `ota_property_id` and `ota_property_password` will be retained by
+    us and passed in every call. Should you not need two identification fields
+    please let us know and we can set it to only ask for `ota_property_id`.
+    However, this would mean that some kind of activation process is required
+    where our customer support team enters the ID on behalf of the hotel.
+    Otherwise it would be possible for the hotel to enter someone else's
+    credentials.
+
+    Implementation suggestions: `ota_property_id` should typically be a username
+    or hotel ID on your OTA. The `ota_property_password` is typically a
+    password used by the hotel to access your OTA's extranet or a token
+    specifically for a channel manager.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/SetupProperty.yaml#/rq
+        schema:
+          type: object
+          properties:
+            mya_property_id:
+              description: Username or property ID on the myallocator
+              type: integer
+              minimum: 1
+            ota_property_id:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            ota_property_password:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            ota_property_sub_id:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            guid:
+              description: Request reference ID, used for debugging and support requests.
+              type: string
+              pattern: '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+            ota_cid:
+              description: OTA ID as given by myallocator
+              type: string
+              pattern: '^[a-z0-9]+$'
+            verb:
+              type: string
+              enum:
+                - SetupProperty
+            RoomInfo:
+              type: array
+              description: >
+                This list of rooms will only be returned if enabled for the
+                OTA by myallocator. By default this is not present. It's
+                only necessary for deep integrations or situations where
+                the OTA plans to automatically/create destroy rooms using
+                myallocator configuration. In a normal integration this
+                isn't very usual.
+              items:
+                $ref: ../schemas.d/room_info.yaml
+          required:
+            - verb
+            - guid
+            - mya_property_id
+            - ota_property_id
+            - ota_property_password
+            - ota_property_sub_id
+            - shared_secret
+            - ota_cid
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/SetupProperty.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: SetupProperty
+  summary: SetupProperty

@@ -1,0 +1,58 @@
+---
+rq:
+  GetRoomTypes:
+    summary: GetRoomTypes (normal)
+    value:
+      verb: GetRoomTypes
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+  GetRoomTypes2:
+    summary: GetRoomTypes (with RoomInfo)
+    value:
+      verb: GetRoomTypes
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+      RoomInfo:
+        - mya_room_id: 45829
+          units: 5
+          beds: 2
+          dormitory: false
+          label: Double Room
+          description: A potentially long description about the room
+        - mya_room_id: 290
+          units: 25
+          beds: 4
+          dormitory: false
+          label: 4-person private
+          description: null
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+      Rooms:
+        - ota_room_id: DR_556
+          title: 6-bed shared dorm
+          occupancy: 6
+          dorm: true
+        - ota_room_id: PR_1952
+          title: 5-person private
+          occupancy: 5
+          dorm: false
+  Failure:
+    summary: Invalid credentials sent
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.
