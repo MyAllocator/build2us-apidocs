@@ -2669,14 +2669,31 @@ paths:
   /NotifyBooking:
     post:
       operationId: notify_booking
-      description: >
+      description: >-
         *Note that the endpoint for this API call is on myallocator!*
 
-        With this API call the OTA can notify myallocator to immediately request a `GetBookingList` call based on the `ota_property_id`/`ota_property_sub_id` and the passed `booking_id`. This should be send on any new booking OR any changes such as cancellations to an existing booking.
 
-        If the `BookingCreate` API call has been implemented then `NotifyBooking` is not required.
+        With this API call the OTA can notify myallocator to immediately request a
 
-        Note: at this time we're not only sending a `GetBookingId` call with the `booking_id` given in this API call. Myallocator instead calls `GetBookingList` as usual. However, in the future myallocator might specifically request the booking provided with `NotifyBooking`.
+        `GetBookingList` call based on the `ota_property_id`/`ota_property_sub_id`
+
+        and the passed `booking_id`. This should be send on any new booking OR any
+
+        changes such as cancellations to an existing booking.
+
+
+        If the `BookingCreate` API call has been implemented then `NotifyBooking`
+
+        is not required.
+
+
+        Note: at this time we're not only sending a `GetBookingId` call with the
+
+        `booking_id` given in this API call. Myallocator instead calls
+
+        `GetBookingList` as usual. However, in the future myallocator might
+
+        specifically request the booking provided with `NotifyBooking`.
       servers:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
           variables:

@@ -1,7 +1,7 @@
 ---
 post:
   operationId: notify_booking
-  description: >
+  description: |-
     *Note that the endpoint for this API call is on myallocator!*
 
     With this API call the OTA can notify myallocator to immediately request a
