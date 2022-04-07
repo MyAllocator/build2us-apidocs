@@ -7,7 +7,7 @@ info:
   description: |
     # Introduction
 
-    This API allows a OTA ("Online Travel Agency", also called "channel",
+    This API allows an OTA ("Online Travel Agency", also called "channel",
     or "travel booking website") to integrate with the myallocator channel
     manager by implementing an API receiver in their environment.
 
@@ -21,33 +21,40 @@ info:
 
     To be considered as a partner, please complete our
     [partnership form](https://www.cloudbeds.com/partner-with-cloudbeds/).
-    Once submitted, your application will be placed in queue to be reviewed for
-    fit and compatibility. We will reach out if the partnership is approved.
+    Your application will be placed in a queue to be reviewed for fit and
+    compatibility. We will reach out if the partnership is approved.
 
-    In addition to an approval notification, you will be provided with a 72-hour
-    link to our API Credential Request form, which will help you create a test
-    account and define your channel on myallocator. Upon completion of the API
-    Credential Request form, you will be sent Test Account login information,
-    Channel ID (`cid`), and the `shared_secret` that is required for the API
-    calls.
+    If approved, you will be provided with a 72-hour link to our API Credential
+    Request form, which will help you create a test account and define your
+    channel on myallocator.
 
-    At this point the channel will be hidden from our user base while in
+    Upon completion of the API Credentialing, you will then have access to your
+    Test Account login information, channel ID (`cid`), and the `shared_secret`
+    that is required for the API calls.
+
+    At this point, the channel will be hidden from our user base while in
     development and only viewable by your designated test account. You will be
     able to use your trial account as a test harness for sending updates to
     your channel. We request that you update our team at least once every two
-    weeks while in development with your estimated completion date. Partners
-    that fail to provide an estimated completion date may have their
-    participation eligibility rescinded. When you are finished with development
-    please email
-    [connectivity@myallocator.com](mailto:connectivity@myallocator.com) to
-    schedule certification.
+    weeks while in development with your estimated completion date.
 
-    Once certified, our team will inform you of next steps, including
-    providing us with:
+    Partners that fail to provide an estimated completion date may have their
+    participation eligibility rescinded.
+
+    We have a self-certification tool. Once you have finished your development
+    process, you will be guided on how to use this tool in order to test and
+    get your integration certified.
+
+    Once you get certified, our team will inform you of the next steps,
+    including providing us with:
+
     * Logos
     * Information about your service
     * Property setup information (obtaining setup credentials, activating the channel manager, etc.)
     * Contact Information to various departments of your business (support, marketing, etc.)
+
+    When everything is tested and all documentation is received your application
+    will be released in a beta stage for 2-3 weeks before going live.
 
     ## Flow
 
@@ -56,8 +63,8 @@ info:
     activation process, where the OTA is automatically emailed to enable the
     property and a support team member of myallocator sets the credentials.
 
-    The property owner then maps the rooms, and if supported, rate plans to
-    complete the connection.
+    The property owner then maps the rooms and rate plans to complete the
+    connection.
 
     After a property has been setup, myallocator will push a full refresh to the
     OTA. This means myallocator sends all availability, rates and restrictions
@@ -83,14 +90,7 @@ info:
     use the numeric codes in the `ID` column. Only errors whose code starts with
     `FAULT.OTA.` are supported.
 
-    # Rate Plan Support
-
-    If your OTA supports rate plans make sure that:
-
-    1. You've implemented the `GetRatePlans` API call.
-    2. You've told us that you support rate plans, and that we've enabled rate plan support for your OTA.
-    3. You've implemented the `close` restriction for `ARIUpdate` calls.
-    4. You return rate plan details in the bookings. Specifically `RateId`/`RateDesc` on the `Rooms` level, and `RateId` on the `Rooms/DayRates` level.
+    # Rate Plans
 
     On myallocator rooms and rate plans have a one-to-many relationship. This
     means that a room has one or more rate plans, and each rate plan has
@@ -103,11 +103,11 @@ info:
 
     # FAQ
 
-    ## Terminlogy
+    ## Terminology
 
-    | OTA | Online travel agency (ex: booking.com, or competitor)|
-    | cid | Channel ID - a two to four character code used by myallocator uniquely identify a OTA.|
-    | guid | Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging. |
+    * OTA: Online travel agency (ex: booking.com, or competitor)
+    * cid: Channel ID - a two to four character code used by myallocator uniquely identify a OTA.
+    * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.f
 
     ## Requests
 
@@ -126,13 +126,11 @@ info:
     * HealthCheck
     * SetupProperty
     * GetRoomTypes
+    * GetRatePlans
     * ARIUpdate
     * GetBookingList
     * GetBookingId
-
-    If rate plans are supported these API calls are required in addition:
-
-    * GetRatePlans
+    * CreateProperty
 
     If the OTA has multiple properties under one user account these API calls
     are required in addition:

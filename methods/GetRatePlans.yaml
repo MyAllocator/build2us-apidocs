@@ -2,9 +2,8 @@
 post:
   operationId: get_rate_plans
   description: |-
-    If your OTA supports different rates per room and if we enabled the OTA for
-    rate plan support, we'll make a `GetRatePlans` call to the OTA to retrieve
-    which rate plans you have configured for the passed credentials.
+    Myallocator uses this call to retrieve a list of rate plans, which are
+    either specific to each room, or global for all rooms.
   requestBody:
     content:
       application/json:

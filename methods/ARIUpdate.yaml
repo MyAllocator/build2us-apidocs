@@ -46,7 +46,7 @@ post:
                         description: Room ID on the OTA.
                       ota_rate_id:
                         type: string
-                        description: Rate plan ID on the OTA, if OTA supports rate plans.
+                        description: Rate plan ID on the OTA
                       start_date:
                         type: string
                         format: date
@@ -123,10 +123,11 @@ post:
                           specified date range. If `true` the guest cannot
                           arrive, stay or depart within the date range. In
                           many cases this is equivalent to `units` = 0, however
-                          it can be used to make specific rate plans unavailable
+                          it is also used to make specific rate plans unavailable
                           while leaving others bookable.
                     required:
                       - ota_room_id
+                      - ota_rate_id
                       - start_date
                       - end_date
                       - units

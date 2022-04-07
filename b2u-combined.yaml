@@ -7,7 +7,7 @@ info:
     # Introduction
 
 
-    This API allows a OTA ("Online Travel Agency", also called "channel",
+    This API allows an OTA ("Online Travel Agency", also called "channel",
 
     or "travel booking website") to integrate with the myallocator channel
 
@@ -31,25 +31,26 @@ info:
 
     [partnership form](https://www.cloudbeds.com/partner-with-cloudbeds/).
 
-    Once submitted, your application will be placed in queue to be reviewed for
+    Your application will be placed in a queue to be reviewed for fit and
 
-    fit and compatibility. We will reach out if the partnership is approved.
-
-
-    In addition to an approval notification, you will be provided with a 72-hour
-
-    link to our API Credential Request form, which will help you create a test
-
-    account and define your channel on myallocator. Upon completion of the API
-
-    Credential Request form, you will be sent Test Account login information,
-
-    Channel ID (`cid`), and the `shared_secret` that is required for the API
-
-    calls.
+    compatibility. We will reach out if the partnership is approved.
 
 
-    At this point the channel will be hidden from our user base while in
+    If approved, you will be provided with a 72-hour link to our API Credential
+
+    Request form, which will help you create a test account and define your
+
+    channel on myallocator.
+
+
+    Upon completion of the API Credentialing, you will then have access to your
+
+    Test Account login information, channel ID (`cid`), and the `shared_secret`
+
+    that is required for the API calls.
+
+
+    At this point, the channel will be hidden from our user base while in
 
     development and only viewable by your designated test account. You will be
 
@@ -57,22 +58,25 @@ info:
 
     your channel. We request that you update our team at least once every two
 
-    weeks while in development with your estimated completion date. Partners
-
-    that fail to provide an estimated completion date may have their
-
-    participation eligibility rescinded. When you are finished with development
-
-    please email
-
-    [connectivity@myallocator.com](mailto:connectivity@myallocator.com) to
-
-    schedule certification.
+    weeks while in development with your estimated completion date.
 
 
-    Once certified, our team will inform you of next steps, including
+    Partners that fail to provide an estimated completion date may have their
 
-    providing us with:
+    participation eligibility rescinded.
+
+
+    We have a self-certification tool. Once you have finished your development
+
+    process, you will be guided on how to use this tool in order to test and
+
+    get your integration certified.
+
+
+    Once you get certified, our team will inform you of the next steps,
+
+    including providing us with:
+
 
     * Logos
 
@@ -81,6 +85,11 @@ info:
     * Property setup information (obtaining setup credentials, activating the channel manager, etc.)
 
     * Contact Information to various departments of your business (support, marketing, etc.)
+
+
+    When everything is tested and all documentation is received your application
+
+    will be released in a beta stage for 2-3 weeks before going live.
 
 
     ## Flow
@@ -95,9 +104,9 @@ info:
     property and a support team member of myallocator sets the credentials.
 
 
-    The property owner then maps the rooms, and if supported, rate plans to
+    The property owner then maps the rooms and rate plans to complete the
 
-    complete the connection.
+    connection.
 
 
     After a property has been setup, myallocator will push a full refresh to the
@@ -142,19 +151,7 @@ info:
     `FAULT.OTA.` are supported.
 
 
-    # Rate Plan Support
-
-
-    If your OTA supports rate plans make sure that:
-
-
-    1. You've implemented the `GetRatePlans` API call.
-
-    2. You've told us that you support rate plans, and that we've enabled rate plan support for your OTA.
-
-    3. You've implemented the `close` restriction for `ARIUpdate` calls.
-
-    4. You return rate plan details in the bookings. Specifically `RateId`/`RateDesc` on the `Rooms` level, and `RateId` on the `Rooms/DayRates` level.
+    # Rate Plans
 
 
     On myallocator rooms and rate plans have a one-to-many relationship. This
@@ -177,14 +174,14 @@ info:
     # FAQ
 
 
-    ## Terminlogy
+    ## Terminology
 
 
-    | OTA | Online travel agency (ex: booking.com, or competitor)|
+    * OTA: Online travel agency (ex: booking.com, or competitor)
 
-    | cid | Channel ID - a two to four character code used by myallocator uniquely identify a OTA.|
+    * cid: Channel ID - a two to four character code used by myallocator uniquely identify a OTA.
 
-    | guid | Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging. |
+    * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.f
 
 
     ## Requests
@@ -216,17 +213,15 @@ info:
 
     * GetRoomTypes
 
+    * GetRatePlans
+
     * ARIUpdate
 
     * GetBookingList
 
     * GetBookingId
 
-
-    If rate plans are supported these API calls are required in addition:
-
-
-    * GetRatePlans
+    * CreateProperty
 
 
     If the OTA has multiple properties under one user account these API calls
@@ -767,13 +762,9 @@ paths:
   /GetRatePlans:
     post:
       operationId: get_rate_plans
-      description: >-
-        If your OTA supports different rates per room and if we enabled the OTA
-        for
-
-        rate plan support, we'll make a `GetRatePlans` call to the OTA to retrieve
-
-        which rate plans you have configured for the passed credentials.
+      description: |-
+        Myallocator uses this call to retrieve a list of rate plans, which are
+        either specific to each room, or global for all rooms.
       requestBody:
         content:
           application/json:
@@ -965,7 +956,7 @@ paths:
                             description: Room ID on the OTA.
                           ota_rate_id:
                             type: string
-                            description: Rate plan ID on the OTA, if OTA supports rate plans.
+                            description: Rate plan ID on the OTA
                           start_date:
                             type: string
                             format: date
@@ -1056,10 +1047,11 @@ paths:
                               specified date range. If `true` the guest cannot
                               arrive, stay or depart within the date range. In
                               many cases this is equivalent to `units` = 0,
-                              however it can be used to make specific rate plans
-                              unavailable while leaving others bookable.
+                              however it is also used to make specific rate
+                              plans unavailable while leaving others bookable.
                         required:
                           - ota_room_id
+                          - ota_rate_id
                           - start_date
                           - end_date
                           - units
