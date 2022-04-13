@@ -1,0 +1,53 @@
+---
+post:
+  operationId: cancel_booking
+  description: |-
+    Allows a property to cancel a booking on your OTA from the myallocator side.
+
+    *IMPORTANT*: Please contact us to enable this capability for your channel. It
+    is NOT enabled by default.
+
+    The reason why the booking is to be canceled is given in the reason field.
+    If the booking cannot be canceled the error code should be provided. Here
+    are possible error codes:
+
+    * 4001 - booking has already departed
+    * 4002 - booking is already canceled
+    * 4003 - booking cannot be canceled. The reason is provided in the `msg` field.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/CancelBooking.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - CancelBooking
+                booking_id:
+                  type: string
+                  description: >
+                    OTA booking ID of the booking to be cancelled.
+                reason:
+                  type: string
+                  description: >
+                    Free text reason given by property as to why the booking
+                    was cancelled.
+          required:
+            - verb
+            - booking_id
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/CancelBooking.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: CancelBooking
+  summary: CancelBooking

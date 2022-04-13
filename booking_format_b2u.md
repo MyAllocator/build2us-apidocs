@@ -63,6 +63,8 @@ Balance    = TotalPrice - Deposit
 | DayRates | Yes | DayRate[] | See below in the DayRate section. |
 | EndDate | Yes | YYYY-MM-DD | The date of the last night of stay (equal to departure date minus one). |
 | Price | Yes | Currency | Total price of the room, for all units and all days, including taxes and fees. Example: stay is for two days and three units and a single night costs €10 (including tax), then `Price` is 2 * 3 * 10 = 60. |
+| RateDesc | Yes | String | Description of the booked rate plan, as provided by the channel. |
+| RateId | Yes | String | Applicable rate plan ID for this booking. Normally there is only one. If there are multiple, list them comma-separated. |
 | StartDate | Yes | YYYY-MM-DD | Arrival date of the customer. |
 | Units | Yes | Int > 0 | Number of rooms booked (for private rooms) or number of beds booked (for dorms/shared rooms). |
 | Adults | | Int >= 0 | Number of adults staying in this room. Adult age threshold is defined by the channel. |
@@ -70,8 +72,6 @@ Balance    = TotalPrice - Deposit
 | Breakfast | | Enum(0,1) | Whether breakfast was booked. |
 | Children | | Int >= 0 | Number of children staying in this room. Child age threshold is defined by the channel. |
 | ExtraTaxes | | ExtraTax[] | See below in the ExtraTax section |
-| RateDesc | | String | Description of the booked rateplan, as provided by the channel. |
-| RateId | | String | Applicable rateplan ID for this booking. Normally there is only one. If there are multiple, list them comma-separated. |
 | RoomDesc | | String | Description of the room, as provided by the channel. |
 | Occupancy | | Int >= 0 | Total number of persons staying in this room, including children and babies. Should be the sum of `Adults`, `Children` and `Babies` if those are present. |
 | OccupantFName | | String | First name(s) of the main occupant of this room. If name is not able to be provided separated by first and last name, provide the full name in `OccupantLName` and omit this field. |
@@ -95,10 +95,10 @@ Price = sum of day rates + room-specific extra taxes
 | ----- | -------- | ---- | ----------- |
 | Currency | Yes | CurrencyCode | Currency code for the `Rate` field. |
 | Date | Yes | YYYY-MM-DD | Date of day rate. |
-| Description | Yes | String | Name or short description of the rateplan booked. Example: "Non-refundable rate" or "10% festival discount". |
+| Description | Yes | String | Name or short description of the rate plan booked. Example: "Non-refundable rate" or "10% festival discount". |
 | Rate | Yes | Currency | Price for this day, including `Commission` and `Tax`. |
+| RateId | Yes | String | Applicable channel rate plan ID for this day rate. |
 | Commission | | Currency | Amount of commission included in the `Rate`. |
-| RateId | | String | Applicable rateplan ID for this day rate. If you support rateplans this is a required field. |
 | Tax | | Currency | Amount of tax included in the `Rate`. |
 
 ## Customer
@@ -184,6 +184,7 @@ If a tax is specific to a specific room put it in the `Rooms` section.
 | Category | Yes | Enum(...) | What type of tax is it? Can be `authority_fee` or `tax`. |
 | Currency | Yes | CurrencyCode | Currency code for the `Amount` and `TotalAmount` field. |
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this extra tax is applicable. |
+| IsInclusive | Yes | Enum(0,1) | Whether the tax is included in the rates provided by the channel. |
 | IsPercent | Yes | Enum(0,1) | Whether value in `Amount` refers to a percentage. |
 | IsPerNight | Yes | Enum(0,1) | Whether the value in `Amount` applies for each night. Only really matters if `IsPercent` is `0`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this extra tax is applicable. |

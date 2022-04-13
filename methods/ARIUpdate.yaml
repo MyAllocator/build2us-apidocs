@@ -1,0 +1,149 @@
+---
+post:
+  operationId: ari_update
+  description: |-
+    This call is used to send availability, rates and restrictions to your OTA.
+    We will combine the updates into as few date ranges as possible, and we
+    split bigger updates into several API requests. We also cache data and will
+    not send ARI updates if the ARI data has not changed within a certain
+    timeframe. You can ask us to alter the numer of `Inventory` objects we send
+    per request. It's also possible to ask us to restrict maximum number of days
+    per date range.
+
+    Note that myallocator only supports availability on the room level, so for
+    the same `ota_room_id` and the same date range the availability will always
+    be the same. Only restrictions and rates are sent on the rate plan level.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/ARIUpdate.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - ARIUpdate
+                currency:
+                  type: string
+                  pattern: '^[A-Z]{3}$'
+                  description: >
+                    3-letter ISO 4217 currency code. This is the currency
+                    the property has set for the channel connection, and
+                    may differ from the property's native currency. The
+                    OTA can use this field to assert that rates are sent
+                    in the correct currency.
+                Inventory:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ota_room_id:
+                        type: string
+                        description: Room ID on the OTA.
+                      ota_rate_id:
+                        type: string
+                        description: Rate plan ID on the OTA
+                      start_date:
+                        type: string
+                        format: date
+                        description: Start date for when the sent ARI is applicable.
+                      end_date:
+                        type: string
+                        format: date
+                        description: >
+                          End date for when the sent ARI is applicable. Note
+                          that this date is inclusive. For example, if the
+                          `end_date` is 2028-08-29 and we send `rate` =
+                          `20.15`, then this rate is applicable for someone
+                          staying/arriving on 2028-08-29.
+                      units:
+                        type: integer
+                        minimum: 0
+                        description: >
+                          Number or rooms bookable (available) for private
+                          rooms, or for the number of beds for shared/dorm rooms.
+                      rate:
+                        type: string
+                        pattern: '^\d+(\.\d+)?$'
+                        description: >
+                          Price per unit for a single night.
+                      rdef_single:
+                        type: string
+                        pattern: '^\d+(\.\d+)?$'
+                        description: >
+                          The single use rate, if only one person is staying.
+                          This will only be present for private rooms, and only
+                          if the occupancy of this room is higher than `1`. If
+                          the value is `0` we recommend to not make the single
+                          use rate available, or to just use the same price as
+                          for `rate`.
+                      max_los:
+                        type: integer
+                        minimum: 0
+                        description: |-
+                          Maximum length of stay. A guest should not be able to
+                          book if they selected more nights than this value. A
+                          value of `0` means that there is no restriction.
+
+                          There are two ways to restrict bookings by this value:
+                          a) Check the `max_los` value for the arrival date,
+                          or b) check the `max_los` value for all days the guest
+                          is intending to stay and restrict by the lowest value.
+                      min_los:
+                        type: integer
+                        minimum: 1
+                        description: |-
+                          Minimum length of stay. A guest should not be able to
+                          book if they selected fewer nights than this value.
+
+                          There are two ways to restrict bookings by this value:
+                          a) Check the `min_los` value for the arrival date,
+                          or b) check the `min_los` value for all days the guest
+                          is intending to stay and restrict by the lowest value.
+                      closearr:
+                        type: boolean
+                        description: >
+                          Restricts whether a guest can arrive within the
+                          specified date range. If `true` the guest can stay
+                          and depart within the date range, but not arrive.
+                      closedep:
+                        type: boolean
+                        description: >
+                          Restricts whether a guest can depart within the
+                          specified date range. If `true` the guest can stay
+                          and arrive within the date range, but not depart.
+                      close:
+                        type: boolean
+                        description: >
+                          Restricts whether a guest can stay within the
+                          specified date range. If `true` the guest cannot
+                          arrive, stay or depart within the date range. In
+                          many cases this is equivalent to `units` = 0, however
+                          it is also used to make specific rate plans unavailable
+                          while leaving others bookable.
+                    required:
+                      - ota_room_id
+                      - ota_rate_id
+                      - start_date
+                      - end_date
+                      - units
+                      - rate
+          required:
+            - verb
+            - currency
+            - Inventory
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/ARIUpdate.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: ARIUpdate
+  summary: ARIUpdate

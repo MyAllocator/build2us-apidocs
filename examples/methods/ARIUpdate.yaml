@@ -1,0 +1,48 @@
+---
+rq:
+  ARIUpdate:
+    summary: ARIUpdate
+    value:
+      verb: ARIUpdate
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: "6C08B96E-450D-4E6A-9933-7D0305730305"
+      currency: "USD"
+      ota_cid: "ota"
+      shared_secret : "s3cr3ts4uc3"
+      Inventory:
+        - ota_room_id: "61365"
+          ota_rate_id: "rate_456"
+          start_date: "2025-01-22"
+          end_date: "2025-02-12"
+          units: 5
+          rate: "15.00"
+          rdef_single: "2.00"
+          max_los: 14
+          min_los: 2
+          closearr: false
+          closedep: false
+          close: false
+        - ota_room_id: "61365"
+          ota_rate_id: "rate_888"
+          start_date: "2025-01-22"
+          end_date: "2025-02-12"
+          units: 5
+          rate: "30.00"
+          close: true
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Incorrect currency settings
+    value:
+      success: false
+      errors:
+        - id: 1102
+          msg: >
+            Your currency setting doesn't match the channel's currency setting.
+            Transmitted: EUR. Setting on OTA: USD.

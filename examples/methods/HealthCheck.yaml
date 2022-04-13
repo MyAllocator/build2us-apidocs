@@ -1,0 +1,25 @@
+---
+rq:
+  HealthCheck:
+    summary: HealthCheck
+    value:
+      verb: HealthCheck
+      ota_property_id: ''
+      ota_property_password: ''
+      ota_property_sub_id: ''
+      mya_property_id: ''
+      guid: "6C08B96E-450D-4E6A-9933-7D0305730305"
+      ota_cid: "ota"
+      shared_secret : "s3cr3ts4uc3"
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Failure
+    value:
+      success: false
+      errors:
+        - id: 1003
+          msg: Problems processing requests

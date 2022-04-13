@@ -1,0 +1,85 @@
+---
+post:
+  operationId: booking_create
+  description: |-
+    *Note that the endpoint for this API call is on myallocator!*
+
+    Use this callback to send us new bookings. Using this callback ensures that
+    there is no delay between the creation of the booking and import on
+    myallocator. Therefore it's strongly recommend to implement this callback.
+    Even when implemented it's still neccessary to also implement the
+    `GetBookingList` and `GetBookingId` calls, which act as fallbacks if
+    the `CreateBooking` notification fails, when a reimport due to processing
+    issues on myallocator is neccessary, or when a specific booking needs to be
+    debugged.
+
+    The booking format is identical to what is being returned in the
+    `GetBookingId` call. The booking format is described
+    [here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
+
+    See the documentation about `GetBookingId` for more details on the format.
+    The specification listed here is not complete and just the minimal
+    requirement.
+
+    The `booking_json` form field is expected to be JSON encoded. Note that the
+    example shown on the right is not rendering correctly due to a bug with the
+    specification renderer. `mya_property_id`, `shared_secret` and
+    `booking_json` should be submitted as form fields.
+  servers:
+    - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+      variables:
+        ota:
+          description: OTA channel ID as assigned by myallocator
+          default: replace_with_ota_id
+  requestBody:
+    content:
+      multipart/form-data:
+        examples:
+          $ref: ../examples/methods/BookingCreate.yaml#/rq
+        schema:
+          type: object
+          properties:
+            mya_property_id:
+              description: Username or property ID on the myallocator
+              type: integer
+              minimum: 1
+            ota_property_id:
+              description: Username, login or property ID on the OTA
+              type: string
+            ota_property_sub_id:
+              type: string
+              description: >
+                Property ID on the OTA, if OTA supports multiple properties under one
+                `ota_property_id`/`ota_property_password` combination. See
+                `GetSubProperties` for more details.
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+            booking_json:
+              $ref: ../schemas.d/booking.yaml
+          required:
+            - shared_secret
+            - booking_json
+        encoding:
+          booking_json:
+            contentType: application/json
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/BookingCreate.yaml#/rs
+          schema:
+            oneOf:
+              - title: Successful Request
+                type: object
+                description: >
+                  No returned error means the booking has been enqueued into
+                  myallocator for import. The response will be an empty
+                  JSON object.
+              - $ref: ../schemas.d/response_callback_error.yaml
+      description: BookingCreate
+  summary: BookingCreate
+  tags:
+    - Callbacks

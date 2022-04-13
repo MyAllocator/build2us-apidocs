@@ -1,0 +1,464 @@
+---
+post:
+  operationId: create_property
+  description: |-
+    Can be used to create a new property (including rooms) on your OTA based on
+    the details that we have in myallocator (eg. property name, address, images,
+    room details, etc). This call needs to be activated explicitly from our side
+    before you can use it. Please talk to your myallocator contact before
+    implementing this call!
+
+    Rate plan information was added at a later date and is only transmitted for
+    new build-to-us implementations or if the feature has been enabled
+    explicitly. Note that every room has a default rate plan, and the ID
+    (even across different rooms) is always `0`.
+
+    Once approved please provide us with your terms & conditions for us to
+    display to a property. You should provide them as a HTML file with only
+    basic styling.
+
+    We cannot guarantee that all of the following request fields will always be
+    filled in, as many are optional within myallocator.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/CreateProperty.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                mya_property_id:
+                  description: Property ID on the myallocator
+                  type: integer
+                  minimum: 1
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by myallocator
+                  type: string
+                  pattern: '^[a-z0-9]+$'
+                verb:
+                  type: string
+                  enum:
+                    - CreateProperty
+                Property:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Property name
+                    country:
+                      type: string
+                      pattern: '^[A-Z]{2}$'
+                      description: >
+                        2-letter ISO 3166-1 alpha-2 country code. This is the
+                        country the property is located in.
+                    currency:
+                      type: string
+                      pattern: '^[A-Z]{3}$'
+                      description: >
+                        3-letter ISO 4217 currency code. This is the default
+                        currency of the property.
+                    timezone:
+                      type: string
+                      description: >
+                        Timezone the property is located in. Check
+                        (this document)[https://apidocs.myallocator.com/timezone-list.html]
+                        for valid values.
+                    email_default:
+                      type: string
+                      format: email
+                      description: >
+                        The default property email address. Defaults to default user
+                        email.
+                    email_channel_booking:
+                      type: string
+                      format: email
+                      description: >
+                        The email address used when forwarding channel booking
+                        emails. Defaults to default user email.
+                    default_min_los:
+                      type: integer
+                      minimum: 1
+                      description: >
+                        Default minimum length of stay setting for this property.
+                        See the description for `min_los` in the `ARIUpdate` call
+                        for more details on this restriction.
+                    default_max_los:
+                      type: integer
+                      minimum: 0
+                      description: |-
+                        Default maximum length of stay setting for this property.
+                        See the description for `max_los` in the `ARIUpdate` call
+                        for more details on this restriction.
+
+                        `0` means there is no restriction.
+                    breakfast:
+                      type: string
+                      enum:
+                        - ''
+                        - IN
+                        - EX
+                      description: |-
+                        Default breakfast setting for the property. Empty string
+                        means no breakfast is available, `IN` means breakfast is
+                        included in the day rates and `EX` means breakfast is
+                        excluded from day rates.
+
+                        Note that this setting is likely not very useful and too
+                        broad.
+                    weekend:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                          - monday
+                          - tuesday
+                          - wednesday
+                          - thursday
+                          - friday
+                          - saturday
+                          - sunday
+                      description: |-
+                        List of weekdays that the property considers to be their
+                        weekend.
+
+                        Note that this setting is likely not very useful.
+                    firstname:
+                      type: string
+                      description: >
+                        First name of property owner/manager.
+                    lastname:
+                      type: string
+                      description: >
+                        First name of property owner/manager.
+                    address:
+                      type: object
+                      description: Address of the property.
+                      properties:
+                        address_line_1:
+                          type: string
+                          nullable: true
+                          description: First address line of the property (usually the street name and house number)
+                        address_line_2:
+                          type: string
+                          nullable: true
+                          description: Second address line of the property (if applicable)
+                        city:
+                          type: string
+                          nullable: true
+                          description: City or locality the property is located in
+                        zip:
+                          type: string
+                          nullable: true
+                          description: Post Code (ZIP) of the property
+                        state:
+                          type: string
+                          nullable: true
+                          description: State of the property (if applicable)
+                        country:
+                          type: string
+                          pattern: '^[A-Z]{2}$'
+                          description: >
+                            2-letter ISO 3166-1 alpha-2 country code. This is the
+                            country the property is located in. Same as `country` on
+                            the top level.
+                        website:
+                          type: string
+                          nullable: true
+                          description: Homepage of the property
+                        lon:
+                          type: string
+                          nullable: true
+                          description: >
+                            Geographic longitude of the property, given as decimal
+                            degrees. Positive for east, negative for west.
+                            Example: `-117.15292`
+                        lat:
+                          type: string
+                          nullable: true
+                          description: >
+                            Geographic latitude of the property, given as decimal
+                            degrees. Positive for north, negative for south.
+                            Example: `32.70954`
+                        phone:
+                          type: string
+                          nullable: true
+                          description: >
+                            Phone number for the property with international country
+                            code (eg. `+44 350 5697864`)
+                        fax:
+                          type: string
+                          nullable: true
+                          description: >
+                            Fax number for the property with international country
+                            code (eg. `+44 350 5697864`)
+                      required:
+                        - country
+                    business_contact:
+                      type: object
+                      description: Contact information for invoicing
+                      properties:
+                        main_contact_name:
+                          type: string
+                          nullable: true
+                          description: Name of the main contact for the property
+                        company_name:
+                          type: string
+                          nullable: true
+                          description: Name of the company owning the property
+                        account_manager_name:
+                          type: string
+                          nullable: true
+                          description: Name of the account manager responsible for the property
+                        vat_id:
+                          type: string
+                          nullable: true
+                          description: Tax ID for the property
+                        address_line_1:
+                          type: string
+                          nullable: true
+                          description: First address line of the company or property owner (usually the street name and house number)
+                        address_line_2:
+                          type: string
+                          nullable: true
+                          description: Second address line of the company or property owner (if applicable)
+                        state:
+                          type: string
+                          nullable: true
+                          description: State of the company or property owner (if applicable)
+                        zip:
+                          type: string
+                          nullable: true
+                          description: Post Code (ZIP) of the company or property owner
+                        city:
+                          type: string
+                          nullable: true
+                          description: City or locality the company or property owner is located in
+                        country:
+                          type: string
+                          pattern: '^[A-Z]{2}$'
+                          description: >
+                            2-letter ISO 3166-1 alpha-2 country code. This is the
+                            country the the company or property owner is located in.
+                      required:
+                        - country
+                    images:
+                      type: array
+                      description: List of property-level images
+                      items:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: Publicly accessible URL to the full resolution image
+                          description:
+                            type: string
+                            description: Description of the image to show on a channel (max. 2000 characters)
+                          sort_order:
+                            type: integer
+                            minimum: 0
+                            description: >
+                              Number indicating the displayed sort order. Lower
+                              numbers means further left/top. Defaults to 0.
+                    rooms:
+                      type: array
+                      description: List of rooms configured for the property
+                      items:
+                        type: object
+                        properties:
+                          mya_room_id:
+                            type: integer
+                            minimum: 1
+                            description: Room ID on myallocator
+                          units:
+                            type: integer
+                            minimum: 1
+                            description: How many rooms of this type there are.
+                          beds:
+                            type: integer
+                            minimum: 1
+                            description: Number of people that can stay in this room.
+                          dormitory:
+                            type: boolean
+                            description: >
+                              `true` if it's a dormitory (shared room), `false` for
+                              private rooms.
+                          label:
+                            type: string
+                            description: >
+                              Short string that describes the room for displaying
+                              purposes.
+                          description:
+                            type: string
+                            nullable: true
+                            description: >
+                              Longer description of the room which describes a room
+                              to a potential guest.
+                          images:
+                            type: array
+                            description: List of room-level images.
+                            items:
+                              type: object
+                              properties:
+                                url:
+                                  type: string
+                                  description: Publicly accessible URL to the full resolution image
+                                description:
+                                  type: string
+                                  nullable: true
+                                  description: Description of the image to show on a channel (max. 2000 characters)
+                                sort_order:
+                                  type: integer
+                                  minimum: 0
+                                  description: >
+                                    Number indicating the displayed sort order. Lower
+                                    numbers means further left/top. Defaults to 0.
+                              required:
+                                - url
+                                - description
+                                - sort_order
+                          rateplans:
+                            type: array
+                            description: List of rate plans configured for the room
+                            items:
+                              type: object
+                              properties:
+                                mya_rate_id:
+                                  type: integer
+                                  minimum: 0
+                                  description: >
+                                    Rate plan ID on myallocator. Every room has a
+                                    default rate plan, and the ID (even across
+                                    different rooms) is always `0`. Any non-default
+                                    rate plans have a higher ID.
+                                label_public:
+                                  type: string
+                                  nullable: true
+                                  description: >
+                                    Name or short summary of the rate plan, suitable
+                                    for display to guests. The label is chosen by the
+                                    property.
+                                label_private:
+                                  type: string
+                                  nullable: true
+                                  description: >
+                                    Name or short summary of the rate plan, aimed to
+                                    be shown just to the property. This could for
+                                    example be a code like `NF` for "Non-refundable".
+                                    The label is chosen by the property.
+                              required:
+                                - mya_rate_id
+                                - label_public
+                                - label_private
+                        required:
+                          - mya_room_id
+                          - units
+                          - beds
+                          - dormitory
+                          - label
+                          - description
+                          - images
+
+                  required:
+                    - name
+                    - country
+                    - currency
+                    - timezone
+                    - email_default
+                    - email_channel_booking
+                    - default_min_los
+                    - default_max_los
+                    - breakfast
+                    - weekend
+                    - firstname
+                    - lastname
+                    - address
+                    - business_contact
+                    - images
+                    - rooms
+          required:
+            - guid
+            - mya_property_id
+            - shared_secret
+            - ota_cid
+            - verb
+            - Property
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/CreateProperty.yaml#/rs
+          schema:
+            oneOf:
+              - type: object
+                title: Successful creation
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  ota_property_id:
+                    type: string
+                    description: New property ID on the OTA
+                  ota_property_password:
+                    type: string
+                    description: >
+                      If the OTA uses passwords this will authenticate the
+                      property on the OTA. We'll automatically save the
+                      password.
+                  instruction_text:
+                    type: string
+                    description: >
+                      The instruction text will be displayed to the hotel after
+                      the property creation is complete. We will escape any
+                      HTML characters, so please only return plain text. You
+                      can include linebreaks (`\n`) which will be converted into
+                      actual line breaks for HTML display.
+                  instruction_link:
+                    type: string
+                    description: >
+                      If an instruction link is provided we will display the
+                      clickable link below the instruction text (if present).
+                  room_mappings:
+                    type: array
+                    description: >
+                      Returning this field will help myallocator to
+                      automatically map the OTA room IDs to myallocator's room
+                      IDs. This is required to automatically send a full
+                      refresh after successful property creation. We strongly
+                      recommend that you return this field. If you do not
+                      support rate plans you do not need to return
+                      `ota_rate_id` and `mya_rate_id`.
+                    items:
+                      type: object
+                      properties:
+                        ota_room_id:
+                          type: string
+                          description: New OTA room ID
+                        mya_room_id:
+                          type: integer
+                          minimum: 1
+                          description: Myallocator room ID
+                        ota_rate_id:
+                          type: string
+                          description: New OTA rate plan ID
+                        mya_rate_id:
+                          type: integer
+                          minimum: 0
+                          description: Myallocator rate plan ID
+                      required:
+                        - ota_room_id
+                        - mya_room_id
+                required:
+                  - success
+                  - ota_property_id
+              - $ref: ../schemas.d/response_error.yaml
+      description: CreateProperty
+  summary: CreateProperty

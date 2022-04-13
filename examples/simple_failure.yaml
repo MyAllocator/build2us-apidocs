@@ -1,0 +1,7 @@
+---
+summary: Request was not processed successfully.
+value:
+  success: false
+  errors:
+    - id: 1001
+      msg: The login details you provided are incorrect. Please update your channel details.

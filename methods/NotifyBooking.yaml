@@ -1,0 +1,69 @@
+---
+post:
+  operationId: notify_booking
+  description: |-
+    *Note that the endpoint for this API call is on myallocator!*
+
+    With this API call the OTA can notify myallocator to immediately request a
+    `GetBookingList` call based on the `ota_property_id`/`ota_property_sub_id`
+    and the passed `booking_id`. This should be send on any new booking OR any
+    changes such as cancellations to an existing booking.
+
+    If the `BookingCreate` API call has been implemented then `NotifyBooking`
+    is not required.
+
+    Note: at this time we're not only sending a `GetBookingId` call with the
+    `booking_id` given in this API call. Myallocator instead calls
+    `GetBookingList` as usual. However, in the future myallocator might
+    specifically request the booking provided with `NotifyBooking`.
+  servers:
+    - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+      variables:
+        ota:
+          description: OTA channel ID as assigned by myallocator
+          default: replace_with_ota_id
+  requestBody:
+    content:
+      multipart/form-data:
+        examples:
+          $ref: ../examples/methods/NotifyBooking.yaml#/rq
+        schema:
+          type: object
+          properties:
+            ota_property_id:
+              description: Username, login or property ID on the OTA
+              type: string
+            ota_property_sub_id:
+              type: string
+              description: >
+                Property ID on the OTA, if OTA supports multiple properties under one
+                `ota_property_id`/`ota_property_password` combination. See
+                `GetSubProperties` for more details.
+            booking_id:
+              type: string
+              description: OTA booking ID of the booking to be retrieved.
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+          required:
+            - shared_secret
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/NotifyBooking.yaml#/rs
+          schema:
+            oneOf:
+              - title: Successful Request
+                type: object
+                description: >
+                  No returned error means the notification has been enqueued into
+                  myallocator for import. The response will be an empty
+                  JSON object.
+              - $ref: ../schemas.d/response_callback_error.yaml
+      description: NotifyBooking
+  summary: NotifyBooking
+  tags:
+    - Callbacks

@@ -1,0 +1,98 @@
+---
+post:
+  operationId: get_sub_properties
+  description: |-
+    Some OTAs only tie one property to a specific login username/password where
+    the username is also the ota_property_id. Others allow for one
+    username/password to be associated with multiple properties. In this second
+    case, each OTA property identifier is stored as an `ota_property_sub_id` in
+    order to be handled separately from the property's OTA username. This method
+    call should return all of the properties (ota_property_sub_ids) associated
+    with the OTA's username/password so that the correct `ota_property_sub_id`
+    can be linked with our `mya_property_id` for a specific property.
+
+    *IMPORTANT*: Please contact us to enable this feature for your OTA. It is
+    NOT enabled by default. It is only necessary if your OTA allows for
+    multiple properties associated with one login username/password.
+
+    Implementation suggestions: `ota_property_sub_id` will be the OTA identifier
+    for a specific property managed by the hotel while the title is that
+    property's name. This method will allow the property to map their
+    myallocator property with the OTA's `ota_property_sub_id` when setting up
+    the property-OTA association on myallocator.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/GetSubProperties.yaml#/rq
+        schema:
+          type: object
+          properties:
+            mya_property_id:
+              description: Username or property ID on the myallocator
+              type: integer
+              minimum: 1
+            ota_property_id:
+              description: Username, login or property ID on the OTA
+              type: string
+            ota_property_password:
+              description: Password for property on your OTA. In case the OTA does not use passwords this will be an empty string.
+              type: string
+            ota_property_sub_id:
+              type: string
+              description: Always an empty string for this call
+              enum:
+                - ''
+            guid:
+              description: Request reference ID, used for debugging and support requests.
+              type: string
+              pattern: '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+            ota_cid:
+              description: OTA ID as given by myallocator
+              type: string
+              pattern: '^[a-z0-9]+$'
+            verb:
+              type: string
+              enum:
+                - GetSubProperties
+          required:
+            - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/GetSubProperties.yaml#/rs
+          schema:
+            oneOf:
+              - type: object
+                title: Successful property list retrieval
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  SubProperties:
+                    type: array
+                    description: >
+                      List of properties for the user on the OTA.
+                    items:
+                      type: object
+                      properties:
+                        ota_property_sub_id:
+                          type: string
+                          description: >
+                            Property ID on the OTA.
+                        title:
+                          type: string
+                          description: Name of the property
+                      required:
+                        - ota_property_sub_id
+                        - title
+                required:
+                  - success
+                  - SubProperties
+              - $ref: ../schemas.d/response_error.yaml
+      description: GetSubProperties
+  summary: GetSubProperties

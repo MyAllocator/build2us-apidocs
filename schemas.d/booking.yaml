@@ -1,0 +1,136 @@
+---
+type: object
+description: >
+  Object describing the booking. The fields listed here are
+  just the minimum required fields.
+properties:
+  OrderId:
+    type: string
+    description: Unique booking ID on the OTA. Maximum of 64 characters.
+  OrderDate:
+    type: string
+    format: date
+    description: Date of booking creation, in UTC (not date when modified!).
+  OrderTime:
+    type: string
+    pattern: '^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$'
+    description: >
+      Time of booking creation, in UTC. If seconds are not
+      provided, set value to ":00". Presence of `OrderTime`
+      requires presence of `OrderDate`.
+  IsCancellation:
+    type: integer
+    enum:
+      - 0
+      - 1
+    description: "`1` if booking is cancelled."
+  TotalCurrency:
+    type: string
+    pattern: '^[A-Z]{3}$'
+    description: >
+      3-letter ISO 4217 currency code for the `TotalPrice`
+      field.
+  TotalPrice:
+    type: number
+    description: >
+      Total price of the booking, including taxes,
+      commission and deposit, after discounts. It should
+      reflect the price the guest will have to pay in
+      total (or has already paid).
+  Customers:
+    type: array
+    items:
+      type: object
+      properties:
+        CustomerCountry:
+          type: string
+          pattern: '^[A-Z]{2}$'
+          description:
+            2-letter ISO 3166-1 alpha-2 country code in which
+            the customer resides, corresponding to their
+            address. Value is uppercase.
+        CustomerEmail:
+          type: string
+          format: email
+          description: Email address of the customer.
+        CustomerFName:
+          type: string
+          description: >
+            First name(s) of the customer. If the name is not
+            stored separated by first and last name, provide
+            full name in `CustomerLName`.
+        CustomerLName:
+          type: string
+          description: Last (family) name or full name of the customer.
+  Rooms:
+    type: array
+    description: List of rooms booked
+    items:
+      type: object
+      properties:
+        ChannelRoomType:
+          type: string
+          description:
+            The ID of the room on the OTA.
+        Currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+          description: >
+            3-letter ISO 4217 currency code for the `Price`
+            field.
+        DayRates:
+          type: array
+          description: >
+            Contains as many objects as the number of nights
+            of the room stay. They need to be sorted by
+            date.
+          items:
+            type: object
+            properties:
+              Date:
+                type: string
+                format: date
+                description: Date of day rate.
+              Description:
+                type: string
+                description: >
+                  Name or short description of the rateplan
+                  booked. Example: "Non-refundable rate" or
+                  "10% festival discount".
+              Rate:
+                type: number
+                description: >
+                  Price for this day, including `Commission`
+                  and `Tax`.
+              Currency:
+                type: string
+                pattern: '^[A-Z]{3}$'
+                description: >
+                  3-letter ISO 4217 currency code for the
+                  `Rate` field.
+        StartDate:
+          type: string
+          format: date
+          description: Arrival date of the customer.
+        EndDate:
+          type: string
+          format: date
+          description: >
+            The date of the last night of stay (equal to
+            departure date minus one).
+        Price:
+          type: number
+          minimum: 0
+          description: >
+            Total price of the room, for all units and all
+            days, including taxes and fees. Example: stay
+            is for two days and three units and a single
+            night costs €10 (including tax), then `Price`
+            is 2 * 3 * 10 = 60.
+        Units:
+          type: integer
+          minimum: 1
+          description: >
+            Number of rooms booked (for private rooms) or
+            number of beds booked (for dorms/shared
+            rooms).

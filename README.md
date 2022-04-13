@@ -1,7 +1,9 @@
-# build2us-apidocs
+# Myallocator Build-To-US API
 
-Myallocator Build2Us API Documentation (OTA Facing)
+This documentation based on [OpenAPI v3.1](https://spec.openapis.org/oas/v3.1.0)
+and displayed with [Redoc](https://github.com/Redocly/redoc).
 
-This documentation is automatically generated and is hosted by github pages. Please send suggestions to support@cloudbeds.com.
+You can import `b2u-combined.yaml` into Postman to automatically generate
+requests and documentation.
 
-To view this please visit: http://myallocator.github.io/build2us-apidocs/index.html
+To [view the documentation click here](http://myallocator.github.io/build2us-apidocs/index.html).

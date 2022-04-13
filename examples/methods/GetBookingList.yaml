@@ -1,0 +1,33 @@
+---
+rq:
+  GetBookingList:
+    summary: GetBookingList
+    value:
+      verb: GetBookingList
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+      ota_booking_version: '2022-03-22 12:09:19'
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+      Bookings:
+        - booking_id: "B84372-281192312"
+          version: '1'
+        - booking_id: "B84372-281192314"
+          version: '2'
+        - booking_id: "H1238-99825634"
+          version: '1'
+  Failure:
+    summary: Invalid credentials sent
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.

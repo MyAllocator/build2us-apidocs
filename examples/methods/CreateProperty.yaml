@@ -1,0 +1,171 @@
+---
+rq:
+  CreateProperty:
+    summary: CreateProperty
+    value:
+      ota_property_id: ''
+      ota_property_password: ''
+      ota_property_sub_id: ''
+      mya_property_id: 12345
+      ota_cid: ota
+      verb: CreateProperty
+      shared_secret : s3cr3ts4uc3
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      Property:
+        name: Sample Hostel
+        country: US
+        currency: EUR
+        email_default: someone@example.com
+        email_channel_booking: bookings@example.com
+        default_min_los: 3
+        default_max_los: 0
+        breakfast: ''
+        weekend:
+        - tuesday
+        - saturday
+        - sunday
+        firstname: John
+        lastname: Smith
+        timezone: Asia/Thimphu
+        address:
+          address_line_1: Main St
+          address_line_2: Annex
+          city: San Diego
+          zip: '92120'
+          state: CA
+          country: US
+          website: http://example.com
+          lon: '32.715736'
+          lat: "-117.161087"
+          phone: "+1 123123123 "
+          fax: "+1 123123123"
+        business_contact:
+          main_contact_name: Jeff Johnson
+          company_name: Hostels Inc.
+          account_manager_name: Hillary Jackson
+          vat_id: US2345678
+          address_line_1: Office Street
+          address_line_2: 3rd floor
+          state: Office State
+          zip: '22222'
+          city: Office City
+          country: DE
+        images:
+        - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+          description: Outside View
+          sort_order: 1
+        - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg
+          description: Reception Area
+          sort_order: 2
+        rooms:
+        - mya_room_id: 45829
+          units: 5
+          beds: 2
+          dormitory: false
+          label: Double Room
+          description: A potentially long description about the room
+          images:
+          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+            description: Double bed
+            sort_order: 1
+          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg
+            description: Bath room
+            sort_order: 2
+          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c99.jpg
+            description: Balcony
+            sort_order: 3
+          rateplans:
+          - mya_rate_id: 0
+            label_public: Default Rate Plan
+            label_private: Default Rate Plan
+          - label_public: Non-refundable
+            label_private: NR
+            mya_rate_id: 850
+          - label_public: With Breakfast
+            label_private: BR
+            mya_rate_id: 851
+        - mya_room_id: 290
+          units: 25
+          beds: 4
+          dormitory: false
+          label: 4-person private
+          description:
+          images: []
+          rateplans:
+          - label_private: Default Rate Plan
+            label_public: Default Rate Plan
+            mya_rate_id: 0
+        - mya_room_id: 329
+          units: 7
+          beds: 3
+          dormitory: false
+          label: 3-person private
+          description: Best three bed room in town
+          images:
+          - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+            description: 3-bed room
+            sort_order: 1
+          rateplans:
+          - label_public: Default Rate Plan
+            label_private: Default Rate Plan
+            mya_rate_id: 0
+          - mya_rate_id: 853
+            label_private: NR
+            label_public: Non-refundable
+        - mya_room_id: 52
+          units: 3
+          beds: 30
+          dormitory: true
+          gender: MIXED
+          label: 30-person mixed shared
+          description:
+          images: []
+          rateplans:
+          - mya_rate_id: 0
+            label_public: Default Rate Plan
+            label_private: Default Rate Plan
+          - mya_rate_id: 852
+            label_public: Non-refundable
+            label_private: NR
+
+rs:
+  Failure:
+    summary: Uncategorised error
+    value:
+      success: false
+      errors:
+        - id: 3
+          msg: Property already exists
+  Success with room mapping:
+    summary: Success
+    value:
+      success: true
+      ota_property_id: CID_123
+      ota_property_password: secret_password
+      instruction_text: |-
+        It worked!
+
+        Now click the link.
+      instruction_link: https://ota.com/instructions
+      room_mappings:
+      - ota_room_id: '11111'
+        mya_room_id: 45829
+        ota_rate_id: rp6623
+        mya_rate_id: 0
+      - ota_room_id: '11111'
+        mya_room_id: 45829
+        ota_rate_id: rp6624
+        mya_rate_id: 850
+      - ota_room_id: '11111'
+        mya_room_id: 45829
+        ota_rate_id: rp6624
+        mya_rate_id: 851
+      - ota_room_id: '22222'
+        mya_room_id: 290
+        ota_rate_id: rp6625
+        mya_rate_id: 0
+      - ota_room_id: '22222'
+        mya_room_id: 290
+        ota_rate_id: rp6626
+        mya_rate_id: 853
+

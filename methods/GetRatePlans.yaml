@@ -1,0 +1,63 @@
+---
+post:
+  operationId: get_rate_plans
+  description: |-
+    Myallocator uses this call to retrieve a list of rate plans, which are
+    either specific to each room, or global for all rooms.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/GetRatePlans.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - GetRatePlans
+          required:
+            - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/GetRatePlans.yaml#/rs
+          schema:
+            oneOf:
+              - type: object
+                title: Successful rate plan retrieval
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  RatePlans:
+                    type: array
+                    description: >
+                      List of rate plans on the OTA.
+                    items:
+                      type: object
+                      properties:
+                        ota_room_id:
+                          type: string
+                          description: >
+                            Room ID on the OTA tied to the rate plan. If the
+                            rate plan is available to all rooms set this to `0`.
+                        ota_rate_id:
+                          type: string
+                          description: Rate plan ID on the OTA
+                        title:
+                          type: string
+                          description: Name, label or short summary of the rate plan
+                      required:
+                        - ota_room_id
+                        - ota_rate_id
+                        - title
+                required:
+                  - success
+                  - RatePlans
+              - $ref: ../schemas.d/response_error.yaml
+      description: GetRatePlans
+  summary: GetRatePlans
