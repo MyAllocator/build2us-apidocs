@@ -201,6 +201,13 @@ info:
     content-type `application/json`.
 
 
+    *Important*: Myallocator will send all requests to the same endpoint, as given
+
+    to us by the OTA. We do *not* append the method name to the URL, even though
+
+    this documentation makes it look like we do.
+
+
     ## Required API calls
 
 
