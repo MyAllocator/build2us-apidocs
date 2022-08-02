@@ -205,7 +205,9 @@ info:
 
     to us by the OTA. We do *not* append the method name to the URL, even though
 
-    this documentation makes it look like we do.
+    this documentation makes it look like we do. We pass which method is called
+
+    in the `verb` field in the payload.
 
 
     ## Required API calls
