@@ -2452,7 +2452,7 @@ paths:
               default: replace_with_ota_id
       requestBody:
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             examples:
               ARIFullRefresh:
                 summary: ARIFullRefresh
@@ -2573,7 +2573,7 @@ paths:
               default: replace_with_ota_id
       requestBody:
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             examples:
               BookingCreate:
                 summary: BookingCreate
@@ -2703,7 +2703,7 @@ paths:
               default: replace_with_ota_id
       requestBody:
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             examples:
               NotifyBooking:
                 summary: NotifyBooking
@@ -2782,7 +2782,7 @@ paths:
               default: replace_with_ota_id
       requestBody:
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             examples:
               RoomInfo:
                 summary: RoomInfo

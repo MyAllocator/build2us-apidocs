@@ -19,7 +19,7 @@ post:
           default: replace_with_ota_id
   requestBody:
     content:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         examples:
           $ref: ../examples/methods/ARIFullRefresh.yaml#/rq
         schema:
