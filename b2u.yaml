@@ -1,7 +1,7 @@
 ---
 info:
   title: Myallocator Build-To-US API
-  version: "4.0"
+  version: "5.0"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
   description: |
@@ -118,11 +118,6 @@ info:
 
     HTTP response codes from myallocator should always be 200. They have the
     content-type `application/json`.
-
-    *Important*: Myallocator will send all requests to the same endpoint, as given
-    to us by the OTA. We do *not* append the method name to the URL, even though
-    this documentation makes it look like we do. We pass which method is called
-    in the `verb` field in the payload.
 
     ## Required API calls
 
