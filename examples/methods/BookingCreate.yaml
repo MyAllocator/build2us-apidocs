@@ -5,36 +5,49 @@ rq:
     value:
       mya_property_id: 998201
       shared_secret : "s3cr3ts4uc3"
-      booking_json:
-        OrderId: '123456789'
-        OrderDate: '2018-04-22'
-        OrderTime: '18:02:58'
-        IsCancellation: 0
-        TotalCurrency: USD
-        TotalPrice: 134
-        Customers:
-        - CustomerCountry: US
-          CustomerEmail: test@test.com
-          CustomerFName: Test Firstname
-          CustomerLName: Test Lastname
-        Rooms:
-        - ChannelRoomType: abcdef
-          Currency: USD
-          DayRates:
-          - Date: '2017-11-08'
-            Description: Refundable Rate
-            Rate: 32.5
-            Currency: USD
-            RateId: '13649'
-          - Date: '2017-11-09'
-            Description: Refundable Rate
-            Rate: 34.5
-            Currency: USD
-            RateId: '13649'
-          StartDate: '2017-11-08'
-          EndDate: '2017-11-09'
-          Price: 134
-          Units: 2
+      booking_json: >
+        {
+          "OrderId": "123456789",
+          "OrderDate": "2018-04-22",
+          "OrderTime": "18:02:58",
+          "IsCancellation": 0,
+          "TotalCurrency": "USD",
+          "TotalPrice": 134,
+          "Customers": [
+            {
+              "CustomerCountry": "US",
+              "CustomerEmail": "test@test.com",
+              "CustomerFName": "Test Firstname",
+              "CustomerLName": "Test Lastname"
+            }
+          ],
+          "Rooms": [
+            {
+              "ChannelRoomType": "abcdef",
+              "Currency": "USD",
+              "DayRates": [
+                {
+                  "Date": "2017-11-08",
+                  "Description": "Refundable Rate",
+                  "Rate": 32.5,
+                  "Currency": "USD",
+                  "RateId": "13649"
+                },
+                {
+                  "Date": "2017-11-09",
+                  "Description": "Refundable Rate",
+                  "Rate": 34.5,
+                  "Currency": "USD",
+                  "RateId": "13649"
+                }
+              ],
+              "StartDate": "2017-11-08",
+              "EndDate": "2017-11-09",
+              "Price": 134,
+              "Units": 2
+            }
+          ]
+        }
 rs:
   Success:
     summary: Success
@@ -44,3 +57,4 @@ rs:
     value:
       Error: 1031
       ErrorMsg: Channel not enabled for property
+

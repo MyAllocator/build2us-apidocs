@@ -2571,36 +2571,49 @@ paths:
                 value:
                   mya_property_id: 998201
                   shared_secret: s3cr3ts4uc3
-                  booking_json:
-                    OrderId: "123456789"
-                    OrderDate: 2018-04-22
-                    OrderTime: 18:02:58
-                    IsCancellation: 0
-                    TotalCurrency: USD
-                    TotalPrice: 134
-                    Customers:
-                      - CustomerCountry: US
-                        CustomerEmail: test@test.com
-                        CustomerFName: Test Firstname
-                        CustomerLName: Test Lastname
-                    Rooms:
-                      - ChannelRoomType: abcdef
-                        Currency: USD
-                        DayRates:
-                          - Date: 2017-11-08
-                            Description: Refundable Rate
-                            Rate: 32.5
-                            Currency: USD
-                            RateId: "13649"
-                          - Date: 2017-11-09
-                            Description: Refundable Rate
-                            Rate: 34.5
-                            Currency: USD
-                            RateId: "13649"
-                        StartDate: 2017-11-08
-                        EndDate: 2017-11-09
-                        Price: 134
-                        Units: 2
+                  booking_json: |
+                    {
+                      "OrderId": "123456789",
+                      "OrderDate": "2018-04-22",
+                      "OrderTime": "18:02:58",
+                      "IsCancellation": 0,
+                      "TotalCurrency": "USD",
+                      "TotalPrice": 134,
+                      "Customers": [
+                        {
+                          "CustomerCountry": "US",
+                          "CustomerEmail": "test@test.com",
+                          "CustomerFName": "Test Firstname",
+                          "CustomerLName": "Test Lastname"
+                        }
+                      ],
+                      "Rooms": [
+                        {
+                          "ChannelRoomType": "abcdef",
+                          "Currency": "USD",
+                          "DayRates": [
+                            {
+                              "Date": "2017-11-08",
+                              "Description": "Refundable Rate",
+                              "Rate": 32.5,
+                              "Currency": "USD",
+                              "RateId": "13649"
+                            },
+                            {
+                              "Date": "2017-11-09",
+                              "Description": "Refundable Rate",
+                              "Rate": 34.5,
+                              "Currency": "USD",
+                              "RateId": "13649"
+                            }
+                          ],
+                          "StartDate": "2017-11-08",
+                          "EndDate": "2017-11-09",
+                          "Price": 134,
+                          "Units": 2
+                        }
+                      ]
+                    }
             schema:
               type: object
               properties:
@@ -2622,8 +2635,11 @@ paths:
                     requests. Not to be shared with customers.
                   type: string
                 booking_json:
-                  $ref: "#/paths/~1GetBookingId/post/responses/200/content/application~1json/sche\
-                    ma/oneOf/0/properties/Booking"
+                  type: string
+                  description: >
+                    The booking payload encoded in JSON. See the response for
+                    `GetBookingId` for a minimal example and check the "Booking
+                    Format" section of this documentation.
               required:
                 - shared_secret
                 - booking_json

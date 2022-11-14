@@ -56,7 +56,10 @@ post:
               description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
               type: string
             booking_json:
-              $ref: ../schemas.d/booking.yaml
+              type: string
+              description: >
+                The booking payload encoded in JSON. See the response for `GetBookingId` for a
+                minimal example and check the "Booking Format" section of this documentation.
           required:
             - shared_secret
             - booking_json
