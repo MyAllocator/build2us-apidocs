@@ -221,8 +221,6 @@ info:
 
     * GetBookingId
 
-    * CreateProperty
-
 
     If the OTA has multiple properties under one user account these API calls
 
