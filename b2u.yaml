@@ -130,7 +130,6 @@ info:
     * ARIUpdate
     * GetBookingList
     * GetBookingId
-    * CreateProperty
 
     If the OTA has multiple properties under one user account these API calls
     are required in addition:
