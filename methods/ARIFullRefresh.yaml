@@ -26,11 +26,19 @@ post:
           type: object
           properties:
             mya_property_id:
-              description: Username or property ID on the myallocator
+              description: Property ID on the myallocator
               type: integer
               minimum: 1
             ota_property_id:
-              description: Username, login or property ID on the OTA
+              description: >
+                Username, login or property ID on the OTA. Don't use this
+                if the OTA support multiple properties under one login.
+              type: string
+            ota_property_sub_id:
+              description: >
+                Property ID on the OTA, if OTA supports multiple properties
+                under one `ota_property_id`/`ota_property_password`
+                combination. See `GetSubProperties` for more details.
               type: string
             shared_secret:
               description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
