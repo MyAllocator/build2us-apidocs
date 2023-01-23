@@ -130,8 +130,6 @@ post:
                       - ota_rate_id
                       - start_date
                       - end_date
-                      - units
-                      - rate
           required:
             - verb
             - currency

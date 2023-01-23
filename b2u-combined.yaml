@@ -1052,8 +1052,6 @@ paths:
                           - ota_rate_id
                           - start_date
                           - end_date
-                          - units
-                          - rate
               required:
                 - verb
                 - currency
@@ -2452,7 +2450,7 @@ paths:
               type: object
               properties:
                 mya_property_id:
-                  description: Username or property ID on the myallocator
+                  description: Property ID on the myallocator
                   type: integer
                   minimum: 1
                 ota_property_id:
