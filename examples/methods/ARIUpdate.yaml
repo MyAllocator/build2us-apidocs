@@ -25,6 +25,8 @@ rq:
           closearr: false
           closedep: false
           close: false
+          min_advanced_offset: 2
+          max_advanced_offset: 30
         - ota_room_id: "61365"
           ota_rate_id: "rate_888"
           start_date: "2025-01-22"
