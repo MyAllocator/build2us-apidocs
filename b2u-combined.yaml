@@ -1049,7 +1049,7 @@ paths:
                               many cases this is equivalent to `units` = 0,
                               however it is also used to make specific rate
                               plans unavailable while leaving others bookable.
-                          min_adanced_offset:
+                          min_advanced_offset:
                             type: integer
                             description: >
                               Cut off restriction: Specifies the number of days
