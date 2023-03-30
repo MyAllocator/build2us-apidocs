@@ -1051,19 +1051,25 @@ paths:
                               plans unavailable while leaving others bookable.
                           min_advanced_offset:
                             type: integer
+                            minimum: 0
                             description: >
                               Cut off restriction: Specifies the number of days
                               before the arrival date guests are allowed to
-                              book. It is mainly used for properties that want
-                              to have a lot of advanced bookings by offering a
-                              heavily discounted rate if guests book at least an
-                              x amount of days in advance.
+                              book. The value of 0 resets to no restriction,
+                              which is the default. This restirction is mainly
+                              used for properties that want to have a lot of
+                              advanced bookings by offering a heavily discounted
+                              rate if guests book at least X number of days in
+                              advance.
                           max_advanced_offset:
                             type: integer
+                            minimum: 0
                             description: >
                               Last Minute restriction: The number of days before
-                              the arrival date guests can book. It is mainly
-                              used to boost last-minute reservations.
+                              the arrival date guests can book. The value of 0
+                              resets to no restirction, which is the default.
+                              This restriction is mainly used to boost
+                              last-minute reservations.
                         required:
                           - ota_room_id
                           - ota_rate_id
