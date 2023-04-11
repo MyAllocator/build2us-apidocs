@@ -81,6 +81,26 @@ post:
                           the value is `0` we recommend to not make the single
                           use rate available, or to just use the same price as
                           for `rate`.
+                      num_adults_included:
+                        type: integer
+                        minimum: 0
+                        description: >
+                          Number of adults included in base rate
+                      num_children_included:
+                        type: integer
+                        minimum: 0
+                        description: >
+                          Number of children included in base rate
+                      adult_N:
+                        type: string
+                        pattern: '^\d+(\.\d+)?$'
+                        description: >
+                          Extra price for the Nth adult.
+                      child_N:
+                        type: string
+                        pattern: '^\d+(\.\d+)?$'
+                        description: >
+                          Extra price for the Nth child.
                       max_los:
                         type: integer
                         minimum: 0
