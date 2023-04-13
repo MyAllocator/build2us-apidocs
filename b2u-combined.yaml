@@ -912,7 +912,7 @@ paths:
                       end_date: 2025-02-12
                       units: 5
                       rate: "15.00"
-                      rdef_single: "2.00"
+                      rdef_single: "12.00"
                       max_los: 14
                       min_los: 2
                       closearr: false
@@ -920,6 +920,10 @@ paths:
                       close: false
                       min_advanced_offset: 2
                       max_advanced_offset: 30
+                      num_adults_included: 2
+                      num_children_included: 2
+                      adult_3: "8.00"
+                      child_3: "5.00"
                     - ota_room_id: "61365"
                       ota_rate_id: rate_888
                       start_date: 2025-01-22
@@ -992,6 +996,30 @@ paths:
                               higher than `1`. If the value is `0` we recommend
                               to not make the single use rate available, or to
                               just use the same price as for `rate`.
+                          num_adults_included:
+                            type: integer
+                            minimum: 0
+                            description: >
+                              Number of adults included in base rate. Sent for
+                              OBP enabled channels.
+                          num_children_included:
+                            type: integer
+                            minimum: 0
+                            description: >
+                              Number of children included in base rate. Sent for
+                              OBP enabled channels.
+                          adult_N:
+                            type: string
+                            pattern: ^\d+(\.\d+)?$
+                            description: >
+                              Extra price for the Nth adult. Sent for OBP
+                              enabled channels.
+                          child_N:
+                            type: string
+                            pattern: ^\d+(\.\d+)?$
+                            description: >
+                              Extra price for the Nth child. Sent for OBP
+                              enabled channels.
                           max_los:
                             type: integer
                             minimum: 0
