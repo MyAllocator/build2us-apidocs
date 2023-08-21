@@ -849,7 +849,8 @@ paths:
                                 `0`.
                             ota_rate_id:
                               type: string
-                              description: Rate plan ID on the OTA
+                              description: Rate plan ID on the OTA.  Cannot be `0`, empty string or otherwise
+                                falsy.
                             title:
                               type: string
                               description: Name, label or short summary of the rate plan
