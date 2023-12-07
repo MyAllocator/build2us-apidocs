@@ -443,19 +443,16 @@ paths:
                   minimum: 1
                 ota_property_id:
                   type: string
-                  description: Always an empty string for this call
-                  enum:
-                    - ""
+                  description: User ID on the OTA
                 ota_property_password:
                   type: string
-                  description: Always an empty string for this call
-                  enum:
-                    - ""
+                  description: Password on the OTA, if supported
                 ota_property_sub_id:
                   type: string
-                  description: Always an empty string for this call
-                  enum:
-                    - ""
+                  description: >
+                    If multiple properties are supported for a set of
+                    `ota_property_id` and `ota_property_password`, this is the
+                    ID identifying a specific property.
                 guid:
                   description: Request reference ID, used for debugging and support requests.
                   type: string
@@ -524,8 +521,6 @@ paths:
                 - guid
                 - mya_property_id
                 - ota_property_id
-                - ota_property_password
-                - ota_property_sub_id
                 - shared_secret
                 - ota_cid
         required: true
