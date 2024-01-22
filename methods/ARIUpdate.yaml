@@ -95,12 +95,15 @@ post:
                         type: string
                         pattern: '^\d+(\.\d+)?$'
                         description: >
-                          Extra price for the Nth adult. Sent for OBP enabled channels.
+                          Extra price for the Nth adult. Sent for OBP enabled channels. Note that
+                          the prices are cumulative. Eg. for a room with `num_adults_included=2`
+                          we calculate the price for 4 adults like this: `rate + adult_3 + adult_4`.
                       child_N:
                         type: string
                         pattern: '^\d+(\.\d+)?$'
                         description: >
-                          Extra price for the Nth child. Sent for OBP enabled channels.
+                          Extra price for the Nth child. Sent for OBP enabled channels. Note that
+                          the prices are cumulative. See above for `adult_N`.
                       max_los:
                         type: integer
                         minimum: 0
