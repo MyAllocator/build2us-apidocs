@@ -3,7 +3,7 @@ auth:
   type: object
   properties:
     mya_property_id:
-      description: Username or property ID on the myallocator
+      description: Property ID on myallocator
       type: integer
       minimum: 1
     ota_property_id:

@@ -13,23 +13,25 @@ post:
           type: object
           properties:
             mya_property_id:
-              type: string
-              description: Always an empty string for this call
-              enum:
-                - ''
+              oneOf:
+                - type: integer
+                  description: Property ID on myallocator if already set
+                  minimum: 1
+                - type: string
+                  enum:
+                    - ''
+                  description: Empty string otherwise if not previously setup
             ota_property_id:
+              description: Username, login or property ID on the OTA if already set, empty string otherwise
               type: string
-              description: Always an empty string for this call
-              enum:
-                - ''
             ota_property_password:
+              description: Password for property on your OTA if already set, empty string otherwise. In case the OTA does not use passwords this will be an empty string.
               type: string
-              description: Always an empty string for this call
-              enum:
-                - ''
             ota_property_sub_id:
               type: string
-              description: Always an empty string for this call
+              description: >
+                Property ID on the OTA, if OTA supports multiple properties under one
+                `ota_property_id`/`ota_property_password` combination. Empty string if not already set.
               enum:
                 - ''
             guid:
