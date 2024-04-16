@@ -1,0 +1,64 @@
+---
+type: array
+description: >
+  Array of conditions that determine if this amount will be applied.
+items:
+  type: object
+  properties:
+    min_start:
+      type: string
+      description: >
+        Amount of parameter above which tax is applied. For example,
+        if condition_parameter is "total-price" and here we have 200,
+        this means that tax/fee is applied when total price is more or equal 200.
+    max_end:
+      type: string
+      description: >
+        Amount of parameter below which tax is applied. For example,
+        if condition_parameter is "total-price" and here we have 200,
+        this means that tax/fee is applied when total price is less or equal 200.
+    one_of:
+      type: array
+      description: >
+        List of values of a parameter. For example, if condition_parameter
+        is "day-of-week" then "SAT,SUN" might be here.
+      items:
+        type: string
+    max_end_inclusive:
+      type: boolean
+      default: true
+      description: >
+        Whether the max_end parameter is inclusive (less or equal) or not (strictly less).
+    min_start_inclusive:
+      type: boolean
+      default: true
+      description: >
+        Whether the min_start parameter is inclusive (greater or equal) or not (strictly greater).
+    condition_parameter:
+      type: string
+      description: >
+        Parameter that determines whether this tax/fee will be applied or not.
+      enum:
+        - adult-age
+        - booking-date
+        - checkin-date
+        - checkout-date
+        - child-age
+        - date-in-range
+        - day-of-week
+        - length-of-stay
+        - night-number
+        - nightly-rate
+        - nights-booked-in-advance
+        - number-of-guests
+        - number-of-nights
+        - number-of-pets
+        - payment-type
+        - product-code-id
+        - rate-type
+        - room-id
+        - stay-dates-intersect
+        - total-price
+  required:
+    - condition_parameter
+

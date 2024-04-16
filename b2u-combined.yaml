@@ -1,6 +1,6 @@
 info:
   title: Myallocator Build-To-US API
-  version: "5.0"
+  version: "5.1"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
   description: >
@@ -1720,6 +1720,101 @@ paths:
                       - sunday
                     firstname: John
                     lastname: Smith
+                    taxes:
+                      - amount: 10.567
+                        applies_per: booking
+                        calculation_basis: rate
+                        category: vat
+                        code: IVA
+                        description: Impuesto
+                        id: 4761
+                        is_fee: false
+                        is_inclusive: true
+                        is_per_night: false
+                        is_percent: true
+                        is_refundable: false
+                        name: IVA
+                        tax_basis_includes_fees:
+                          - fee_id: 4762
+                      - amount: 5
+                        applies_per: pet
+                        category: other_fee
+                        description: Pet fee applies for each pet when total number of pets is more than
+                          one.
+                        id: 4762
+                        is_fee: true
+                        is_inclusive: false
+                        is_per_night: false
+                        is_percent: false
+                        is_refundable: false
+                        name: Pet fee
+                        conditions:
+                          - condition_parameter: number-of-pets
+                            min_start: "2"
+                            min_start_inclusive: true
+                      - amount: 2.49
+                        applies_per: adult
+                        calculation_basis: rate
+                        category: tourism_tax
+                        description: Per person per night when number of nights are greater than 2
+                        id: 4763
+                        is_fee: false
+                        is_inclusive: false
+                        is_per_night: true
+                        is_percent: false
+                        is_refundable: false
+                        name: Local tourism tax
+                        conditions:
+                          - condition_parameter: length-of-stay
+                            min_start: "3"
+                            min_start_inclusive: true
+                      - applies_per: booking
+                        category: other_fee
+                        external_id: A4672
+                        id: 4764
+                        is_fee: true
+                        is_inclusive: false
+                        is_per_night: true
+                        is_percent: false
+                        is_refundable: false
+                        name: Resort Fee
+                        amounts:
+                          - amount: 10
+                            conditions:
+                              - condition_parameter: nightly-rate
+                                min_start: "0"
+                                max_end: "121"
+                                min_start_inclusive: true
+                                max_end_inclusive: false
+                          - amount: 11
+                            conditions:
+                              - condition_parameter: nightly-rate
+                                min_start: "121"
+                                max_end: "221"
+                                min_start_inclusive: true
+                                max_end_inclusive: false
+                          - amount: 12
+                            conditions:
+                              - condition_parameter: nightly-rate
+                                min_start: "221"
+                                min_start_inclusive: true
+                      - amount: 10.567
+                        applies_per: booking
+                        calculation_basis: rate
+                        category: other_fee
+                        description: Weekend service fee
+                        id: 4765
+                        is_fee: true
+                        is_inclusive: false
+                        is_per_night: true
+                        is_percent: false
+                        is_refundable: false
+                        name: Weekend fee
+                        conditions:
+                          - condition_parameter: day-of-week
+                            one-of:
+                              - SAT
+                              - SUN
                     timezone: Asia/Thimphu
                     address:
                       address_line_1: Main St
@@ -2189,6 +2284,228 @@ paths:
                               - label
                               - description
                               - images
+                        taxes:
+                          type: array
+                          description: |
+                            Property taxes and fees.
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                minimum: 1
+                                description: Tax/Fee ID in cloudbeds system
+                              is_fee:
+                                type: boolean
+                                description: '"true" if fee. Otherwise tax'
+                              is_inclusive:
+                                type: boolean
+                                default: true
+                                description: '"true" when tax/fee included in rate.'
+                              is_per_night:
+                                type: boolean
+                                default: true
+                                description: '"true" when tax/fee is per night, otherwise per stay.'
+                              is_percent:
+                                type: boolean
+                                default: true
+                                description: '"true" when amount represents percentage, otherwise absolute
+                                  value.'
+                              is_refundable:
+                                type: boolean
+                                default: true
+                                description: For example, refundable damage deposit fee will set this "true".
+                              amount:
+                                type: number
+                                description: >
+                                  Tax/fee amount. Either amount in currency or
+                                  percent, depending on is_percent field. For
+                                  example 20.5 can mean 20.5% or $20.5. Only one
+                                  element either "amount" or "amounts" is
+                                  supposed to be active, not both.
+                              amounts:
+                                type: array
+                                description: >
+                                  Array of tax/fee amounts. Multiple amounts may
+                                  apply at the same time depending on the
+                                  conditions for each item. Only one element
+                                  either "amount" or "amounts" is supposed to be
+                                  active, not both.
+                                items:
+                                  type: object
+                                  properties:
+                                    amount:
+                                      description: Tax/fee amount. Either amount in currency or percent, depending on
+                                        is_percent field. For example 20.5 can
+                                        mean 20.5% or $20.5.
+                                      type: number
+                                    conditions:
+                                      type: array
+                                      description: >
+                                        Array of conditions that determine if
+                                        this amount will be applied.
+                                      items:
+                                        type: object
+                                        properties:
+                                          min_start:
+                                            type: string
+                                            description: >
+                                              Amount of parameter above which
+                                              tax is applied. For example, if
+                                              condition_parameter is
+                                              "total-price" and here we have
+                                              200, this means that tax/fee is
+                                              applied when total price is more
+                                              or equal 200.
+                                          max_end:
+                                            type: string
+                                            description: >
+                                              Amount of parameter below which
+                                              tax is applied. For example, if
+                                              condition_parameter is
+                                              "total-price" and here we have
+                                              200, this means that tax/fee is
+                                              applied when total price is less
+                                              or equal 200.
+                                          one_of:
+                                            type: array
+                                            description: >
+                                              List of values of a parameter. For
+                                              example, if condition_parameter is
+                                              "day-of-week" then array
+                                              ["SAT","SUN"] might be here.
+                                            items:
+                                              type: string
+                                          max_end_inclusive:
+                                            type: boolean
+                                            default: true
+                                            description: >
+                                              Whether the max_end parameter is
+                                              inclusive (less or equal) or not
+                                              (strictly less).
+                                          min_start_inclusive:
+                                            type: boolean
+                                            default: true
+                                            description: >
+                                              Whether the min_start parameter is
+                                              inclusive (greater or equal) or
+                                              not (strictly greater).
+                                          condition_parameter:
+                                            type: string
+                                            description: >
+                                              Parameter that determines whether
+                                              this tax/fee will be applied or
+                                              not.
+                                            enum:
+                                              - adult-age
+                                              - booking-date
+                                              - checkin-date
+                                              - checkout-date
+                                              - child-age
+                                              - date-in-range
+                                              - day-of-week
+                                              - length-of-stay
+                                              - night-number
+                                              - nightly-rate
+                                              - nights-booked-in-advance
+                                              - number-of-guests
+                                              - number-of-nights
+                                              - number-of-pets
+                                              - payment-type
+                                              - product-code-id
+                                              - rate-type
+                                              - room-id
+                                              - stay-dates-intersect
+                                              - total-price
+                                        required:
+                                          - condition_parameter
+                                  required:
+                                    - amount
+                              category:
+                                type: string
+                                description: |
+                                  Tax category.
+                                enum:
+                                  - occupancy_tax
+                                  - other_fee
+                                  - other_tax
+                                  - resort_tax
+                                  - sales_tax
+                                  - service_charge
+                                  - tourism_tax
+                                  - vat
+                              code:
+                                type: string
+                                description: Issued by federal government tax/fee code.
+                              external_id:
+                                type: string
+                                description: >
+                                  Optional custom field to store an external
+                                  system ID. Not guaranteed to be unique.
+                              description:
+                                type: string
+                                description: Tax/fee description.
+                              name:
+                                type: string
+                                description: Tax/fee name.
+                              applies_per:
+                                type: string
+                                description: |
+                                  To which entity is tax/fee applied.
+                                enum:
+                                  - adult
+                                  - all-adults
+                                  - booking
+                                  - booking-external-item
+                                  - child
+                                  - children
+                                  - guest
+                                  - pet
+                                  - pets
+                                  - rateplan
+                                  - room
+                                  - room-type
+                                  - service
+                              conditions:
+                                $ref: "#/paths/~1CreateProperty/post/requestBody/content/application~1json/sche\
+                                  ma/allOf/1/properties/Property/properties/tax\
+                                  es/items/properties/amounts/items/properties/\
+                                  conditions"
+                              tax_basis_includes_fees:
+                                type: array
+                                items:
+                                  type: object
+                                  description: Array of fee IDs which will be summed up before calculating this
+                                    tax. Depends on calculation_basis.
+                                  properties:
+                                    fee_id:
+                                      type: integer
+                                      description: ID of a fee
+                                      minimum: 1
+                                  required:
+                                    - fee_id
+                              calculation_basis:
+                                type: string
+                                description: >
+                                  To what value percentage will be applied in
+                                  order to calculate tax amount in currency.
+                                  Only applicable if "is_percent" is "true".
+                                enum:
+                                  - fees
+                                  - fees-per-night
+                                  - rate
+                                  - rate-and-fees
+                                  - rate-and-fees-per-night
+                                  - rate-per-night
+                            required:
+                              - applies_per
+                              - category
+                              - id
+                              - is_inclusive
+                              - is_per_night
+                              - is_percent
+                              - is_refundable
+                              - name
                       required:
                         - name
                         - country
@@ -2473,6 +2790,186 @@ paths:
                       ma/oneOf/1"
           description: GetSubProperties
       summary: GetSubProperties
+  /UpdateTaxes:
+    post:
+      operationId: update_taxes
+      description: |
+        Synchronize taxes/fees after they have been changed.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              UpdateTaxes:
+                summary: UpdateTaxes
+                value:
+                  verb: UpdateTaxes
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  shared_secret: s3cr3ts4uc3
+                  ota_cid: ota
+                  taxes:
+                    update:
+                      - amount: 10.567
+                        applies_per: booking
+                        calculation_basis: rate
+                        category: vat
+                        code: IVA
+                        description: Impuesto
+                        id: 4761
+                        is_fee: false
+                        is_inclusive: true
+                        is_per_night: false
+                        is_percent: true
+                        is_refundable: false
+                        name: IVA
+                        tax_basis_includes_fees:
+                          - fee_id: 4762
+                      - amount: 5
+                        applies_per: pet
+                        category: other_fee
+                        description: Pet fee applies for each pet when total number of pets is more than
+                          one.
+                        id: 4762
+                        is_fee: true
+                        is_inclusive: false
+                        is_per_night: false
+                        is_percent: false
+                        is_refundable: false
+                        name: Pet fee
+                        conditions:
+                          - condition_parameter: number-of-pets
+                            min_start: "2"
+                            min_start_inclusive: true
+                      - amount: 2.49
+                        applies_per: adult
+                        calculation_basis: rate
+                        category: tourism_tax
+                        description: Per person per night when number of nights are greater than 2
+                        id: 4763
+                        is_fee: false
+                        is_inclusive: false
+                        is_per_night: true
+                        is_percent: false
+                        is_refundable: false
+                        name: Local tourism tax
+                        conditions:
+                          - condition_parameter: length-of-stay
+                            min_start: "3"
+                            min_start_inclusive: true
+                      - applies_per: booking
+                        category: other_fee
+                        external_id: A4672
+                        id: 4764
+                        is_fee: true
+                        is_inclusive: false
+                        is_per_night: true
+                        is_percent: false
+                        is_refundable: false
+                        name: Resort Fee
+                        amounts:
+                          - amount: 10
+                            conditions:
+                              - condition_parameter: nightly-rate
+                                min_start: "0"
+                                max_end: "121"
+                                min_start_inclusive: true
+                                max_end_inclusive: false
+                          - amount: 11
+                            conditions:
+                              - condition_parameter: nightly-rate
+                                min_start: "121"
+                                max_end: "221"
+                                min_start_inclusive: true
+                                max_end_inclusive: false
+                          - amount: 12
+                            conditions:
+                              - condition_parameter: nightly-rate
+                                min_start: "221"
+                                min_start_inclusive: true
+                      - amount: 10.567
+                        applies_per: booking
+                        calculation_basis: rate
+                        category: other_fee
+                        description: Weekend service fee
+                        id: 4765
+                        is_fee: true
+                        is_inclusive: false
+                        is_per_night: true
+                        is_percent: false
+                        is_refundable: false
+                        name: Weekend fee
+                        conditions:
+                          - condition_parameter: day-of-week
+                            one-of:
+                              - SAT
+                              - SUN
+                    delete:
+                      - id: 4769
+                      - id: 4768
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    taxes:
+                      type: object
+                      description: Object that specifies Taxes/Fees to update and/or delete.
+                      properties:
+                        update:
+                          type: array
+                          description: |
+                            List of Taxes/Fees that were updated or created
+                          items:
+                            $ref: "#/paths/~1CreateProperty/post/requestBody/content/application~1json/sche\
+                              ma/allOf/1/properties/Property/properties/taxes/i\
+                              tems"
+                        delete:
+                          type: array
+                          description: |
+                            List of Taxes/Fees that were deleted
+                          items:
+                            type: object
+                            description: Tax/Fee object to delete. Contains ID only.
+                            properties:
+                              id:
+                                type: integer
+                                minimum: 1
+                                description: Tax/Fee ID in cloudbeds system
+                            required:
+                              - id
+                    verb:
+                      type: string
+                      enum:
+                        - UpdateTaxes
+              required:
+                - taxes
+                - verb
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: UpdateTaxes
+      summary: UpdateTaxes
   /ARIFullRefresh:
     post:
       operationId: ari_full_refresh
