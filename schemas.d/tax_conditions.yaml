@@ -21,7 +21,7 @@ items:
       type: array
       description: >
         List of values of a parameter. For example, if condition_parameter
-        is "day-of-week" then "SAT,SUN" might be here.
+        is "day-of-week" then ["SAT","SUN"] might be here.
       items:
         type: string
     max_end_inclusive:

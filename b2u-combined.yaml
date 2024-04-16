@@ -1812,7 +1812,7 @@ paths:
                         name: Weekend fee
                         conditions:
                           - condition_parameter: day-of-week
-                            one-of:
+                            one_of:
                               - SAT
                               - SUN
                     timezone: Asia/Thimphu
@@ -2319,7 +2319,7 @@ paths:
                                 type: number
                                 description: >
                                   Tax/fee amount. Either amount in currency or
-                                  percent, depending on is_percent field. For
+                                  percent, depending on "is_percent" field. For
                                   example 20.5 can mean 20.5% or $20.5. Only one
                                   element either "amount" or "amounts" is
                                   supposed to be active, not both.
@@ -2372,8 +2372,8 @@ paths:
                                             description: >
                                               List of values of a parameter. For
                                               example, if condition_parameter is
-                                              "day-of-week" then array
-                                              ["SAT","SUN"] might be here.
+                                              "day-of-week" then ["SAT","SUN"]
+                                              might be here.
                                             items:
                                               type: string
                                           max_end_inclusive:
@@ -2451,7 +2451,7 @@ paths:
                               applies_per:
                                 type: string
                                 description: |
-                                  To which entity is tax/fee applied.
+                                  To which entity tax/fee is applied.
                                 enum:
                                   - adult
                                   - all-adults
@@ -2799,7 +2799,7 @@ paths:
         content:
           application/json:
             examples:
-              UpdateTaxes:
+              GetBookingId:
                 summary: UpdateTaxes
                 value:
                   verb: UpdateTaxes
@@ -2903,7 +2903,7 @@ paths:
                         name: Weekend fee
                         conditions:
                           - condition_parameter: day-of-week
-                            one-of:
+                            one_of:
                               - SAT
                               - SUN
                     delete:

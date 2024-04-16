@@ -88,7 +88,7 @@
   name: Weekend fee
   conditions:
     - condition_parameter: day-of-week
-      one-of:
+      one_of:
         - SAT
         - SUN
 
