@@ -1,3 +1,4 @@
+---
 - amount: 10.567
   applies_per: booking
   calculation_basis: rate
