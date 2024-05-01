@@ -2,7 +2,7 @@
 post:
   operationId: update_taxes
   description: >
-    Synchronize taxes/fees after they have been changed.
+    Synchronize taxes/fees after they have been changed on Cloudbeds.
   requestBody:
     content:
       application/json:
@@ -20,13 +20,13 @@ post:
                     update:
                       type: array
                       description: >
-                        List of Taxes/Fees that were updated or created
+                        List of taxes/fees to update or create
                       items:
                         $ref: ../schemas.d/tax_info.yaml
                     delete:
                       type: array
                       description: >
-                        List of Taxes/Fees that were deleted
+                        List of taxes/fees to delete
                       items:
                         type: object
                         description: Tax/Fee object to delete. Contains ID only.
@@ -34,7 +34,7 @@ post:
                           id:
                             type: integer
                             minimum: 1
-                            description: Tax/Fee ID in cloudbeds system
+                            description: "Tax/fee ID in Cloudbeds' system"
                         required:
                           - id
                 verb:

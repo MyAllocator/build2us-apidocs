@@ -9,18 +9,18 @@ items:
       type: string
       description: >
         Amount of parameter above which tax is applied. For example,
-        if condition_parameter is "total-price" and here we have 200,
+        if `condition_parameter` is "total-price" and here we have 200,
         this means that tax/fee is applied when total price is more or equal 200.
     max_end:
       type: string
       description: >
         Amount of parameter below which tax is applied. For example,
-        if condition_parameter is "total-price" and here we have 200,
+        if `condition_parameter` is "total-price" and here we have 200,
         this means that tax/fee is applied when total price is less or equal 200.
     one_of:
       type: array
       description: >
-        List of values of a parameter. For example, if condition_parameter
+        List of values of a parameter. For example, if `condition_parameter`
         is "day-of-week" then ["SAT","SUN"] might be here.
       items:
         type: string
@@ -28,12 +28,12 @@ items:
       type: boolean
       default: true
       description: >
-        Whether the max_end parameter is inclusive (less or equal) or not (strictly less).
+        Whether the `max_end` parameter is inclusive (less or equal) or not (strictly less).
     min_start_inclusive:
       type: boolean
       default: true
       description: >
-        Whether the min_start parameter is inclusive (greater or equal) or not (strictly greater).
+        Whether the `min_start` parameter is inclusive (greater or equal) or not (strictly greater).
     condition_parameter:
       type: string
       description: >
