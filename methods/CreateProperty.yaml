@@ -366,7 +366,12 @@ post:
                           - label
                           - description
                           - images
-
+                    taxes:
+                      type: array
+                      description: >
+                        Property taxes and fees.
+                      items:
+                        $ref: ../schemas.d/tax_info.yaml
                   required:
                     - name
                     - country

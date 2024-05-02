@@ -1,7 +1,7 @@
 ---
 info:
   title: Myallocator Build-To-US API
-  version: "5.0"
+  version: "5.1"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
   description: |
@@ -162,6 +162,8 @@ paths:
     $ref: methods/CreateProperty.yaml
   /GetSubProperties:
     $ref: methods/GetSubProperties.yaml
+  /UpdateTaxes:
+    $ref: methods/UpdateTaxes.yaml
 
   /ARIFullRefresh:
     $ref: methods/ARIFullRefresh.yaml

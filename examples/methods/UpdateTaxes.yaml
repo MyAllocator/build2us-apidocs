@@ -1,0 +1,123 @@
+---
+rq:
+  GetBookingId:
+    summary: UpdateTaxes
+    value:
+      verb: UpdateTaxes
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      shared_secret : s3cr3ts4uc3
+      ota_cid: ota
+      taxes:
+        update:
+          - amount: 10.567
+            applies_per: booking
+            calculation_basis: rate
+            category: vat
+            code: IVA
+            description: Impuesto
+            id: 4761
+            is_fee: false
+            is_inclusive: true
+            is_per_night: false
+            is_percent: true
+            is_refundable: false
+            name: IVA
+            tax_basis_includes_fees:
+              - fee_id: 4762
+          - amount: 5
+            applies_per: pet
+            category: other_fee
+            description: Pet fee applies for each pet when total number of pets is more than one.
+            id: 4762
+            is_fee: true
+            is_inclusive: false
+            is_per_night: false
+            is_percent: false
+            is_refundable: false
+            name: Pet fee
+            conditions:
+              - condition_parameter: number-of-pets
+                min_start: "2"
+                min_start_inclusive: true
+          - amount: 2.49
+            applies_per: adult
+            calculation_basis: rate
+            category: tourism_tax
+            description: Per person per night when number of nights are greater than 2
+            id: 4763
+            is_fee: false
+            is_inclusive: false
+            is_per_night: true
+            is_percent: false
+            is_refundable: false
+            name: Local tourism tax
+            conditions:
+              - condition_parameter: length-of-stay
+                min_start: "3"
+                min_start_inclusive: true
+          - applies_per: booking
+            category: other_fee
+            external_id: A4672
+            id: 4764
+            is_fee: true
+            is_inclusive: false
+            is_per_night: true
+            is_percent: false
+            is_refundable: false
+            name: Resort Fee
+            amounts:
+              - amount: 10.00
+                conditions:
+                  - condition_parameter: nightly-rate
+                    min_start: "0"
+                    max_end: "121"
+                    min_start_inclusive: true
+                    max_end_inclusive: false
+              - amount: 11.00
+                conditions:
+                  - condition_parameter: nightly-rate
+                    min_start: "121"
+                    max_end: "221"
+                    min_start_inclusive: true
+                    max_end_inclusive: false
+              - amount: 12.00
+                conditions:
+                  - condition_parameter: nightly-rate
+                    min_start: "221"
+                    min_start_inclusive: true
+          - amount: 10.567
+            applies_per: booking
+            calculation_basis: rate
+            category: other_fee
+            description: Weekend service fee
+            id: 4765
+            is_fee: true
+            is_inclusive: false
+            is_per_night: true
+            is_percent: false
+            is_refundable: false
+            name: Weekend fee
+            conditions:
+              - condition_parameter: day-of-week
+                one_of:
+                  - SAT
+                  - SUN
+        delete:
+          - id: 4769
+          - id: 4768
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Invalid credentials sent
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.

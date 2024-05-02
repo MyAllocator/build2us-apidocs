@@ -26,6 +26,8 @@ rq:
         - sunday
         firstname: John
         lastname: Smith
+        taxes:
+          $ref: ../taxes.yaml
         timezone: Asia/Thimphu
         address:
           address_line_1: Main St

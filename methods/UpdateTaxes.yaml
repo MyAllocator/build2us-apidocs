@@ -1,0 +1,58 @@
+---
+post:
+  operationId: update_taxes
+  description: >
+    Synchronize taxes/fees after they have been changed on Cloudbeds.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/UpdateTaxes.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                taxes:
+                  type: object
+                  description: Object that specifies Taxes/Fees to update and/or delete.
+                  properties:
+                    update:
+                      type: array
+                      description: >
+                        List of taxes/fees to update or create
+                      items:
+                        $ref: ../schemas.d/tax_info.yaml
+                    delete:
+                      type: array
+                      description: >
+                        List of taxes/fees to delete
+                      items:
+                        type: object
+                        description: Tax/Fee object to delete. Contains ID only.
+                        properties:
+                          id:
+                            type: integer
+                            minimum: 1
+                            description: "Tax/fee ID in Cloudbeds' system"
+                        required:
+                          - id
+                verb:
+                  type: string
+                  enum:
+                    - UpdateTaxes
+          required:
+            - taxes
+            - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/UpdateTaxes.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: UpdateTaxes
+  summary: UpdateTaxes
+
