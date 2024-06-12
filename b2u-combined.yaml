@@ -2884,8 +2884,32 @@ paths:
                   shared_secret: s3cr3ts4uc3
                   ota_cid: ota
                   room:
-                    $ref: "#/paths/~1CreateProperty/post/requestBody/content/application~1json/exam\
-                      ples/CreateProperty/value/Property/rooms/0"
+                    mya_room_id: 45829
+                    units: 5
+                    beds: 2
+                    dormitory: false
+                    label: Double Room
+                    description: A potentially long description about the room
+                    images:
+                      - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
+                        description: Double bed
+                        sort_order: 1
+                      - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c38.jpg
+                        description: Bath room
+                        sort_order: 2
+                      - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c99.jpg
+                        description: Balcony
+                        sort_order: 3
+                    rateplans:
+                      - mya_rate_id: 0
+                        label_public: Default Rate Plan
+                        label_private: Default Rate Plan
+                      - label_public: Non-refundable
+                        label_private: NR
+                        mya_rate_id: 850
+                      - label_public: With Breakfast
+                        label_private: BR
+                        mya_rate_id: 851
             schema:
               allOf:
                 - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
