@@ -162,6 +162,10 @@ paths:
     $ref: methods/CreateProperty.yaml
   /GetSubProperties:
     $ref: methods/GetSubProperties.yaml
+  /DeleteRoom:
+    $ref: methods/DeleteRoom.yaml
+  /UpdateRoom:
+    $ref: methods/UpdateRoom.yaml
   /UpdateTaxes:
     $ref: methods/UpdateTaxes.yaml
 

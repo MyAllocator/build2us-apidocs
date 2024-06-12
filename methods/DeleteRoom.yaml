@@ -1,0 +1,43 @@
+---
+post:
+  operationId: delete_room
+  description: >
+    Delete room after it has been deleted on myallocator.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/DeleteRoom.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                room:
+                  type: object
+                  description: Room data
+                  properties:
+                    mya_room_id:
+                      type: integer
+                      minimum: 1
+                      description: Room ID on myallocator
+                  required:
+                    - mya_room_id
+                verb:
+                  type: string
+                  enum:
+                    - DeleteRoom
+              required:
+                - room
+                - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/DeleteRoom.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: DeleteRoom
+  summary: DeleteRoom
