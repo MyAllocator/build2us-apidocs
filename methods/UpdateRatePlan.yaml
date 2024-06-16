@@ -1,0 +1,100 @@
+---
+post:
+  operationId: update_rateplan
+  description: >
+    Create of update rate plan after it has been changed on myallocator.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/UpdateRatePlan.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                rateplan:
+                  type: object
+                  properties:
+                    mya_rate_id:
+                      type: integer
+                      minimum: 1
+                      description: Rate plan ID on myallocator.
+                    ota_rate_id:
+                      type: string
+                      description: Channel rate plan ID.
+                    label_private:
+                      type: string
+                      description: The private name of the rate plan, only shown to the property.
+                    label_public:
+                      type: string
+                      description: The public name of the rate plan, that can also be shown to customers.
+                    max_advanced_offset:
+                      type: integer
+                      minimum: 0
+                      description: >
+                        "Last Minute restriction: The number of days before the arrival date guests can book.
+                        The value of 0 resets to no restriction, which is the default. This restriction is
+                        mainly used to boost last-minute reservations."
+                    max_occupancy:
+                      type: integer
+                      minimum: 0
+                      description: Maximum occupancy, `0` if there are no restrictions.
+                    max_stay:
+                      type: integer
+                      minimum: 0
+                      description: >
+                        Default maximum length of stay, `0` for no limit. Needs to be >= `min_stay` (unless it's 0).
+                    min_advanced_offset:
+                      type: integer
+                      minimum: 0
+                      description: >
+                        "Cut off restriction: Specifies the number of days before the arrival date guests
+                        are allowed to book. The value of 0 resets to no restriction, which is the default.
+                        This restriction is mainly used for properties that want to have a lot of advanced
+                        bookings by offering a heavily discounted rate if guests book at least X number of
+                        days in advance."
+                    min_occupancy:
+                      type: integer
+                      minimum: 0
+                      description: Minimum occupancy, `0` if there are no restrictions.
+                    min_stay:
+                      type: integer
+                      minimum: 0
+                      description: >
+                        Default minimum length of stay, `0` for no limit. Needs to be <= `max_stay`.
+                    smart_policy_id:
+                      type: integer
+                      minimum: 1
+                      description: The ID of the Smart Policy assigned to this rate plan.
+                    meal_codes:
+                      type: array
+                      description: List of meal codes that are available for this rate plan.
+                        items:
+                          type: integer
+                          minimum: 1
+                          maximum: 24
+                          description: >
+                            OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                  required:
+                    - mya_rate_id
+                    - label_public
+                    - label_private
+                verb:
+                  type: string
+                  enum:
+                    - UpdateRatePlan
+              required:
+                - rateplan
+                - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/UpdateRatePlan.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: UpdateRatePlan
+  summary: UpdateRatePlan

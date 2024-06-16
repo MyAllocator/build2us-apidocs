@@ -1,0 +1,43 @@
+---
+post:
+  operationId: delete_rateplan
+  description: >
+    Delete rateplan after it has been deleted on myallocator.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/DeleteRatePlan.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                rateplan:
+                  type: object
+                  description: Rate plan to delete
+                  properties:
+                    mya_rateplan_id:
+                      type: integer
+                      minimum: 1
+                      description: Rate plan ID on myallocator
+                  required:
+                    - mya_rateplan_id
+                verb:
+                  type: string
+                  enum:
+                    - DeleteRatePlan
+              required:
+                - rateplan
+                - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/DeleteRatePlan.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: DeleteRatePlan
+  summary: DeleteRatePlan
