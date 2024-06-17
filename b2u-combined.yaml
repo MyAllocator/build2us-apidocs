@@ -2976,6 +2976,226 @@ paths:
                   a"
           description: UpdateTaxes
       summary: UpdateTaxes
+  /DeleteRatePlan:
+    post:
+      operationId: delete_rateplan
+      description: |
+        Delete rateplan after it has been deleted on myallocator.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              DeleteRatePlan:
+                summary: DeleteRatePlan
+                value:
+                  verb: DeleteRatePlan
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  shared_secret: s3cr3ts4uc3
+                  ota_cid: ota
+                  rateplan:
+                    mya_rateplan_id: 115326
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    rateplan:
+                      type: object
+                      description: Rate plan to delete
+                      properties:
+                        mya_rateplan_id:
+                          type: integer
+                          minimum: 1
+                          description: Rate plan ID on myallocator
+                      required:
+                        - mya_rateplan_id
+                    verb:
+                      type: string
+                      enum:
+                        - DeleteRatePlan
+                  required:
+                    - rateplan
+                    - verb
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                Failure:
+                  summary: Invalid credentials sent
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect.
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: DeleteRatePlan
+      summary: DeleteRatePlan
+  /UpdateRatePlan:
+    post:
+      operationId: update_rateplan
+      description: |
+        Create of update rate plan after it has been changed on myallocator.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              UpdateRatePlan:
+                summary: UpdateRateplan
+                value:
+                  verb: UpdateRatePlan
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  shared_secret: s3cr3ts4uc3
+                  ota_cid: ota
+                  rateplan:
+                    mya_rateplan_id: 115629
+                    label_private: NR
+                    label_public: Non-refundable
+                    max_advanced_offset: 90
+                    max_occupancy: 3
+                    max_stay: 14
+                    min_advanced_offset: 0
+                    min_occupancy: 1
+                    min_stay: 1
+                    smart_policy_id: 345673
+                    meal_codes:
+                      - 1
+                      - 19
+                      - 21
+                      - 22
+                    ota_rateplan_id: "3456"
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    rateplan:
+                      type: object
+                      properties:
+                        mya_rateplan_id:
+                          type: integer
+                          minimum: 1
+                          description: Rate plan ID on myallocator.
+                        ota_rateplan_id:
+                          type: string
+                          description: Channel rate plan ID.
+                        label_private:
+                          type: string
+                          description: The private name of the rate plan, only shown to the property.
+                        label_public:
+                          type: string
+                          description: The public name of the rate plan, that can also be shown to
+                            customers.
+                        mya_room_id:
+                          type: integer
+                          minimum: 1
+                          description: Room ID on myallocator this pate plan is applied to
+                        ota_room_id:
+                          type: string
+                        max_advanced_offset:
+                          type: integer
+                          minimum: 0
+                          description: >
+                            "Last Minute restriction: The number of days before
+                            the arrival date guests can book. The value of 0
+                            resets to no restriction, which is the default. This
+                            restriction is mainly used to boost last-minute
+                            reservations."
+                        max_occupancy:
+                          type: integer
+                          minimum: 0
+                          description: Maximum occupancy, `0` if there are no restrictions.
+                        max_stay:
+                          type: integer
+                          minimum: 0
+                          description: >
+                            Default maximum length of stay, `0` for no limit.
+                            Needs to be >= `min_stay` (unless it's 0).
+                        min_advanced_offset:
+                          type: integer
+                          minimum: 0
+                          description: >
+                            "Cut off restriction: Specifies the number of days
+                            before the arrival date guests are allowed to book.
+                            The value of 0 resets to no restriction, which is
+                            the default. This restriction is mainly used for
+                            properties that want to have a lot of advanced
+                            bookings by offering a heavily discounted rate if
+                            guests book at least X number of days in advance."
+                        min_occupancy:
+                          type: integer
+                          minimum: 0
+                          description: Minimum occupancy, `0` if there are no restrictions.
+                        min_stay:
+                          type: integer
+                          minimum: 0
+                          description: >
+                            Default minimum length of stay, `0` for no limit.
+                            Needs to be <= `max_stay`.
+                        smart_policy_id:
+                          type: integer
+                          minimum: 1
+                          description: The ID of the Smart Policy assigned to this rate plan.
+                        meal_codes:
+                          type: array
+                          description: >
+                            List of meal codes that are available for this rate
+                            plan. OTA meal code. `1` - all inclusive, `2` -
+                            american/full board, `3` - bed & breakfast etc.
+                          items:
+                            type: integer
+                            minimum: 1
+                            maximum: 24
+                      required:
+                        - mya_rateplan_id
+                        - label_public
+                        - label_private
+                    verb:
+                      type: string
+                      enum:
+                        - UpdateRatePlan
+                  required:
+                    - rateplan
+                    - verb
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                Failure:
+                  summary: Invalid credentials
+                  value:
+                    success: false
+                    errors:
+                      - id: 1001
+                        msg: The login details you provided are incorrect
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: UpdateRatePlan
+      summary: UpdateRatePlan
   /ARIFullRefresh:
     post:
       operationId: ari_full_refresh

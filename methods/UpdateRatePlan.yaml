@@ -16,11 +16,11 @@ post:
                 rateplan:
                   type: object
                   properties:
-                    mya_rate_id:
+                    mya_rateplan_id:
                       type: integer
                       minimum: 1
                       description: Rate plan ID on myallocator.
-                    ota_rate_id:
+                    ota_rateplan_id:
                       type: string
                       description: Channel rate plan ID.
                     label_private:
@@ -29,6 +29,12 @@ post:
                     label_public:
                       type: string
                       description: The public name of the rate plan, that can also be shown to customers.
+                    mya_room_id:
+                      type: integer
+                      minimum: 1
+                      description: Room ID on myallocator this pate plan is applied to
+                    ota_room_id:
+                      type: string
                     max_advanced_offset:
                       type: integer
                       minimum: 0
@@ -69,15 +75,15 @@ post:
                       description: The ID of the Smart Policy assigned to this rate plan.
                     meal_codes:
                       type: array
-                      description: List of meal codes that are available for this rate plan.
-                        items:
-                          type: integer
-                          minimum: 1
-                          maximum: 24
-                          description: >
-                            OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                      description: >
+                        List of meal codes that are available for this rate plan.
+                        OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                      items:
+                        type: integer
+                        minimum: 1
+                        maximum: 24
                   required:
-                    - mya_rate_id
+                    - mya_rateplan_id
                     - label_public
                     - label_private
                 verb:
