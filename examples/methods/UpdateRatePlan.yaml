@@ -15,13 +15,8 @@ rq:
         mya_rateplan_id: 115629
         label_private: NR
         label_public: Non-refundable
-        max_advanced_offset: 90
         max_occupancy: 3
-        max_stay: 14
-        min_advanced_offset: 0
         min_occupancy: 1
-        min_stay: 1
-        smart_policy_id: 345673
         meal_codes:
           - 1
           - 19
