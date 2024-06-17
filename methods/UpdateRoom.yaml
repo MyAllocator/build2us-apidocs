@@ -44,6 +44,13 @@ post:
                       description: >
                         Longer description of the room which describes a room
                         to a potential guest.
+                    gender:
+                      type: string
+                      description: Gender
+                      enum:
+                        - MA
+                        - FE
+                        - MI
                     images:
                       type: array
                       description: List of property-level images
