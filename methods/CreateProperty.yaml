@@ -291,6 +291,13 @@ post:
                             description: >
                               `true` if it's a dormitory (shared room), `false` for
                               private rooms.
+                          gender:
+                            type: string
+                            description: Required for dormitory
+                            enum:
+                              - MALE
+                              - FEMALE
+                              - MIXED
                           label:
                             type: string
                             description: >

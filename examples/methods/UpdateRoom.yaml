@@ -18,7 +18,7 @@ rq:
         dormitory: false
         label: Double Room
         description: A potentially long description about the room
-        gender: MI
+        gender: MIXED
         images:
         - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
           description: Double bed

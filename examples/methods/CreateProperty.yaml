@@ -64,6 +64,7 @@ rq:
           units: 5
           beds: 2
           dormitory: false
+          gender: MIXED
           label: Double Room
           description: A potentially long description about the room
           images:
