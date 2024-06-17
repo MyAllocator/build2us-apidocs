@@ -2890,6 +2890,7 @@ paths:
                     dormitory: false
                     label: Double Room
                     description: A potentially long description about the room
+                    gender: MI
                     images:
                       - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
                         description: Double bed
@@ -2947,6 +2948,13 @@ paths:
                           description: >
                             Longer description of the room which describes a
                             room to a potential guest.
+                        gender:
+                          type: string
+                          description: Gender
+                          enum:
+                            - MA
+                            - FE
+                            - MI
                         images:
                           type: array
                           description: List of property-level images
