@@ -2980,7 +2980,7 @@ paths:
     post:
       operationId: delete_rateplan
       description: |
-        Delete rateplan after it has been deleted on myallocator.
+        Delete rateplan after it has been deleted on Cloudbeds.
       requestBody:
         content:
           application/json:
@@ -3011,7 +3011,7 @@ paths:
                         mya_rateplan_id:
                           type: integer
                           minimum: 1
-                          description: Rate plan ID on myallocator
+                          description: Cloudbeds rate plan ID.
                       required:
                         - mya_rateplan_id
                     verb:
@@ -3047,7 +3047,7 @@ paths:
     post:
       operationId: update_rateplan
       description: |
-        Create of update rate plan after it has been changed on myallocator.
+        Create of update rate plan after it has been changed on Cloudbeds.
       requestBody:
         content:
           application/json:
@@ -3087,7 +3087,7 @@ paths:
                         mya_rateplan_id:
                           type: integer
                           minimum: 1
-                          description: Rate plan ID on myallocator.
+                          description: Cloudbeds rate plan ID.
                         ota_rateplan_id:
                           type: string
                           description: Channel rate plan ID.

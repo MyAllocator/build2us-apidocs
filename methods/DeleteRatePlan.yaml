@@ -2,7 +2,7 @@
 post:
   operationId: delete_rateplan
   description: >
-    Delete rateplan after it has been deleted on myallocator.
+    Delete rateplan after it has been deleted on Cloudbeds.
   requestBody:
     content:
       application/json:
@@ -20,7 +20,7 @@ post:
                     mya_rateplan_id:
                       type: integer
                       minimum: 1
-                      description: Rate plan ID on myallocator
+                      description: Cloudbeds rate plan ID.
                   required:
                     - mya_rateplan_id
                 verb:
