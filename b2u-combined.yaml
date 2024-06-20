@@ -2808,7 +2808,7 @@ paths:
     post:
       operationId: delete_room
       description: |
-        Delete room after it has been deleted on myallocator.
+        Delete room after it has been deleted on Cloudbeds.
       requestBody:
         content:
           application/json:
@@ -2839,7 +2839,7 @@ paths:
                         mya_room_id:
                           type: integer
                           minimum: 1
-                          description: Room ID on myallocator
+                          description: Cloudbeds room ID.
                       required:
                         - mya_room_id
                     verb:
@@ -2875,7 +2875,7 @@ paths:
     post:
       operationId: update_room
       description: |
-        Create of update room after it has been changed on myallocator.
+        Create of update room after it has been changed on Cloudbeds.
       requestBody:
         content:
           application/json:
@@ -2931,7 +2931,7 @@ paths:
                         mya_room_id:
                           type: integer
                           minimum: 1
-                          description: Room ID on myallocator
+                          description: Cloudbeds room ID
                         units:
                           type: integer
                           minimum: 1
@@ -2997,7 +2997,7 @@ paths:
                                 type: integer
                                 minimum: 0
                                 description: >
-                                  Rate plan ID on myallocator. Every room has a
+                                  Cloudbeds rate plan ID. Every room has a
                                   default rate plan, and the ID (even across
                                   different rooms) is always `0`. Any
                                   non-default rate plans have a higher ID.

@@ -2,7 +2,7 @@
 post:
   operationId: delete_room
   description: >
-    Delete room after it has been deleted on myallocator.
+    Delete room after it has been deleted on Cloudbeds.
   requestBody:
     content:
       application/json:
@@ -20,7 +20,7 @@ post:
                     mya_room_id:
                       type: integer
                       minimum: 1
-                      description: Room ID on myallocator
+                      description: Cloudbeds room ID.
                   required:
                     - mya_room_id
                 verb:
