@@ -1,6 +1,6 @@
 ---
 rq:
-  GetBookingId:
+  UpdateTaxes:
     summary: UpdateTaxes
     value:
       verb: UpdateTaxes
