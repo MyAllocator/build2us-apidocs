@@ -168,6 +168,10 @@ paths:
     $ref: methods/UpdateRoom.yaml
   /UpdateTaxes:
     $ref: methods/UpdateTaxes.yaml
+  /DeleteRatePlan:
+    $ref: methods/DeleteRatePlan.yaml
+  /UpdateRatePlan:
+    $ref: methods/UpdateRatePlan.yaml
 
   /ARIFullRefresh:
     $ref: methods/ARIFullRefresh.yaml

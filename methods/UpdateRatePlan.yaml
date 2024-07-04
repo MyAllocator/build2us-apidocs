@@ -1,0 +1,70 @@
+---
+post:
+  operationId: update_rateplan
+  description: >
+    Create of update rate plan after it has been changed on Cloudbeds.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/UpdateRatePlan.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                rateplan:
+                  type: object
+                  properties:
+                    mya_rateplan_id:
+                      type: integer
+                      minimum: 1
+                      description: Cloudbeds rate plan ID.
+                    ota_rateplan_id:
+                      type: string
+                      description: Channel rate plan ID.
+                    label_private:
+                      type: string
+                      description: The private name of the rate plan, only shown to the property.
+                    label_public:
+                      type: string
+                      description: The public name of the rate plan, that can also be shown to customers.
+                    max_occupancy:
+                      type: integer
+                      minimum: 0
+                      description: Maximum occupancy, `0` means no restrictions.
+                    min_occupancy:
+                      type: integer
+                      minimum: 0
+                      description: Minimum occupancy, `0` means no restrictions.
+                    meal_codes:
+                      type: array
+                      description: >
+                        List of meal codes that are available for this rate plan.
+                        OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                      items:
+                        type: integer
+                        minimum: 1
+                        maximum: 24
+                  required:
+                    - mya_rateplan_id
+                    - label_public
+                    - label_private
+                verb:
+                  type: string
+                  enum:
+                    - UpdateRatePlan
+              required:
+                - rateplan
+                - verb
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/UpdateRatePlan.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: UpdateRatePlan
+  summary: UpdateRatePlan

@@ -1,0 +1,27 @@
+---
+rq:
+  DeleteRatePlan:
+    summary: DeleteRatePlan
+    value:
+      verb: DeleteRatePlan
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      shared_secret: s3cr3ts4uc3
+      ota_cid: ota
+      rateplan:
+        mya_rateplan_id: 115326
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Invalid credentials sent
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect.

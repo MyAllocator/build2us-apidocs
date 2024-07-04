@@ -1,0 +1,37 @@
+---
+rq:
+  UpdateRatePlan:
+    summary: UpdateRateplan
+    value:
+      verb: UpdateRatePlan
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      shared_secret : s3cr3ts4uc3
+      ota_cid: ota
+      rateplan:
+        mya_rateplan_id: 115629
+        label_private: NR
+        label_public: Non-refundable
+        max_occupancy: 3
+        min_occupancy: 1
+        meal_codes:
+          - 1
+          - 19
+          - 21
+          - 22
+        ota_rateplan_id: "3456"
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Invalid credentials
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect
