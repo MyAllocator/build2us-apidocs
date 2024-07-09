@@ -2,7 +2,7 @@
 post:
   operationId: update_rateplan
   description: >
-    Create of update rate plan after it has been changed on Cloudbeds.
+    Create of update rate plan after it has been changed on the Cloudbeds channel manager.
   requestBody:
     content:
       application/json:
@@ -19,7 +19,7 @@ post:
                     mya_rateplan_id:
                       type: integer
                       minimum: 1
-                      description: Cloudbeds rate plan ID.
+                      description: Rate plan ID on the Cloudbeds channel manager.
                     ota_rateplan_id:
                       type: string
                       description: Channel rate plan ID.

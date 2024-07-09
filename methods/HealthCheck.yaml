@@ -15,7 +15,7 @@ post:
             mya_property_id:
               oneOf:
                 - type: integer
-                  description: Property ID on myallocator if already set
+                  description: Property ID on the Cloudbeds channel manager if already set
                   minimum: 1
                 - type: string
                   enum:
@@ -42,7 +42,7 @@ post:
               description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
               type: string
             ota_cid:
-              description: OTA ID as given by myallocator
+              description: OTA ID as given by Cloudbeds
               type: string
               pattern: '^[a-z0-9]+$'
             verb:

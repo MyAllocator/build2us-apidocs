@@ -2,9 +2,9 @@
 post:
   operationId: notify_booking
   description: |-
-    *Note that the endpoint for this API call is on myallocator!*
+    *Note that the endpoint for this API call is on Cloudbeds!*
 
-    With this API call the OTA can notify myallocator to immediately request a
+    With this API call the OTA can notify Cloudbeds to immediately request a
     `GetBookingList` call based on the `ota_property_id`/`ota_property_sub_id`
     and the passed `booking_id`. This should be send on any new booking OR any
     changes such as cancellations to an existing booking.
@@ -13,14 +13,14 @@ post:
     is not required.
 
     Note: at this time we're not only sending a `GetBookingId` call with the
-    `booking_id` given in this API call. Myallocator instead calls
-    `GetBookingList` as usual. However, in the future myallocator might
+    `booking_id` given in this API call. Cloudbeds instead calls
+    `GetBookingList` as usual. However, in the future Cloudbeds might
     specifically request the booking provided with `NotifyBooking`.
   servers:
     - url: https://api.myallocator.com/callback/ota/{ota}/v202203
       variables:
         ota:
-          description: OTA channel ID as assigned by myallocator
+          description: OTA channel ID as assigned by Cloudbeds
           default: replace_with_ota_id
   requestBody:
     content:
@@ -60,7 +60,7 @@ post:
                 type: object
                 description: >
                   No returned error means the notification has been enqueued into
-                  myallocator for import. The response will be an empty
+                  Cloudbeds for import. The response will be an empty
                   JSON object.
               - $ref: ../schemas.d/response_callback_error.yaml
       description: NotifyBooking

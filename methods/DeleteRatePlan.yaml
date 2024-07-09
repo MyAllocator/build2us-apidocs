@@ -20,7 +20,7 @@ post:
                     mya_rateplan_id:
                       type: integer
                       minimum: 1
-                      description: Cloudbeds rate plan ID.
+                      description: Rate plan ID on the Cloudbeds channel manager.
                   required:
                     - mya_rateplan_id
                 verb:

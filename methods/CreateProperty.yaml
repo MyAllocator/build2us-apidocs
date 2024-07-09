@@ -3,9 +3,9 @@ post:
   operationId: create_property
   description: |-
     Can be used to create a new property (including rooms) on your OTA based on
-    the details that we have in myallocator (eg. property name, address, images,
+    the details that we have in Cloudbeds (eg. property name, address, images,
     room details, etc). This call needs to be activated explicitly from our side
-    before you can use it. Please talk to your myallocator contact before
+    before you can use it. Please talk to your Cloudbeds contact before
     implementing this call!
 
     Rate plan information was added at a later date and is only transmitted for
@@ -18,7 +18,7 @@ post:
     basic styling.
 
     We cannot guarantee that all of the following request fields will always be
-    filled in, as many are optional within myallocator.
+    filled in, as many are optional within Cloudbeds.
   requestBody:
     content:
       application/json:
@@ -30,7 +30,7 @@ post:
             - type: object
               properties:
                 mya_property_id:
-                  description: Property ID on myallocator
+                  description: Property ID on the Cloudbeds channel manager
                   type: integer
                   minimum: 1
                 guid:
@@ -41,7 +41,7 @@ post:
                   description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
                   type: string
                 ota_cid:
-                  description: OTA ID as given by myallocator
+                  description: OTA ID as given by Cloudbeds
                   type: string
                   pattern: '^[a-z0-9]+$'
                 verb:
@@ -277,7 +277,7 @@ post:
                           mya_room_id:
                             type: integer
                             minimum: 1
-                            description: Room ID on myallocator
+                            description: Room ID on the Cloudbeds channel manager
                           units:
                             type: integer
                             minimum: 1
@@ -342,7 +342,7 @@ post:
                                   type: integer
                                   minimum: 0
                                   description: >
-                                    Rate plan ID on myallocator. Every room has a
+                                    Rate plan ID on the Cloudbeds channel manager. Every room has a
                                     default rate plan, and the ID (even across
                                     different rooms) is always `0`. Any non-default
                                     rate plans have a higher ID.
@@ -441,8 +441,8 @@ post:
                   room_mappings:
                     type: array
                     description: >
-                      Returning this field will help myallocator to
-                      automatically map the OTA room IDs to myallocator's room
+                      Returning this field will help Cloudbeds to
+                      automatically map the OTA room IDs to the Cloudbeds channel manager room
                       IDs. This is required to automatically send a full
                       refresh after successful property creation. We strongly
                       recommend that you return this field. If you do not
@@ -457,14 +457,14 @@ post:
                         mya_room_id:
                           type: integer
                           minimum: 1
-                          description: Myallocator room ID
+                          description: Room ID on the Cloudbeds channel manager
                         ota_rate_id:
                           type: string
                           description: New OTA rate plan ID
                         mya_rate_id:
                           type: integer
                           minimum: 0
-                          description: Myallocator rate plan ID
+                          description: Rate plan ID on the Cloudbeds channel manager
                       required:
                         - ota_room_id
                         - mya_room_id

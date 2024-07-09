@@ -2,17 +2,17 @@
 post:
   operationId: room_info
   description: |-
-    *Note that the endpoint for this API call is on myallocator!*
+    *Note that the endpoint for this API call is on Cloudbeds!*
 
-    Returns the rooms configured on myallocator. It's only necessary for deep
+    Returns the rooms configured on Cloudbeds. It's only necessary for deep
     integrations or situations where the OTA plans to automatically/create
-    destroy rooms using myallocator configuration. In a normal integration this
+    destroy rooms using Cloudbeds' configuration. In a normal integration this
     isn't very common.
   servers:
     - url: https://api.myallocator.com/callback/ota/{ota}/v202203
       variables:
         ota:
-          description: OTA channel ID as assigned by myallocator
+          description: OTA channel ID as assigned by Cloudbeds
           default: replace_with_ota_id
   requestBody:
     content:
@@ -23,7 +23,7 @@ post:
           type: object
           properties:
             mya_property_id:
-              description: Property ID on myallocator
+              description: Property ID on the Cloudbeds channel manager
               type: integer
               minimum: 1
             shared_secret:
@@ -47,7 +47,7 @@ post:
                   RoomInfo:
                     type: array
                     description: >
-                      List of rooms configured on myallocator.
+                      List of rooms configured on Cloudbeds.
                     items:
                       $ref: ../schemas.d/room_info.yaml
                 required:

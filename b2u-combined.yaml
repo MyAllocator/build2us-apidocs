@@ -1,5 +1,5 @@
 info:
-  title: Myallocator Build-To-US API
+  title: Cloudbeds OTA Build-To-Us API
   version: "5.1"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
@@ -9,16 +9,9 @@ info:
 
     This API allows an OTA ("Online Travel Agency", also called "channel",
 
-    or "travel booking website") to integrate with the myallocator channel
+    or "travel booking website") to integrate with the Cloudbeds channel
 
     manager by implementing an API receiver in their environment.
-
-
-    If you are a property management system (PMS), this is not the API you are
-
-    looking for. Instead please review our
-
-    [PMS API documentation](http://apidocs.myallocator.com/) instead.
 
 
     # Getting Started
@@ -40,7 +33,7 @@ info:
 
     Request form, which will help you create a test account and define your
 
-    channel on myallocator.
+    channel on Cloudbeds.
 
 
     Upon completion of the API Credentialing, you will then have access to your
@@ -97,11 +90,11 @@ info:
 
     For a new property to connect to the OTA they will go to the channel setup
 
-    on myallocator, and either enter their OTA credentials, or go through some
+    on Cloudbeds, and either enter their OTA credentials, or go through some
 
     activation process, where the OTA is automatically emailed to enable the
 
-    property and a support team member of myallocator sets the credentials.
+    property and a support team member of Cloudbeds sets the credentials.
 
 
     The property owner then maps the rooms and rate plans to complete the
@@ -109,22 +102,22 @@ info:
     connection.
 
 
-    After a property has been setup, myallocator will push a full refresh to the
+    After a property has been setup, Cloudbeds will push a full refresh to the
 
-    OTA. This means myallocator sends all availability, rates and restrictions
+    OTA. This means Cloudbeds sends all availability, rates and restrictions
 
     for the next 2+ years (depending on how many years of ARI data the OTA
 
     supports) for all rooms and rate plans. After this initial sync has been
 
-    completed myallocator will update the OTA whenever there is a change to
+    completed Cloudbeds will update the OTA whenever there is a change to
 
     ARI, eg. because a booking has been imported or pricing has been altered.
 
 
-    Myallocator will poll for bookings in regular configurable intervals.
+    Cloudbeds will poll for bookings in regular configurable intervals.
 
-    Bookings can and should be sent via a callback to myallocator to speed up
+    Bookings can and should be sent via a callback to Cloudbeds to speed up
 
     the import.
 
@@ -154,7 +147,7 @@ info:
     # Rate Plans
 
 
-    On myallocator rooms and rate plans have a one-to-many relationship. This
+    On the Cloudbeds channel manager rooms and rate plans have a one-to-many relationship. This
 
     means that a room has one or more rate plans, and each rate plan has
 
@@ -179,7 +172,7 @@ info:
 
     * OTA: Online travel agency (ex: booking.com, or competitor)
 
-    * cid: Channel ID - a two to four character code used by myallocator uniquely identify a OTA.
+    * cid: Channel ID - a two to four character code used by Cloudbeds uniquely identify a OTA.
 
     * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.f
 
@@ -187,7 +180,7 @@ info:
     ## Requests
 
 
-    Myallocator will send requests to the OTA with content-type
+    Cloudbeds will send requests to the OTA with content-type
 
     `application/json`, with the payload being in the body of the request. Gzip
 
@@ -196,7 +189,7 @@ info:
     (SSL encryption) is required for the OTA's endpoint.
 
 
-    HTTP response codes from myallocator should always be 200. They have the
+    HTTP response codes from Cloudbeds should always be 200. They have the
 
     content-type `application/json`.
 
@@ -230,7 +223,7 @@ info:
     * GetSubProperties
 openapi: 3.0.0
 servers:
-  - url: https://api.your-ota.com/myallocator
+  - url: https://api.your-ota.com/cloudbeds
     description: OTA endpoint
 paths:
   /HealthCheck:
@@ -260,7 +253,7 @@ paths:
                 mya_property_id:
                   oneOf:
                     - type: integer
-                      description: Property ID on myallocator if already set
+                      description: Property ID on the Cloudbeds channel manager if already set
                       minimum: 1
                     - type: string
                       enum:
@@ -292,7 +285,7 @@ paths:
                     requests. Not to be shared with customers.
                   type: string
                 ota_cid:
-                  description: OTA ID as given by myallocator
+                  description: OTA ID as given by Cloudbeds
                   type: string
                   pattern: ^[a-z0-9]+$
                 verb:
@@ -373,7 +366,7 @@ paths:
         return with error ID `1002`.
 
 
-        On myallocator the hotel will go to the OTA setup by selecting the OTA.
+        On Cloudbeds the hotel will go to the OTA setup by selecting the OTA.
 
         There the user will be prompted to put in the credentials
 
@@ -444,7 +437,7 @@ paths:
               type: object
               properties:
                 mya_property_id:
-                  description: Property ID on myallocator
+                  description: Property ID on the Cloudbeds channel manager
                   type: integer
                   minimum: 1
                 ota_property_id:
@@ -468,7 +461,7 @@ paths:
                     requests. Not to be shared with customers.
                   type: string
                 ota_cid:
-                  description: OTA ID as given by myallocator
+                  description: OTA ID as given by Cloudbeds
                   type: string
                   pattern: ^[a-z0-9]+$
                 verb:
@@ -479,18 +472,18 @@ paths:
                   type: array
                   description: >
                     This list of rooms will only be returned if enabled for the
-                    OTA by myallocator. By default this is not present. It's
-                    only necessary for deep integrations or situations where the
-                    OTA plans to automatically/create destroy rooms using
-                    myallocator configuration. In a normal integration this
-                    isn't very usual.
+                    OTA by Cloudbeds. By default this is not present. It's only
+                    necessary for deep integrations or situations where the OTA
+                    plans to automatically/create destroy rooms using the
+                    Cloudbeds configuration. In a normal integration this isn't
+                    very usual.
                   items:
                     type: object
                     properties:
                       mya_room_id:
                         type: integer
                         minimum: 1
-                        description: Room ID on myallocator
+                        description: Room ID on the Cloudbeds channel manager
                       units:
                         type: integer
                         minimum: 1
@@ -606,7 +599,7 @@ paths:
                 - type: object
                   properties:
                     mya_property_id:
-                      description: Property ID on myallocator
+                      description: Property ID on the Cloudbeds channel manager
                       type: integer
                       minimum: 1
                     ota_property_id:
@@ -632,7 +625,7 @@ paths:
                         requests. Not to be shared with customers.
                       type: string
                     ota_cid:
-                      description: OTA ID as given by myallocator
+                      description: OTA ID as given by Cloudbeds
                       type: string
                       pattern: ^[a-z0-9]+$
                   required:
@@ -653,10 +646,10 @@ paths:
                       type: array
                       description: >
                         This list of rooms will only be returned if enabled for
-                        the OTA by myallocator. By default this is not present.
+                        the OTA by Cloudbeds. By default this is not present.
                         It's only necessary for deep integrations or situations
                         where the OTA plans to automatically/create destroy
-                        rooms using myallocator configuration. In a normal
+                        rooms using Cloudbeds configuration. In a normal
                         integration this isn't very usual.
                       items:
                         $ref: "#/paths/~1SetupProperty/post/requestBody/content/application~1json/schem\
@@ -762,7 +755,7 @@ paths:
     post:
       operationId: get_rate_plans
       description: |-
-        Myallocator uses this call to retrieve a list of rate plans, which are
+        Cloudbeds uses this call to retrieve a list of rate plans, which are
         either specific to each room, or global for all rooms.
       requestBody:
         content:
@@ -886,7 +879,7 @@ paths:
         per date range.
 
 
-        Note that myallocator only supports availability on the room level, so for
+        Note that Cloudbeds only supports availability on the room level, so for
 
         the same `ota_room_id` and the same date range the availability will always
 
@@ -1156,7 +1149,7 @@ paths:
         be used as a fallback every 30 minutes.
 
 
-        The OTA can also send myallocator a `NotifyBooking` callback to inform about
+        The OTA can also send Cloudbeds a `NotifyBooking` callback to inform about
 
         new bookings available to be polled.
       requestBody:
@@ -1321,9 +1314,11 @@ paths:
         Guest's credit/debit card details can be provided with the `Payments` field.
 
 
-        Implementation suggestions: when testing make sure the myallocator test
+        Implementation suggestions: when testing make sure the Cloudbeds test
 
-        property has "download bookings" enabled or the booking will be saved in a
+        property has "download bookings" enabled on the Cloudbeds channel manager or
+
+        the booking will be saved in a
 
         queue and not visible during testing. To enable login and go to MANAGE /
 
@@ -1579,7 +1574,7 @@ paths:
     post:
       operationId: cancel_booking
       description: >-
-        Allows a property to cancel a booking on your OTA from the myallocator
+        Allows a property to cancel a booking on your OTA from the Cloudbeds
         side.
 
 
@@ -1668,11 +1663,11 @@ paths:
         Can be used to create a new property (including rooms) on your OTA based
         on
 
-        the details that we have in myallocator (eg. property name, address, images,
+        the details that we have in Cloudbeds (eg. property name, address, images,
 
         room details, etc). This call needs to be activated explicitly from our side
 
-        before you can use it. Please talk to your myallocator contact before
+        before you can use it. Please talk to your Cloudbeds contact before
 
         implementing this call!
 
@@ -1695,7 +1690,7 @@ paths:
 
         We cannot guarantee that all of the following request fields will always be
 
-        filled in, as many are optional within myallocator.
+        filled in, as many are optional within Cloudbeds.
       requestBody:
         content:
           application/json:
@@ -1930,7 +1925,7 @@ paths:
                 - type: object
                   properties:
                     mya_property_id:
-                      description: Property ID on myallocator
+                      description: Property ID on the Cloudbeds channel manager
                       type: integer
                       minimum: 1
                     guid:
@@ -1942,7 +1937,7 @@ paths:
                         requests. Not to be shared with customers.
                       type: string
                     ota_cid:
-                      description: OTA ID as given by myallocator
+                      description: OTA ID as given by Cloudbeds
                       type: string
                       pattern: ^[a-z0-9]+$
                     verb:
@@ -2198,7 +2193,7 @@ paths:
                               mya_room_id:
                                 type: integer
                                 minimum: 1
-                                description: Room ID on myallocator
+                                description: Room ID on the Cloudbeds channel manager
                               units:
                                 type: integer
                                 minimum: 1
@@ -2265,11 +2260,11 @@ paths:
                                       type: integer
                                       minimum: 0
                                       description: >
-                                        Rate plan ID on myallocator. Every room
-                                        has a default rate plan, and the ID
-                                        (even across different rooms) is always
-                                        `0`. Any non-default rate plans have a
-                                        higher ID.
+                                        Rate plan ID on the Cloudbeds channel
+                                        manager. Every room has a default rate
+                                        plan, and the ID (even across different
+                                        rooms) is always `0`. Any non-default
+                                        rate plans have a higher ID.
                                     label_public:
                                       type: string
                                       nullable: true
@@ -2625,13 +2620,14 @@ paths:
                       room_mappings:
                         type: array
                         description: >
-                          Returning this field will help myallocator to
-                          automatically map the OTA room IDs to myallocator's
-                          room IDs. This is required to automatically send a
-                          full refresh after successful property creation. We
-                          strongly recommend that you return this field. If you
-                          do not support rate plans you do not need to return
-                          `ota_rate_id` and `mya_rate_id`.
+                          Returning this field will help Cloudbeds to
+                          automatically map the OTA room IDs to the Cloudbeds
+                          channel manager room IDs. This is required to
+                          automatically send a full refresh after successful
+                          property creation. We strongly recommend that you
+                          return this field. If you do not support rate plans
+                          you do not need to return `ota_rate_id` and
+                          `mya_rate_id`.
                         items:
                           type: object
                           properties:
@@ -2641,14 +2637,14 @@ paths:
                             mya_room_id:
                               type: integer
                               minimum: 1
-                              description: Myallocator room ID
+                              description: Room ID on the Cloudbeds channel manager
                             ota_rate_id:
                               type: string
                               description: New OTA rate plan ID
                             mya_rate_id:
                               type: integer
                               minimum: 0
-                              description: Myallocator rate plan ID
+                              description: Rate plan ID on the Cloudbeds channel manager
                           required:
                             - ota_room_id
                             - mya_room_id
@@ -2694,9 +2690,9 @@ paths:
 
         property's name. This method will allow the property to map their
 
-        myallocator property with the OTA's `ota_property_sub_id` when setting up
+        Cloudbeds property with the OTA's `ota_property_sub_id` when setting up
 
-        the property-OTA association on myallocator.
+        the property-OTA association on Cloudbeds.
       requestBody:
         content:
           application/json:
@@ -2716,7 +2712,7 @@ paths:
               type: object
               properties:
                 mya_property_id:
-                  description: Property ID on myallocator
+                  description: Property ID on the Cloudbeds channel manager
                   type: integer
                   minimum: 1
                 ota_property_id:
@@ -2740,7 +2736,7 @@ paths:
                     requests. Not to be shared with customers.
                   type: string
                 ota_cid:
-                  description: OTA ID as given by myallocator
+                  description: OTA ID as given by Cloudbeds
                   type: string
                   pattern: ^[a-z0-9]+$
                 verb:
@@ -2839,7 +2835,7 @@ paths:
                         mya_room_id:
                           type: integer
                           minimum: 1
-                          description: Cloudbeds room ID.
+                          description: Room ID on the Cloudbeds channel manager.
                       required:
                         - mya_room_id
                     verb:
@@ -2874,8 +2870,9 @@ paths:
   /UpdateRoom:
     post:
       operationId: update_room
-      description: |
-        Create of update room after it has been changed on Cloudbeds.
+      description: >
+        Create of update room after it has been changed on the Cloudbeds channel
+        manager.
       requestBody:
         content:
           application/json:
@@ -2931,7 +2928,7 @@ paths:
                         mya_room_id:
                           type: integer
                           minimum: 1
-                          description: Cloudbeds room ID
+                          description: Room ID on the Cloudbeds channel manager
                         units:
                           type: integer
                           minimum: 1
@@ -2997,10 +2994,10 @@ paths:
                                 type: integer
                                 minimum: 0
                                 description: >
-                                  Cloudbeds rate plan ID. Every room has a
-                                  default rate plan, and the ID (even across
-                                  different rooms) is always `0`. Any
-                                  non-default rate plans have a higher ID.
+                                  Rate plan ID on the Cloudbeds channel manager.
+                                  Every room has a default rate plan, and the ID
+                                  (even across different rooms) is always `0`.
+                                  Any non-default rate plans have a higher ID.
                               label_public:
                                 type: string
                                 nullable: true
@@ -3061,8 +3058,9 @@ paths:
   /UpdateTaxes:
     post:
       operationId: update_taxes
-      description: |
-        Synchronize taxes/fees after they have been changed on Cloudbeds.
+      description: >
+        Synchronize taxes/fees after they have been changed on the Cloudbeds
+        channel manager.
       requestBody:
         content:
           application/json:
@@ -3206,7 +3204,7 @@ paths:
                               id:
                                 type: integer
                                 minimum: 1
-                                description: Tax/fee ID in Cloudbeds' system
+                                description: Tax/fee ID on the Cloudbeds channel manager
                             required:
                               - id
                     verb:
@@ -3273,7 +3271,7 @@ paths:
                         mya_rateplan_id:
                           type: integer
                           minimum: 1
-                          description: Cloudbeds rate plan ID.
+                          description: Rate plan ID on the Cloudbeds channel manager.
                       required:
                         - mya_rateplan_id
                     verb:
@@ -3308,8 +3306,9 @@ paths:
   /UpdateRatePlan:
     post:
       operationId: update_rateplan
-      description: |
-        Create of update rate plan after it has been changed on Cloudbeds.
+      description: >
+        Create of update rate plan after it has been changed on the Cloudbeds
+        channel manager.
       requestBody:
         content:
           application/json:
@@ -3349,7 +3348,7 @@ paths:
                         mya_rateplan_id:
                           type: integer
                           minimum: 1
-                          description: Cloudbeds rate plan ID.
+                          description: Rate plan ID on the Cloudbeds channel manager.
                         ota_rateplan_id:
                           type: string
                           description: Channel rate plan ID.
@@ -3415,16 +3414,16 @@ paths:
     post:
       operationId: ari_full_refresh
       description: >
-        *Note that the endpoint for this API call is on myallocator!*
+        *Note that the endpoint for this API call is on Cloudbeds!*
 
-        This is for technical support on the remote OTA to enqueue a full refresh of the property. You may use either `ota_property_id` (it may be resolved into a number of myallocator IDs) or `mya_property_id`.
+        This is for technical support on the remote OTA to enqueue a full refresh of the property. You may use either `ota_property_id` (it may be resolved into a number of Cloudbeds channel manager IDs) or `mya_property_id`.
 
         Note that full refreshes are heavy operations, so only call this when absolutely neccessary. Under no circumstances use this callback on a scheduled basis.
       servers:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
           variables:
             ota:
-              description: OTA channel ID as assigned by myallocator
+              description: OTA channel ID as assigned by Cloudbeds
               default: replace_with_ota_id
       requestBody:
         content:
@@ -3439,7 +3438,7 @@ paths:
               type: object
               properties:
                 mya_property_id:
-                  description: Property ID on the myallocator
+                  description: Property ID on the Cloudbeds channel manager
                   type: integer
                   minimum: 1
                 ota_property_id:
@@ -3484,7 +3483,7 @@ paths:
                         minimum: 1
                         description: >
                           If present indicates that at least one full refresh
-                          was enqueued into myallocator to be sent to the OTA.
+                          was enqueued into Cloudbeds to be sent to the OTA.
                   - type: object
                     title: Error Response
                     properties:
@@ -3508,14 +3507,14 @@ paths:
     post:
       operationId: booking_create
       description: >-
-        *Note that the endpoint for this API call is on myallocator!*
+        *Note that the endpoint for this API call is on Cloudbeds!*
 
 
         Use this callback to send us new bookings. Using this callback ensures that
 
         there is no delay between the creation of the booking and import on
 
-        myallocator. Therefore it's strongly recommend to implement this callback.
+        Cloudbeds. Therefore it's strongly recommend to implement this callback.
 
         Even when implemented it's still neccessary to also implement the
 
@@ -3523,7 +3522,7 @@ paths:
 
         the `CreateBooking` notification fails, when a reimport due to processing
 
-        issues on myallocator is neccessary, or when a specific booking needs to be
+        issues on Cloudbeds is neccessary, or when a specific booking needs to be
 
         debugged.
 
@@ -3553,7 +3552,7 @@ paths:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
           variables:
             ota:
-              description: OTA channel ID as assigned by myallocator
+              description: OTA channel ID as assigned by Cloudbeds
               default: replace_with_ota_id
       requestBody:
         content:
@@ -3611,7 +3610,7 @@ paths:
               type: object
               properties:
                 mya_property_id:
-                  description: Property ID on myallocator
+                  description: Property ID on the Cloudbeds channel manager
                   type: integer
                   minimum: 1
                 ota_property_id:
@@ -3659,7 +3658,7 @@ paths:
                     type: object
                     description: >
                       No returned error means the booking has been enqueued into
-                      myallocator for import. The response will be an empty JSON
+                      Cloudbeds for import. The response will be an empty JSON
                       object.
                   - $ref: "#/paths/~1ARIFullRefresh/post/responses/200/content/application~1json/sc\
                       hema/oneOf/1"
@@ -3671,10 +3670,10 @@ paths:
     post:
       operationId: notify_booking
       description: >-
-        *Note that the endpoint for this API call is on myallocator!*
+        *Note that the endpoint for this API call is on Cloudbeds!*
 
 
-        With this API call the OTA can notify myallocator to immediately request a
+        With this API call the OTA can notify Cloudbeds to immediately request a
 
         `GetBookingList` call based on the `ota_property_id`/`ota_property_sub_id`
 
@@ -3690,16 +3689,16 @@ paths:
 
         Note: at this time we're not only sending a `GetBookingId` call with the
 
-        `booking_id` given in this API call. Myallocator instead calls
+        `booking_id` given in this API call. Cloudbeds instead calls
 
-        `GetBookingList` as usual. However, in the future myallocator might
+        `GetBookingList` as usual. However, in the future Cloudbeds might
 
         specifically request the booking provided with `NotifyBooking`.
       servers:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
           variables:
             ota:
-              description: OTA channel ID as assigned by myallocator
+              description: OTA channel ID as assigned by Cloudbeds
               default: replace_with_ota_id
       requestBody:
         content:
@@ -3752,7 +3751,7 @@ paths:
                     type: object
                     description: >
                       No returned error means the notification has been enqueued
-                      into myallocator for import. The response will be an empty
+                      into Cloudbeds for import. The response will be an empty
                       JSON object.
                   - $ref: "#/paths/~1ARIFullRefresh/post/responses/200/content/application~1json/sc\
                       hema/oneOf/1"
@@ -3764,21 +3763,21 @@ paths:
     post:
       operationId: room_info
       description: >-
-        *Note that the endpoint for this API call is on myallocator!*
+        *Note that the endpoint for this API call is on Cloudbeds!*
 
 
-        Returns the rooms configured on myallocator. It's only necessary for deep
+        Returns the rooms configured on Cloudbeds. It's only necessary for deep
 
         integrations or situations where the OTA plans to automatically/create
 
-        destroy rooms using myallocator configuration. In a normal integration this
+        destroy rooms using Cloudbeds' configuration. In a normal integration this
 
         isn't very common.
       servers:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
           variables:
             ota:
-              description: OTA channel ID as assigned by myallocator
+              description: OTA channel ID as assigned by Cloudbeds
               default: replace_with_ota_id
       requestBody:
         content:
@@ -3793,7 +3792,7 @@ paths:
               type: object
               properties:
                 mya_property_id:
-                  description: Property ID on myallocator
+                  description: Property ID on the Cloudbeds channel manager
                   type: integer
                   minimum: 1
                 shared_secret:
@@ -3838,7 +3837,7 @@ paths:
                       RoomInfo:
                         type: array
                         description: |
-                          List of rooms configured on myallocator.
+                          List of rooms configured on Cloudbeds.
                         items:
                           $ref: "#/paths/~1SetupProperty/post/requestBody/content/application~1json/schem\
                             a/properties/RoomInfo/items"

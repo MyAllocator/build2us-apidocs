@@ -4,7 +4,7 @@ properties:
   mya_room_id:
     type: integer
     minimum: 1
-    description: Room ID on myallocator
+    description: Room ID on the Cloudbeds channel manager
   units:
     type: integer
     minimum: 1

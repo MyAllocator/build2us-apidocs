@@ -2,7 +2,7 @@
 post:
   operationId: update_room
   description: >
-    Create of update room after it has been changed on Cloudbeds.
+    Create of update room after it has been changed on the Cloudbeds channel manager.
   requestBody:
     content:
       application/json:
@@ -19,7 +19,7 @@ post:
                     mya_room_id:
                       type: integer
                       minimum: 1
-                      description: Cloudbeds room ID
+                      description: Room ID on the Cloudbeds channel manager
                     units:
                       type: integer
                       minimum: 1
@@ -83,7 +83,7 @@ post:
                             type: integer
                             minimum: 0
                             description: >
-                              Cloudbeds rate plan ID. Every room has a
+                              Rate plan ID on the Cloudbeds channel manager. Every room has a
                               default rate plan, and the ID (even across
                               different rooms) is always `0`. Any non-default
                               rate plans have a higher ID.

@@ -26,8 +26,9 @@ post:
 
     Guest's credit/debit card details can be provided with the `Payments` field.
 
-    Implementation suggestions: when testing make sure the myallocator test
-    property has "download bookings" enabled or the booking will be saved in a
+    Implementation suggestions: when testing make sure the Cloudbeds test
+    property has "download bookings" enabled on the Cloudbeds channel manager or
+    the booking will be saved in a
     queue and not visible during testing. To enable login and go to MANAGE /
     General Details / Download new bookings from channels. Default setting
     is "Off". Once enabled please allow 30 minutes for the backend to start

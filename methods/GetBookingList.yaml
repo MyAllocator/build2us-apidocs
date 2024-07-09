@@ -10,7 +10,7 @@ post:
     5 minutes. If `CreateBooking` is supported then the `GetBookingList` will
     be used as a fallback every 30 minutes.
 
-    The OTA can also send myallocator a `NotifyBooking` callback to inform about
+    The OTA can also send Cloudbeds a `NotifyBooking` callback to inform about
     new bookings available to be polled.
   requestBody:
     content:

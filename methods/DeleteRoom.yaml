@@ -20,7 +20,7 @@ post:
                     mya_room_id:
                       type: integer
                       minimum: 1
-                      description: Cloudbeds room ID.
+                      description: Room ID on the Cloudbeds channel manager.
                   required:
                     - mya_room_id
                 verb:

@@ -2,15 +2,15 @@
 post:
   operationId: booking_create
   description: |-
-    *Note that the endpoint for this API call is on myallocator!*
+    *Note that the endpoint for this API call is on Cloudbeds!*
 
     Use this callback to send us new bookings. Using this callback ensures that
     there is no delay between the creation of the booking and import on
-    myallocator. Therefore it's strongly recommend to implement this callback.
+    Cloudbeds. Therefore it's strongly recommend to implement this callback.
     Even when implemented it's still neccessary to also implement the
     `GetBookingList` and `GetBookingId` calls, which act as fallbacks if
     the `CreateBooking` notification fails, when a reimport due to processing
-    issues on myallocator is neccessary, or when a specific booking needs to be
+    issues on Cloudbeds is neccessary, or when a specific booking needs to be
     debugged.
 
     The booking format is identical to what is being returned in the
@@ -29,7 +29,7 @@ post:
     - url: https://api.myallocator.com/callback/ota/{ota}/v202203
       variables:
         ota:
-          description: OTA channel ID as assigned by myallocator
+          description: OTA channel ID as assigned by Cloudbeds
           default: replace_with_ota_id
   requestBody:
     content:
@@ -40,7 +40,7 @@ post:
           type: object
           properties:
             mya_property_id:
-              description: Property ID on myallocator
+              description: Property ID on the Cloudbeds channel manager
               type: integer
               minimum: 1
             ota_property_id:
@@ -79,7 +79,7 @@ post:
                 type: object
                 description: >
                   No returned error means the booking has been enqueued into
-                  myallocator for import. The response will be an empty
+                  Cloudbeds for import. The response will be an empty
                   JSON object.
               - $ref: ../schemas.d/response_callback_error.yaml
       description: BookingCreate

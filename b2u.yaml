@@ -1,6 +1,6 @@
 ---
 info:
-  title: Myallocator Build-To-US API
+  title: Cloudbeds OTA Build-To-Us API
   version: "5.1"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
@@ -8,12 +8,8 @@ info:
     # Introduction
 
     This API allows an OTA ("Online Travel Agency", also called "channel",
-    or "travel booking website") to integrate with the myallocator channel
+    or "travel booking website") to integrate with the Cloudbeds channel
     manager by implementing an API receiver in their environment.
-
-    If you are a property management system (PMS), this is not the API you are
-    looking for. Instead please review our
-    [PMS API documentation](http://apidocs.myallocator.com/) instead.
 
     # Getting Started
 
@@ -26,7 +22,7 @@ info:
 
     If approved, you will be provided with a 72-hour link to our API Credential
     Request form, which will help you create a test account and define your
-    channel on myallocator.
+    channel on Cloudbeds.
 
     Upon completion of the API Credentialing, you will then have access to your
     Test Account login information, channel ID (`cid`), and the `shared_secret`
@@ -59,22 +55,22 @@ info:
     ## Flow
 
     For a new property to connect to the OTA they will go to the channel setup
-    on myallocator, and either enter their OTA credentials, or go through some
+    on Cloudbeds, and either enter their OTA credentials, or go through some
     activation process, where the OTA is automatically emailed to enable the
-    property and a support team member of myallocator sets the credentials.
+    property and a support team member of Cloudbeds sets the credentials.
 
     The property owner then maps the rooms and rate plans to complete the
     connection.
 
-    After a property has been setup, myallocator will push a full refresh to the
-    OTA. This means myallocator sends all availability, rates and restrictions
+    After a property has been setup, Cloudbeds will push a full refresh to the
+    OTA. This means Cloudbeds sends all availability, rates and restrictions
     for the next 2+ years (depending on how many years of ARI data the OTA
     supports) for all rooms and rate plans. After this initial sync has been
-    completed myallocator will update the OTA whenever there is a change to
+    completed Cloudbeds will update the OTA whenever there is a change to
     ARI, eg. because a booking has been imported or pricing has been altered.
 
-    Myallocator will poll for bookings in regular configurable intervals.
-    Bookings can and should be sent via a callback to myallocator to speed up
+    Cloudbeds will poll for bookings in regular configurable intervals.
+    Bookings can and should be sent via a callback to Cloudbeds to speed up
     the import.
 
     # Booking Format
@@ -92,7 +88,7 @@ info:
 
     # Rate Plans
 
-    On myallocator rooms and rate plans have a one-to-many relationship. This
+    On the Cloudbeds channel manager rooms and rate plans have a one-to-many relationship. This
     means that a room has one or more rate plans, and each rate plan has
     exactly one room. For the `ARIUpdate` calls we can send different
     `ota_rate_id` values for the same `ota_room_id`. Rates and restrictions are
@@ -106,17 +102,17 @@ info:
     ## Terminology
 
     * OTA: Online travel agency (ex: booking.com, or competitor)
-    * cid: Channel ID - a two to four character code used by myallocator uniquely identify a OTA.
+    * cid: Channel ID - a two to four character code used by Cloudbeds uniquely identify a OTA.
     * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.f
 
     ## Requests
 
-    Myallocator will send requests to the OTA with content-type
+    Cloudbeds will send requests to the OTA with content-type
     `application/json`, with the payload being in the body of the request. Gzip
     compression and keep-alives will be used if supported. HTTPS
     (SSL encryption) is required for the OTA's endpoint.
 
-    HTTP response codes from myallocator should always be 200. They have the
+    HTTP response codes from Cloudbeds should always be 200. They have the
     content-type `application/json`.
 
     ## Required API calls
@@ -138,7 +134,7 @@ info:
 
 openapi: 3.0.0
 servers:
-  - url: https://api.your-ota.com/myallocator
+  - url: https://api.your-ota.com/cloudbeds
     description: OTA endpoint
 
 paths:

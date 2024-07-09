@@ -2,7 +2,7 @@
 post:
   operationId: get_rate_plans
   description: |-
-    Myallocator uses this call to retrieve a list of rate plans, which are
+    Cloudbeds uses this call to retrieve a list of rate plans, which are
     either specific to each room, or global for all rooms.
   requestBody:
     content:

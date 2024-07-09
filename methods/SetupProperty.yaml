@@ -7,7 +7,7 @@ post:
     ID `1001`. If the connection needs to be enabled from the OTA side first
     return with error ID `1002`.
 
-    On myallocator the hotel will go to the OTA setup by selecting the OTA.
+    On Cloudbeds the hotel will go to the OTA setup by selecting the OTA.
     There the user will be prompted to put in the credentials
     (`ota_property_id` and `ota_property_password`), which are provided by your
     OTA. Both `ota_property_id` and `ota_property_password` will be retained by
@@ -31,7 +31,7 @@ post:
           type: object
           properties:
             mya_property_id:
-              description: Property ID on myallocator
+              description: Property ID on the Cloudbeds channel manager
               type: integer
               minimum: 1
             ota_property_id:
@@ -53,7 +53,7 @@ post:
               description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
               type: string
             ota_cid:
-              description: OTA ID as given by myallocator
+              description: OTA ID as given by Cloudbeds
               type: string
               pattern: '^[a-z0-9]+$'
             verb:
@@ -64,10 +64,10 @@ post:
               type: array
               description: >
                 This list of rooms will only be returned if enabled for the
-                OTA by myallocator. By default this is not present. It's
+                OTA by Cloudbeds. By default this is not present. It's
                 only necessary for deep integrations or situations where
                 the OTA plans to automatically/create destroy rooms using
-                myallocator configuration. In a normal integration this
+                the Cloudbeds configuration. In a normal integration this
                 isn't very usual.
               items:
                 $ref: ../schemas.d/room_info.yaml

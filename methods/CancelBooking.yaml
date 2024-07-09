@@ -2,7 +2,7 @@
 post:
   operationId: cancel_booking
   description: |-
-    Allows a property to cancel a booking on your OTA from the myallocator side.
+    Allows a property to cancel a booking on your OTA from the Cloudbeds side.
 
     *IMPORTANT*: Please contact us to enable this capability for your channel. It
     is NOT enabled by default.

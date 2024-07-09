@@ -21,10 +21,10 @@ post:
                   type: array
                   description: >
                     This list of rooms will only be returned if enabled for the
-                    OTA by myallocator. By default this is not present. It's
+                    OTA by Cloudbeds. By default this is not present. It's
                     only necessary for deep integrations or situations where
                     the OTA plans to automatically/create destroy rooms using
-                    myallocator configuration. In a normal integration this
+                    Cloudbeds configuration. In a normal integration this
                     isn't very usual.
                   items:
                     $ref: ../schemas.d/room_info.yaml

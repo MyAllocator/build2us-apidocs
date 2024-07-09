@@ -2,7 +2,7 @@
 post:
   operationId: update_taxes
   description: >
-    Synchronize taxes/fees after they have been changed on Cloudbeds.
+    Synchronize taxes/fees after they have been changed on the Cloudbeds channel manager.
   requestBody:
     content:
       application/json:
@@ -34,7 +34,7 @@ post:
                           id:
                             type: integer
                             minimum: 1
-                            description: "Tax/fee ID in Cloudbeds' system"
+                            description: "Tax/fee ID on the Cloudbeds channel manager"
                         required:
                           - id
                 verb:

@@ -3,7 +3,7 @@ auth:
   type: object
   properties:
     mya_property_id:
-      description: Property ID on myallocator
+      description: Property ID on the Cloudbeds channel manager
       type: integer
       minimum: 1
     ota_property_id:
@@ -26,7 +26,7 @@ auth:
       description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
       type: string
     ota_cid:
-      description: OTA ID as given by myallocator
+      description: OTA ID as given by Cloudbeds
       type: string
       pattern: '^[a-z0-9]+$'
   required:

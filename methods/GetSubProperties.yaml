@@ -18,8 +18,8 @@ post:
     Implementation suggestions: `ota_property_sub_id` will be the OTA identifier
     for a specific property managed by the hotel while the title is that
     property's name. This method will allow the property to map their
-    myallocator property with the OTA's `ota_property_sub_id` when setting up
-    the property-OTA association on myallocator.
+    Cloudbeds property with the OTA's `ota_property_sub_id` when setting up
+    the property-OTA association on Cloudbeds.
   requestBody:
     content:
       application/json:
@@ -29,7 +29,7 @@ post:
           type: object
           properties:
             mya_property_id:
-              description: Property ID on myallocator
+              description: Property ID on the Cloudbeds channel manager
               type: integer
               minimum: 1
             ota_property_id:
@@ -51,7 +51,7 @@ post:
               description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
               type: string
             ota_cid:
-              description: OTA ID as given by myallocator
+              description: OTA ID as given by Cloudbeds
               type: string
               pattern: '^[a-z0-9]+$'
             verb:

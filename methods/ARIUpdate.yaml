@@ -10,7 +10,7 @@ post:
     per request. It's also possible to ask us to restrict maximum number of days
     per date range.
 
-    Note that myallocator only supports availability on the room level, so for
+    Note that Cloudbeds only supports availability on the room level, so for
     the same `ota_room_id` and the same date range the availability will always
     be the same. Only restrictions and rates are sent on the rate plan level.
   requestBody:
