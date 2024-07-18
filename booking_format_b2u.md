@@ -21,12 +21,16 @@
 | CancellationReason | | String | Only provide when `IsCancellation` = `1`. Reason given by property or guest as to why booking was cancelled. |
 | Commission | | Currency | Amount of commission on the booking, included in the `TotalPrice`. Commission is an absolute amount of currency to be paid to the channel. This field does not indicate whether the commission is already paid or not. |
 | CommissionCurrency | | CurrencyCode | Currency code for the `Commission` field. Required if `Commission` is present. |
+| CustomerAssociations | | CustomerAssociation[] | See below in the CustomerAssociation section |
 | Deposit | | Currency | Amount of deposit this booking has already received. Included in `TotalPrice` |
 | DepositCurrency | | CurrencyCode | Currency code for the `Deposit` field. Required if `Deposit` is present. |
 | ExternalReferences | | ExternalReference[] | See below in the ExternalReference section |
+| MessageThreadId | | String | Some channels provide communication between host and guest in the form of message threads. A reservation-associated message thread id can be stored here. |
 | ExtraServices | | ExtraService[] | See below in the ExtraService section |
 | ExtraTaxes | | ExtraTax[] | See below in the ExtraTax section |
 | IsTentative | | Enum(0,1) | `1` if the booking is not yet confirmed and availability should not yet be reduced. This can apply to booking enquiries where the property owner needs to confirm the booking first. |
+| Loyalties | | Loyalty[] | See below in the Loyalty section |
+| Memberships | | Membership[] | See below in the Membership section |
 | OrderAdults | | Int >= 0 | Total number of unique adults. Adult age threshold is defined by the channel. Should equal sum of `Adults` in each room if this breakdown is given. |
 | OrderChildren | | Int >= 0 | Total number of unique children or babies. Child/baby age threshold is defined by the channel. Should equal sum of `Children` plus `Babies` in each room if this breakdown is given. |
 | OrderCustomers | | Int >= 0 | Total number of unique customers. Should equal sum of `Occupancy` in each room if this breakdown is given. Should also equal the sum of `OrderAdults` and `OrderChildren` if those fields are present. |
@@ -44,6 +48,7 @@
 | TotalTaxes | | Currency | Amount of taxes for this booking. The amount is included in `TotalPrice`. If there are different types of taxes applicable to a booking then this is the sum of those taxes. |
 | TotalTaxesCurrency | | CurrencyCode | Currency code for the `TotalTaxes` field. Required if `TotalTaxes` is present. |
 | TravelAgencies | | TravelAgency[] | See below in the TravelAgency section |
+| Vouchers | | Voucher[] | See below in the Voucher section |
 
 ### Relation of fields
 
@@ -71,6 +76,7 @@ Balance    = TotalPrice - Deposit
 | Babies | | Int >= 0 | Number of babies staying in this room. Baby age threshold is defined by the channel. |
 | Breakfast | | Enum(0,1) | Whether breakfast was booked. |
 | Children | | Int >= 0 | Number of children staying in this room. Child age threshold is defined by the channel. |
+| ExtraServices | | ExtraService[] | See below in the ExtraService section |
 | ExtraTaxes | | ExtraTax[] | See below in the ExtraTax section |
 | RoomDesc | | String | Description of the room, as provided by the channel. |
 | Occupancy | | Int >= 0 | Total number of persons staying in this room, including children and babies. Should be the sum of `Adults`, `Children` and `Babies` if those are present. |
@@ -143,6 +149,9 @@ person staying at the property.
 | Discount | Yes | Currency | Amount of discount as a positive value. |
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this discount is applicable. Often the same as the booking's `EndDate`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this discount is applicable. Often the same as the booking's `StartDate`. |
+| IncludedInDayRates | | Enum(0,1) | Whether the discount is included in the day rates. If not present assumed to be `1`. |
+| IncludedInRoomPrice | | Enum(0,1) | Whether the discount is included in the room price (`Price` in `Rooms` array). If not present assumed to be `1`. |
+| IncludedInTotal | | Enum(0,1) | Whether the discount is included in the total. We strongly recommend to set this to `1` whenever possible. |
 
 ## ExternalReference
 
@@ -161,13 +170,20 @@ service booked.
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
-| Label | | String | Short free-form name for the type of extra service (eg. Conference Room ). |
-| Description | Yes | String | Description of the extra service. |
 | EndDate | Yes | YYYY-MM-DD | End date for the date range of when this extra service is applicable. Often the same as the booking's `EndDate`. |
 | StartDate | Yes | YYYY-MM-DD | Start date for the date range of when this extra service is applicable. Often the same as the booking's `StartDate`. |
 | Units | Yes | Int > 0 | Quantity of the extra services booked. |
-| Currency | | CurrencyCode | Currency code for the `Price` field. Required if `Price` is present. |
-| Price | | Currency | Price of the extra service. Some services do not have a price. |
+| Adults | | Int >= 0 | Number of adults the extra service is booked for. Adult age threshold is defined by the channel. |
+| Babies | | Int >= 0 | Number of babies the extra service is booked for. Baby age threshold is defined by the channel. |
+| Category | | Enum(...) | What type of extra service is this? Can be `fee`, `meal` or `service`.  |
+| Children | | Int >= 0 | Number of children the extra service is booked for. Child age threshold is defined by the channel. |
+| Currency | | CurrencyCode | Currency code for the `Price` field. Ideally always present if `Price` is present, but if channel doesn't provide it it's best not to guess it. |
+| Label | | String | Short free-form name for the type of extra service (eg. Conference Room ). |
+| Description | | String | Description of the extra service. |
+| IncludedInDayRates | | Enum(0,1) | Whether the discount is included in the day rates. If not present assumed to be true. |
+| IncludedInRoomPrice | | Enum(0,1) | Whether the discount is included in the room price (`Price` in `Rooms` array). If not present assumed to be true. |
+| IncludedInTotal | | Enum(0,1) | Whether the extra service is included in the total. Ideally always `1` unless there is a very specific reason not to do that. |
+| Price | | Currency | Price of the extra service (price per unit of service, not the total for all `Units`). Some services do not have a price, in which case this can also be left out. |
 
 ## ExtraTax
 
@@ -227,14 +243,21 @@ This object holds information about involved travel agencies.
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
-| Name | | String | Name of the travel agency. |
-| Phone | | String | Phone number of the travel agency. |
-| Email | | Email-Address | Email address of the travel agency. |
 | Address | | String | Address of the travel agency. |
 | City | | String | City of the travel agency. |
-| PostCode | | String | Postcode (ZIP) of the travel agency. |
-| State | | String | State (province, etc.) of the travel agency. |
+| CompanyName | | String | Company name. |
 | Country | | ISO 3166-1 alpha-2 | Country code of the travel agency. Value is uppercase. |
+| Email | | Email-Address | Email address of the travel agency. |
+| Fax | | String | Fax number of travel agency. |
+| Name | | String | Name of the travel agency. |
+| Phone | | String | Phone number of the travel agency. |
+| PhoneMobile | | String | Mobile phone number of the travel agency. |
+| Phones | | Phone[] | Phone numbers of the travel agency. |
+| PostCode | | String | Postcode (ZIP) of the travel agency. |
+| ProfileId | | String | Travel agency id. The id may come from different sources, see ProfileIdType |
+| ProfileIdType | | Enum('ABTA','CLIA','IATA','TIDS','TRUE') | Organization to which the travel agency profile id belongs. |
+| State | | String | State (province, etc.) of the travel agency. |
+
 
 ## Payment
 
@@ -258,6 +281,10 @@ This object holds credit/debit card details of the customer.
 | CardBalance | | Currency | Balance on the card. Usually just for virtual cards. |
 | CardBalanceCurrency | | CurrencyCode | Currency of the `CardBalance` field. |
 | CardActivationDate | | YYYY-MM-DD | The card can be charged starting on this date. Relates to virtual cards that cannot be charged right away. |
+| CardExpirationDate | | YYYY-MM-DD | The card can be charged until on this date. Relates to virtual cards. |
+| DayRatesCommissionIncluded | | Boolean | In cases where a reservation is paid for by virtual credit card (VCC), this flag indicates whether or not the rates for each date of stay already has channel commission/compensation subtracted or not. |
+| IsBankTransfer | | Boolean | Used to indicate whether or not the reservation was paid for by bank transfer. |
+| TotalPriceCommissionIncluded | | Boolean | In cases where a reservation is paid for by virtual credit card (VCC), this flag indicates whether or not the reservation total price already has channel commission/compensation subtracted or not. |
 
 ## CardType
 
@@ -274,6 +301,7 @@ This object holds credit/debit card details of the customer.
 | EC | EuroCard |
 | EL | Elo Creditcard |
 | ER | enRoute |
+| FB | Forbrugsforeningskort |
 | HC | Hipercard |
 | JA | JAL |
 | JC | Japan Credit Bureau |
@@ -289,6 +317,23 @@ This object holds credit/debit card details of the customer.
 | TP | Universal Air Travel Card |
 | VI | Visa |
 
+## ContactPerson
+
+Contact person information.
+
+| Field              | Always Present | Type                | Description                                                 |
+|--------------------|----------------|---------------------|-------------------------------------------------------------|
+| Address            |                | String              | Contact person address.                                     |
+| City               |                | String              |                                                             |
+| Country            |                | ISO 3166-1 alpha-2  | Country code.                                               |
+| Email              |                | Email-Address       | Email address.                                              |
+| FName              |                | String              | First name.                                                 |
+| LName              |                | String              | Last name.                                                  |
+| LoyaltyMemberships |                | LoyaltyMembership[] | Loyalty program memberships assigned to the contact person. |
+| Phone              |                | String              | Phone number.                                               |
+| PostCode           |                | String              | Postcode (ZIP).                                             |
+| State              |                | String              | State (province, etc.). 
+
 ## CreditCardAddress
 
 | Field | Required | Type | Description |
@@ -298,3 +343,119 @@ This object holds credit/debit card details of the customer.
 | CountryCode | | ISO 3166-1 alpha-2 | Resident country code of card holder, as part of their address. Value should be uppercase. |
 | PostalCode | | String | Postcode (ZIP) of the card holder. |
 | StateCode | | String | State (province, etc.) of the card holder. |
+
+## CustomerAssociation
+
+Reservation customers can sometimes be associated with entities that have some
+meaning to the property or arrange the reservation. These associations (minus
+travel agencies, which are handled separately) include companies (a customer's
+company employer may have a special deal with the property enabling different
+rates or capabilities that can, for example, trigger during reservation
+cancellation), wholesalers, or groups (customer can
+book as part of a group block for special events). Each association will have
+indicators of type as well as a contact person. Group associations will also
+contain a `GroupCode`, which indicates to the property manager the group block
+to which they belong.
+
+### Provided by channel module
+
+| Field | Required | Type | Description |
+| ----- | -------- | ---- | ----------- |
+| ProfileId | Yes | String | Unique id for this association profile. Probably channel-specific. |
+| TypeId | Yes | Enum(3,5,6,21) | Refer [Profile Type (PRT)](#profile-type-prt). |
+| Address | | String | Address line for association contact person. |
+| City | | String | City for association contact person. |
+| CompanyName | | String | Company name. |
+| ContactPerson | | ContactPerson | Contact person information. |
+| Country | | ISO 3166-1 alpha-2 | Country code for association contact person. |
+| Email | | Email-Address | Email address for the association contact person. |
+| Fax | | String | Fax number for association contact person. |
+| GroupCode | | String | Only found in group block associations. Enables property manager to tie reservation back to group block. This value is sent to the channel when creating the block. |
+| Name | | String | Name for association contact person. |
+| Phone | | String | Phone number for association contact person. |
+| PhoneMobile | | String | Mobile phone for the association / contact person. |
+| Phones | | Phone[] | Phone numbers for the association / contact person. |
+| PostCode | | String | Postal code for association contact person. |
+| State | | String | State (province, etc.) of the travel agency. |
+
+## Loyalty
+
+Some properties (usually bigger hotel chains) have loyalty programs that
+can help guests accumulate monetary perks toward future stays with the
+chain. Loyalties form a type of deposit, which go towards the total
+reservation price affecting the `Deposit` and `Balance` fields in a
+reservation payload. Loyalties have a name, a member id, quantity, and
+total amount.
+
+### Provided by channel module
+
+| Field | Required | Type | Description |
+| ----- | -------- | ---- | ----------- |
+| Description | Yes | String | Name of loyalty program. |
+| MemberId | Yes | String | Loyalty program member id (usually an email address). |
+| Currency | | CurrencyCode | Currency of the `Total` field. |
+| TotalAmount | | Currency | Total amount deposited for the reservation. |
+| Units | | String | Number of loyalty points used. |
+
+## LoyaltyMembership
+
+Guests can have membership details for loyalty programs stored in their profile.
+Loyalty program details in a guest profile indicate what membership details a customer
+has stored on their profile but not which loyalty program is selected for the booking.
+
+| Field         | Required | Type       | Description                                                          |
+|---------------|----------|------------|----------------------------------------------------------------------|
+| EffectiveDate |          | YYYY-MM-DD | Starting date.                                                       |
+| ExpireDate    |          | YYYY-MM-DD | Ending date.                                                         |
+| LoyalLevel    |          | String     | Indicates special privileges in a program assigned to an individual. |
+| MembershipId  |          | String     | Unique identifier of the member in the program.                      |
+| ProgramId     |          | String     | The company of the loyalty program.                                  |
+| SignupDate    |          | YYYY-MM-DD | The date that the member signed up for the loyalty program.          |
+| VendorCode    |          | String     | The identifier for the vendor in the program.
+
+## Membership
+
+Some properties have "frequent guest" programs that allow for guests to
+accrue points or get perks. Each membership will contain a `ProgramCode`
+(membership program name) and `AccountID` (guest's membership ID).
+
+### Provided by channel module
+
+| Field | Required | Type | Description |
+| ----- | -------- | ---- | ----------- |
+| AccountId | Yes | String | Guest's membership ID for this program |
+| ProgramCode | Yes | String | Name of the membership program |
+| BonusCode | | String | The code or name of the bonus program. |
+
+## Voucher
+
+Vouchers are a form of deposit. Sometimes, when a guest books as part
+of a company, the company may have an account with the property. In
+some cases, if one of these customers cancels their reservation booked
+through their company, instead of getting a refund, the property keeps
+the money in an account and can apply it to future reservations as a
+voucher. It is applied towards the total reservation price affecting
+the `Deposit` and `Balance` fields in a reservation payload.
+
+### Provided by channel module
+
+| Field | Required | Type | Description |
+| ----- | -------- | ---- | ----------- |
+| TotalAmount | Yes | Currency | Total amount deposited for the reservation. |
+| VoucherId | Yes | String | The transaction ID. |
+| Currency | | CurrencyCode | Currency of the `Total` field. |
+| SupplierId | | String | Source/Provider of the voucher. |
+
+## Reference Tables
+
+CRSs refer to OTA codes in different sections of the payload which in turn have designated values.
+The below tables documents different codes -> values mappings.
+
+### Profile Type (PRT)
+
+| Code Value | Code Name  |
+| ---------- | ---------- |
+| 3          | Company    |
+| 5          | Wholesaler |
+| 6          | Group      |
+| 21         | Arranger   |
