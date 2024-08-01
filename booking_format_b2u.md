@@ -24,6 +24,7 @@
 | CustomerAssociations | | CustomerAssociation[] | See below in the CustomerAssociation section |
 | Deposit | | Currency | Amount of deposit this booking has already received. Included in `TotalPrice` |
 | DepositCurrency | | CurrencyCode | Currency code for the `Deposit` field. Required if `Deposit` is present. |
+| DepositType | | Enum(...) | Possible deposit types are: `ota`, `vcc`, `manual`, `cc`, `bank_transfer`, `voucher`, `directbill` |
 | ExternalReferences | | ExternalReference[] | See below in the ExternalReference section |
 | MessageThreadId | | String | Some channels provide communication between host and guest in the form of message threads. A reservation-associated message thread id can be stored here. |
 | ExtraServices | | ExtraService[] | See below in the ExtraService section |
