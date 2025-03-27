@@ -295,6 +295,7 @@ This object holds credit/debit card details of the customer.
 | BC | BC Card |
 | CA | MasterCard |
 | CB | Carte Blanche |
+| CL | Cabal |
 | CU | China Union Pay |
 | DS | Discover |
 | DC | Diners Club |
@@ -304,12 +305,15 @@ This object holds credit/debit card details of the customer.
 | ER | enRoute |
 | FB | Forbrugsforeningskort |
 | HC | Hipercard |
+| IT | ItalCred |
 | JA | JAL |
 | JC | Japan Credit Bureau |
 | L  | Delta |
 | LA | Laser |
 | MU | Maestro UK |
 | N  | Dankort |
+| NR | Naranja |
+| NT | Nativa |
 | R  | Carte Bleue |
 | S  | Switch |
 | SO | Solo |
