@@ -17,6 +17,7 @@ rq:
         currency: EUR
         email_default: someone@example.com
         email_channel_booking: bookings@example.com
+        email_contact: person@example.com
         default_min_los: 3
         default_max_los: 0
         breakfast: ''

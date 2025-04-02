@@ -1712,6 +1712,7 @@ paths:
                     currency: EUR
                     email_default: someone@example.com
                     email_channel_booking: bookings@example.com
+                    email_contact: person@example.com
                     default_min_los: 3
                     default_max_los: 0
                     breakfast: ""
@@ -1980,6 +1981,12 @@ paths:
                           description: >
                             The email address used when forwarding channel
                             booking emails. Defaults to default user email.
+                        email_contact:
+                          type: string
+                          format: email
+                          description: >
+                            The email address of the contact person responsible
+                            for the property creation.
                         default_min_los:
                           type: integer
                           minimum: 1
@@ -2522,6 +2529,7 @@ paths:
                         - timezone
                         - email_default
                         - email_channel_booking
+                        - email_contact
                         - default_min_los
                         - default_max_los
                         - breakfast
