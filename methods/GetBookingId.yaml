@@ -21,7 +21,7 @@ post:
 
     Currency codes: Make sure they are valid ISO-4217 (uppercase).
 
-    Make sure to provide `OrderDate` and `OrderTime`. They have be provided in
+    Make sure to provide `OrderDate` and `OrderTime`. They have to be provided in
     UTC.
 
     Guest's credit/debit card details can be provided with the `Payments` field.
