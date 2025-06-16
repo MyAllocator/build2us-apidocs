@@ -1306,7 +1306,7 @@ paths:
         Currency codes: Make sure they are valid ISO-4217 (uppercase).
 
 
-        Make sure to provide `OrderDate` and `OrderTime`. They have be provided in
+        Make sure to provide `OrderDate` and `OrderTime`. They have to be provided in
 
         UTC.
 
@@ -1570,6 +1570,80 @@ paths:
                       ma/oneOf/1"
           description: GetBookingId
       summary: GetBookingId
+  /AckBooking:
+    post:
+      operationId: ack_booking
+      description: >-
+        Allows Cloudbeds to acknowledge a booking on your OTA from the Cloudbeds
+        side.
+
+
+        *IMPORTANT*: Please contact us to enable this capability for your channel. It
+
+        is NOT enabled by default.
+
+
+        If the booking cannot be acknowledged the error code should be provided. Here
+
+        are possible error codes:
+
+
+        * 4004 - booking cannot be acknowledged. The reason is provided in the `msg` field.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              AckBooking:
+                summary: AckBooking
+                value:
+                  verb: AckBooking
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: "10034818"
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  booking_id: H7736-29385551
+            schema:
+              allOf:
+                - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
+                    /allOf/0"
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - AckBooking
+                    booking_id:
+                      type: string
+                      description: |
+                        OTA booking ID of the booking to be acknowledged.
+              required:
+                - verb
+                - booking_id
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Booking has already acknowledged
+                  value:
+                    success: false
+                    errors:
+                      - id: 4001
+                        msg: Booking has already acknowledged
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
+                  a"
+          description: AckBooking
+      summary: AckBooking
   /CancelBooking:
     post:
       operationId: cancel_booking
