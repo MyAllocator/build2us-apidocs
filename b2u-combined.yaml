@@ -1437,6 +1437,29 @@ paths:
                           OrderId:
                             type: string
                             description: Unique booking ID on the OTA. Maximum of 64 characters.
+                          OrderAdults:
+                            type: integer
+                            minimum: 0
+                            description: >
+                              Total number of unique adults. Adult age threshold
+                              is defined by the channel. Should equal sum of
+                              Adults in each room if this breakdown is given.
+                          OrderChildren:
+                            type: integer
+                            minimum: 0
+                            description: >
+                              Total number of unique children or babies.
+                              Child/baby age threshold is defined by the
+                              channel. Should equal sum of `Children` plus
+                              `Babies` in each room if this breakdown is given.
+                          OrderCustomers:
+                            type: integer
+                            minimum: 1
+                            description: >
+                              Total number of unique customers. Should equal sum
+                              of `Occupancy` in each room if this breakdown is
+                              given. Should also equal the sum of `OrderAdults`
+                              and `OrderChildren` if those fields are present.
                           OrderDate:
                             type: string
                             format: date
@@ -1519,6 +1542,27 @@ paths:
                                         type: string
                                         format: date
                                         description: Date of day rate.
+                                      Adults:
+                                        type: integer
+                                        minimum: 0
+                                        description: >
+                                          Number of adults staying in this room.
+                                          Adult age threshold is defined by the
+                                          channel.
+                                      Babies:
+                                        type: integer
+                                        minimum: 0
+                                        description: >
+                                          Number of babies staying in this room.
+                                          Baby age threshold is defined by the
+                                          channel.
+                                      Children:
+                                        type: integer
+                                        minimum: 0
+                                        description: >
+                                          Number of children staying in this
+                                          room. Child age threshold is defined
+                                          by the channel.
                                       Description:
                                         type: string
                                         description: >
