@@ -89,10 +89,28 @@ properties:
     items:
       type: object
       properties:
+        Adults:
+          type: integer
+          minimum: 0
+          description: >
+            Number of adults staying in this room. Adult age
+            threshold is defined by the channel.
+        Babies:
+          type: integer
+          minimum: 0
+          description: >
+            Number of babies staying in this room. Baby age
+            threshold is defined by the channel.
         ChannelRoomType:
           type: string
           description:
             The ID of the room on the OTA.
+        Children:
+          type: integer
+          minimum: 0
+          description: >
+            Number of children staying in this room. Child age
+            threshold is defined by the channel.
         Currency:
           type: string
           pattern: '^[A-Z]{3}$'
@@ -112,24 +130,6 @@ properties:
                 type: string
                 format: date
                 description: Date of day rate.
-              Adults:
-                type: integer
-                minimum: 0
-                description: >
-                  Number of adults staying in this room. Adult age
-                  threshold is defined by the channel.
-              Babies:
-                type: integer
-                minimum: 0
-                description: >
-                  Number of babies staying in this room. Baby age
-                  threshold is defined by the channel.
-              Children:
-                type: integer
-                minimum: 0
-                description: >
-                  Number of children staying in this room. Child age
-                  threshold is defined by the channel.
               Description:
                 type: string
                 description: >
@@ -157,6 +157,13 @@ properties:
           description: >
             The date of the last night of stay (equal to
             departure date minus one).
+        Occupancy:
+          type: integer
+          minimum: 1
+          description: >
+            Total number of persons staying in this room, including
+            children and babies. Should be the sum of `Adults`,
+            `Children` and `Babies` if those are present.
         Price:
           type: number
           minimum: 0
