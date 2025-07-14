@@ -137,17 +137,17 @@ info:
     If the OTA is a channel manager, a CRS (central reservation system) or otherwise
     a broker that relays bookings from other OTAs/sources then Cloudbeds need to be
     notified about this to mark the OTA as a "broker". Additionally, the booking
-    format will require additional fields to be provided to ensure that properties can
+    format requires providing additional fields to ensure that properties can
     correctly map sources for reports, tax/fee handling and display purposes.
 
-    These booking format fields are required for brokered bookings to work correctly:
+    The following booking format fields are required for brokered bookings to work correctly:
 
     * `OrderSource`
     * `OrderSourceId`
     * `ExternalReferences`
 
     Please check [booking format](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md)
-    on how to use these fields. We also recommend to implement the `SourceTree` field if multiple
+    on how to use these fields. We also recommend implementing the `SourceTree` field if multiple
     sources can be involved in a booking.
 
 openapi: 3.0.0
