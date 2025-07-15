@@ -7,6 +7,9 @@
 | Customers | Yes | Customer[] | See below in the Customer section |
 | IsCancellation | Yes | Enum(0,1) | `1` if booking is cancelled. |
 | IsModification | Yes | Enum(0,1) | `1` if booking is modified. |
+| OrderAdults | Yes | Int >= 0 | Total number of unique adults. Adult age threshold is defined by the channel. Should equal sum of `Adults` in each room if this breakdown is given. |
+| OrderChildren | Yes | Int >= 0 | Total number of unique children or babies. Child/baby age threshold is defined by the channel. Should equal sum of `Children` plus `Babies` in each room if this breakdown is given. |
+| OrderCustomers | Yes | Int >= 0 | Total number of unique customers. Should equal sum of `Occupancy` in each room if this breakdown is given. Should also equal the sum of `OrderAdults` and `OrderChildren` if those fields are present. |
 | OrderDate | Yes | YYYY-MM-DD | Date of booking creation, in UTC (not date when modified!). |
 | OrderId | Yes | String | Unique booking ID on your channel. Maximum of 64 characters. |
 | OrderTime | Yes | HH:MM:SS | Time of booking creation, in UTC. If seconds are not provided, set value to ":00".  Presence of `OrderTime` requires presence of `OrderDate`. |
@@ -18,33 +21,36 @@
 | Discounts | | Discount[] | See below in the Discount section |
 | CancellationFee | | Currency |  The total amount of cancellation fees a guest has to pay because the cancellation was out of the cancellation policy. |
 | CancellationFeeCurrency | | CurrencyCode | Currency code for the `CancellationFee` field. Always provide if `CancellationFee` is present. |
+| CancellationId | | String | Cancellation ID provided by the channel. |
 | CancellationReason | | String | Only provide when `IsCancellation` = `1`. Reason given by property or guest as to why booking was cancelled. |
+| GuestNoShow | | Boolean | Only present when `IsCancellation` = `true` and if a guest is reported as not showing up. |
 | Commission | | Currency | Amount of commission on the booking, included in the `TotalPrice`. Commission is an absolute amount of currency to be paid to the channel. This field does not indicate whether the commission is already paid or not. |
 | CommissionCurrency | | CurrencyCode | Currency code for the `Commission` field. Required if `Commission` is present. |
+| CommissionPercentage | | Float | Percentage of commission on the booking. |
+| CommissionableAmount | | Currency | Amount of commissionable revenue. The percentage defined in `CommissionPercentage` is applied to `CommissionableAmount` to calculate the final commission `Commission`. |
 | CustomerAssociations | | CustomerAssociation[] | See below in the CustomerAssociation section |
 | Deposit | | Currency | Amount of deposit this booking has already received. Included in `TotalPrice` |
 | DepositCurrency | | CurrencyCode | Currency code for the `Deposit` field. Required if `Deposit` is present. |
 | DepositType | | Enum(...) | Possible deposit types are: `ota`, `vcc`, `manual`, `cc`, `bank_transfer`, `voucher`, `directbill` |
 | ExternalReferences | | ExternalReference[] | See below in the ExternalReference section |
-| MessageThreadId | | String | Some channels provide communication between host and guest in the form of message threads. A reservation-associated message thread id can be stored here. |
+| MessageThreadId | | String | Some channels provide communication between host and guest in the form of message threads. A reservation-associated message thread ID can be stored here. |
 | ExtraServices | | ExtraService[] | See below in the ExtraService section |
 | ExtraTaxes | | ExtraTax[] | See below in the ExtraTax section |
 | IsTentative | | Enum(0,1) | `1` if the booking is not yet confirmed and availability should not yet be reduced. This can apply to booking enquiries where the property owner needs to confirm the booking first. |
 | Loyalties | | Loyalty[] | See below in the Loyalty section |
 | Memberships | | Membership[] | See below in the Membership section |
-| OrderAdults | | Int >= 0 | Total number of unique adults. Adult age threshold is defined by the channel. Should equal sum of `Adults` in each room if this breakdown is given. |
-| OrderChildren | | Int >= 0 | Total number of unique children or babies. Child/baby age threshold is defined by the channel. Should equal sum of `Children` plus `Babies` in each room if this breakdown is given. |
-| OrderCustomers | | Int >= 0 | Total number of unique customers. Should equal sum of `Occupancy` in each room if this breakdown is given. Should also equal the sum of `OrderAdults` and `OrderChildren` if those fields are present. |
 | OrderFemales | | Int >= 0 | Total number of unique female guests. |
 | OrderMales | | Int >= 0 | Total number of unique male guests. |
 | OrderModifDate | | YYYY-MM-DD | Date of booking modification, in UTC. Do not pass if booking has not been modified. |
 | OrderModifTime | | HH:MM:SS | Time of booking creation, in UTC. Do not pass if booking has NOT been modified. If seconds are not provided, set value to ":00". Presence of `OrderModifTime` requires presence of `OrderModifDate`. |
 | OrderPets | | Int >= 0 | Number of pets (animals) the guest will bring. |
-| OrderSource | | String | Originating source of guest booking, usually a website. For example, Expedia passes bookings from multiple websites (hotels.com, Travelocity, Orbtiz, etc.). May also refer to travel agent/agency who created the booking. Do NOT provide this field if the value is the same as your channel name. |
+| OrderSource | | String | Originating source of guest booking, usually a website. For example, Expedia passes bookings from multiple websites (hotels.com, Travelocity, Orbtiz, etc.). May also refer to travel agent/agency who created the booking. Do NOT provide this field if the value is the same as your channel name. This field is informational only. |
+| OrderSourceId | | String | This field is used by build-to-us channel brokers (channels that pass us reservations made on one of their partner channels). This field should contain the channel ID you use to identify the third party or the Cloudbeds Channel Manager channel ID (e.g., `exp` for `Expedia`). If you plan to use your channel's third-party channel ids, please provide us with your list of identifiers and their associated channel names so we can internalize them. Cloudbeds will use or translate this to an internal ID so that the end user knows the reservation origin source. For example, if `OrderSource` is `Expedia`, then `OrderSourceId` is the ID used by your channel (or ours) to identify `Expedia`. To use Cloudbeds' channel IDs directly please reach out to us for a current list. **Important**: It is required to use the `ExternalReferences` section to provide us with the corresponding reservation origin `OrderId` when brokering reservations. Make sure `Type` is set to `OTA`. |
 | Payments | | Payment[] | See below in the Payment section |
 | PaymentCollect | | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
 | PaymentTransactions | | PaymentTransaction[] | See below in the PaymentTransaction section |
 | Policy | | String | Terms and conditions that apply to this booking. For example it could contain the cancellation terms. |
+| SourceTree | | SourceTree[] | A list of reservation sources for brokered reservations. This list always includes an intermediary, such as a channel, CRS, or GDS, and can contain a guest-facing entity, such as a travel agency or rewards program. See more below in SourceTree section |
 | TaxBreakdown | | TaxBreakdown[] | See below in the TaxBreakdown section |
 | TotalTaxes | | Currency | Amount of taxes for this booking. The amount is included in `TotalPrice`. If there are different types of taxes applicable to a booking then this is the sum of those taxes. |
 | TotalTaxesCurrency | | CurrencyCode | Currency code for the `TotalTaxes` field. Required if `TotalTaxes` is present. |
@@ -64,28 +70,29 @@ Balance    = TotalPrice - Deposit
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
+| Adults | Yes | Int >= 0 | Number of adults staying in this room. Adult age threshold is defined by the channel. |
+| Babies | Yes | Int >= 0 | Number of babies staying in this room. Baby age threshold is defined by the channel. |
 | ChannelRoomType | Yes | String | The ID of the room on the channel. |
+| Children | Yes | Int >= 0 | Number of children staying in this room. Child age threshold is defined by the channel. |
 | Currency | Yes | CurrencyCode | Currency code for the `Price` field. Required if `Price` is present. |
 | DayRates | Yes | DayRate[] | See below in the DayRate section. |
 | EndDate | Yes | YYYY-MM-DD | The date of the last night of stay (equal to departure date minus one). |
+| Occupancy | Yes | Int >= 0 | Total number of persons staying in this room, including children and babies. Should be the sum of `Adults`, `Children` and `Babies` if those are present. |
 | Price | Yes | Currency | Total price of the room, for all units and all days, including taxes and fees. Example: stay is for two days and three units and a single night costs €10 (including tax), then `Price` is 2 * 3 * 10 = 60. |
 | RateDesc | Yes | String | Description of the booked rate plan, as provided by the channel. |
 | RateId | Yes | String | Applicable rate plan ID for this booking. Normally there is only one. If there are multiple, list them comma-separated. |
 | StartDate | Yes | YYYY-MM-DD | Arrival date of the customer. |
 | Units | Yes | Int > 0 | Number of rooms booked (for private rooms) or number of beds booked (for dorms/shared rooms). |
-| Adults | | Int >= 0 | Number of adults staying in this room. Adult age threshold is defined by the channel. |
-| Babies | | Int >= 0 | Number of babies staying in this room. Baby age threshold is defined by the channel. |
 | Breakfast | | Enum(0,1) | Whether breakfast was booked. |
-| Children | | Int >= 0 | Number of children staying in this room. Child age threshold is defined by the channel. |
 | ExtraServices | | ExtraService[] | See below in the ExtraService section |
 | ExtraTaxes | | ExtraTax[] | See below in the ExtraTax section |
 | RoomDesc | | String | Description of the room, as provided by the channel. |
-| Occupancy | | Int >= 0 | Total number of persons staying in this room, including children and babies. Should be the sum of `Adults`, `Children` and `Babies` if those are present. |
 | OccupantFName | | String | First name(s) of the main occupant of this room. If name is not able to be provided separated by first and last name, provide the full name in `OccupantLName` and omit this field. |
 | OccupantLName | | String | Last (family) name or full name of the main occupant of this room. |
 | OccupantNote | | String | Text provided by the guest at time of booking, intended to be read by the property. |
 | OccupantSmoker | | Enum(0,1) | Whether one of the occupants is a smoker. |
 | Policy | | String | Text describing the booking conditions, like cancellation conditions. |
+| NonRefundableRate | | Boolean | Indicates whether or not the booked rate is non-refundable. |
 | PromotionDesc | | String | Describes the promotion applicable to the booked room. |
 
 ### Relation of fields
@@ -106,6 +113,7 @@ Price = sum of day rates + room-specific extra taxes
 | Rate | Yes | Currency | Price for this day, including `Commission` and `Tax`. |
 | RateId | Yes | String | Applicable channel rate plan ID for this day rate. |
 | Commission | | Currency | Amount of commission included in the `Rate`. |
+| IsRatePerUnit | | Boolean | Whether the rate is per unit. Defaults to `true` if not present. |
 | Tax | | Currency | Amount of tax included in the `Rate`. |
 
 ## Customer
@@ -157,11 +165,14 @@ person staying at the property.
 ## ExternalReference
 
 List of further identifiers for the booking. For example, the booking ID a travel
-agency provides might be different from the channel's booking ID.
+agency or reservation broker provides might be different from the build-to-us channel's booking ID.
+If brokering reservations for other online travel agencies, it is required to provide an external
+reference object with `Type` `OTA` and the reservation origin order ID as the `Reference`. This way,
+if the property needs to get in contact with the reservation source, they know the correct reservation ID.
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
-| Type | Yes | String | Identifies which system the booking reference refers to (eg. `IATA` or `CRS`). There is no predefined list for this. |
+| Type | Yes | String | Identifies which system the booking reference refers to (eg. `IATA`, `OTA`, or `CRS`). There is no predefined list for this. |
 | Reference | Yes | String | ID on the system referred to by `Type`. |
 
 ## ExtraService
@@ -209,6 +220,18 @@ If a tax is specific to a specific room put it in the `Rooms` section.
 | RemittedBy | | Enum(...) | Who is responsible for remitting this tax to the tax-collecting agency? Can be `Property` or `Channel`. |
 | Description | | String | Description of the tax as provided by the channel. |
 
+## SourceTree
+
+Lists chain of reservation sources from guest to Cloudbeds, in that order. Each
+source is an object with the following fields:
+
+| Field | Required | Type | Description |
+| ----- | ------ | ---- | ----------- |
+| Name | Yes | String | Name of source, provided by channel. |
+| Type | Yes | String | Open Travel Booking Channel Type. Can be 1-7. Examples: 1 = GDS, 5 = CRS, 7 = Internet (e.g., channel). |
+| ExternalId | | String | Reservation broker provided ID for the source. Same type of ID as used in `OrderSourceId`. Please provide Cloudbeds with a list, unless Cloudbeds Channel Manager channel IDs are used. |
+| InternalId | | String | Cloudbeds Channel Manager ID for the source if the source already exists within Cloudbeds. Can be the same as `ExternalId` if Cloudbeds Channel Manager channel IDs are used. |
+
 ## TaxBreakdown
 
 Provides a breakdown of which taxes are contained in `TotalTaxes`. See
@@ -255,8 +278,8 @@ This object holds information about involved travel agencies.
 | PhoneMobile | | String | Mobile phone number of the travel agency. |
 | Phones | | Phone[] | Phone numbers of the travel agency. |
 | PostCode | | String | Postcode (ZIP) of the travel agency. |
-| ProfileId | | String | Travel agency id. The id may come from different sources, see ProfileIdType |
-| ProfileIdType | | Enum('ABTA','CLIA','IATA','TIDS','TRUE') | Organization to which the travel agency profile id belongs. |
+| ProfileId | | String | Travel agency ID. The ID may come from different sources, see ProfileIdType |
+| ProfileIdType | | Enum('ABTA','CLIA','IATA','TIDS','TRUE') | Organization to which the travel agency profile ID belongs. |
 | State | | String | State (province, etc.) of the travel agency. |
 
 
@@ -284,7 +307,9 @@ This object holds credit/debit card details of the customer.
 | CardActivationDate | | YYYY-MM-DD | The card can be charged starting on this date. Relates to virtual cards that cannot be charged right away. |
 | CardExpirationDate | | YYYY-MM-DD | The card can be charged until on this date. Relates to virtual cards. |
 | DayRatesCommissionIncluded | | Boolean | In cases where a reservation is paid for by virtual credit card (VCC), this flag indicates whether or not the rates for each date of stay already has channel commission/compensation subtracted or not. |
-| IsBankTransfer | | Boolean | Used to indicate whether or not the reservation was paid for by bank transfer. |
+| IsBankTransfer | | Boolean | Used to indicate whether or not the reservation was paid for by bank transfer (meant for VCCs). |
+| IsVCC | | Boolean | True if the payment card is a virtual credit card (VCC). |
+| TaxId | | String | In some regions (like Brazil) a tax ID of the card holder is required to charge a card. |
 | TotalPriceCommissionIncluded | | Boolean | In cases where a reservation is paid for by virtual credit card (VCC), this flag indicates whether or not the reservation total price already has channel commission/compensation subtracted or not. |
 
 ## CardType
@@ -366,7 +391,6 @@ to which they belong.
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
-| ProfileId | Yes | String | Unique id for this association profile. Probably channel-specific. |
 | TypeId | Yes | Enum(3,5,6,21) | Refer [Profile Type (PRT)](#profile-type-prt). |
 | Address | | String | Address line for association contact person. |
 | City | | String | City for association contact person. |
@@ -381,6 +405,7 @@ to which they belong.
 | PhoneMobile | | String | Mobile phone for the association / contact person. |
 | Phones | | Phone[] | Phone numbers for the association / contact person. |
 | PostCode | | String | Postal code for association contact person. |
+| ProfileId | | String | Unique ID for this association profile. Probably channel-specific. |
 | State | | String | State (province, etc.) of the travel agency. |
 
 ## Loyalty
@@ -389,7 +414,7 @@ Some properties (usually bigger hotel chains) have loyalty programs that
 can help guests accumulate monetary perks toward future stays with the
 chain. Loyalties form a type of deposit, which go towards the total
 reservation price affecting the `Deposit` and `Balance` fields in a
-reservation payload. Loyalties have a name, a member id, quantity, and
+reservation payload. Loyalties have a name, a member ID, quantity, and
 total amount.
 
 ### Provided by channel module
@@ -397,7 +422,7 @@ total amount.
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
 | Description | Yes | String | Name of loyalty program. |
-| MemberId | Yes | String | Loyalty program member id (usually an email address). |
+| MemberId | Yes | String | Loyalty program member ID (usually an email address). |
 | Currency | | CurrencyCode | Currency of the `Total` field. |
 | TotalAmount | | Currency | Total amount deposited for the reservation. |
 | Units | | String | Number of loyalty points used. |
