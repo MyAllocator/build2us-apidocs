@@ -50,7 +50,7 @@
 | PaymentCollect | | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
 | PaymentTransactions | | PaymentTransaction[] | See below in the PaymentTransaction section |
 | Policy | | String | Terms and conditions that apply to this booking. For example it could contain the cancellation terms. |
-| SourceTree | | SourceTree[] | It is a list of reservation sources for brokered reservations (e.g., those through SiteMinder). This list always includes an intermediary, such as a channel, CRS, or GDS, and can contain a guest-facing entity, such as a travel agency or rewards program. See more below in SourceTree section |
+| SourceTree | | SourceTree[] | A list of reservation sources for brokered reservations. This list always includes an intermediary, such as a channel, CRS, or GDS, and can contain a guest-facing entity, such as a travel agency or rewards program. See more below in SourceTree section |
 | TaxBreakdown | | TaxBreakdown[] | See below in the TaxBreakdown section |
 | TotalTaxes | | Currency | Amount of taxes for this booking. The amount is included in `TotalPrice`. If there are different types of taxes applicable to a booking then this is the sum of those taxes. |
 | TotalTaxesCurrency | | CurrencyCode | Currency code for the `TotalTaxes` field. Required if `TotalTaxes` is present. |
