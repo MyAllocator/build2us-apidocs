@@ -1,0 +1,59 @@
+---
+rq:
+  UpdateGroupBlock:
+    summary: UpdateGroupBlock
+    value:
+      verb: UpdateGroupBlock
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+      group_block_data:
+        group_code: g12345
+        group_block_code: b123332
+        group_data:
+          $ref: ../group.yaml
+        group_block_status: definite
+        group_block_notes:
+          - text: This
+            created_at: 2025-01-01T00:05:01Z
+            updated_at: 2025-01-01T00:05:01Z
+          - text: is it
+            created_at: 2025-01-01T00:05:01Z
+            updated_at: 2025-01-01T00:05:01Z
+        group_block_auto_release:
+          release_type: all_days
+          release_days: 2
+          release_time: 02:00
+        group_block_ari:
+          12345:
+            ota_rate_id: 54321
+            data:
+              - start_date: 2025-03-03
+                end_date: 2025-03-04
+                units_allotted: 2
+                units_remaining: 2
+                units_confirmed: 0
+                rate: 233
+              - start_date: 2025-03-05
+                end_date: 2025-03-07
+                units_allotted: 2
+                units_remaining: 1
+                units_confirmed: 1
+                rate: 234
+
+rs:
+  Failure:
+    summary: Block with such code does not exists
+    value:
+      success: false
+      errors:
+        - id: 2
+          msg: Block with such code does not exists
+  Success:
+    summary: Success
+    value:
+      success: true

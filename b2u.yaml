@@ -1,7 +1,7 @@
 ---
 info:
   title: Cloudbeds OTA Build-To-Us API
-  version: "5.1"
+  version: "5.2"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
   description: |
@@ -195,3 +195,16 @@ paths:
     $ref: methods/NotifyBooking.yaml
   /RoomInfo:
     $ref: methods/RoomInfo.yaml
+
+  /CreateGroup:
+    $ref: methods/CreateGroup.yaml
+  /UpdateGroup:
+    $ref: methods/UpdateGroup.yaml
+  /DeleteGroup:
+    $ref: methods/DeleteGroup.yaml
+  /CreateGroupBlock:
+    $ref: methods/CreateGroupBlock.yaml
+  /UpdateGroupBlock:
+    $ref: methods/UpdateGroupBlock.yaml
+  /DeleteGroupBlock:
+    $ref: methods/DeleteGroupBlock.yaml

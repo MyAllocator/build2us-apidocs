@@ -1,0 +1,30 @@
+---
+group_code: g12345
+group_name: Medical Phizer conference
+group_status: open
+group_notes:
+  - text: This
+    created_at: 2025-01-01T00:05:01Z
+    updated_at: 2025-01-01T00:05:01Z
+  - text: is
+    created_at: 2025-01-01T00:05:01Z
+    updated_at: 2025-01-01T00:05:01Z
+  - text: Sparta
+    created_at: 2025-01-01T00:05:01Z
+    updated_at: 2025-01-01T00:05:01Z
+address:
+  city: Krakow
+  zip: 12345
+  state: Krkw
+  address_line1: Gavela street
+  address_line2: 25/57
+contacts:
+  - first_name: Ivan
+    last_name: Petrov
+    emails:
+      - type: business
+        value: breadley.p@phizer.com
+    phones:
+      - type: work
+        value: +44321142177
+    role: organizer

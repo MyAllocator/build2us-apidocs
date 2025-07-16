@@ -1,0 +1,38 @@
+---
+post:
+  operationId: delete_group
+  description: |-
+    This call is used to update delete group profile on your OTA previously created by CreateGroup call.
+    This call needs to be activated explicitly from our side
+    before you can use it. Please talk to your Cloudbeds contact before
+    implementing this call!
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/DeleteGroup.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - DeleteGroup
+                group_code:
+                  type: string
+          required:
+            - verb
+            - group_code
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/DeleteGroup.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: DeleteGroup
+  summary: DeleteGroup
