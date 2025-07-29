@@ -371,7 +371,7 @@ paths:
                           description: >
                             Optional error string to give more details about the
                             error. Myallocator localises errors into different
-                            langauges, so this field is generally ignored and
+                            languages, so this field is generally ignored and
                             only useful for debugging.
                       required:
                         - id
@@ -3209,6 +3209,20 @@ paths:
                   summary: Success
                   value:
                     success: true
+                Success with mapping:
+                  summary: Success with mapping
+                  value:
+                    success: true
+                    room_mappings:
+                      - ota_room_id: "11111"
+                        mya_rate_id: 0
+                        ota_rate_id: DEF-3456
+                      - ota_room_id: "11111"
+                        mya_rate_id: 850
+                        ota_rate_id: NR-3456
+                      - ota_room_id: "11111"
+                        mya_rate_id: 851
+                        ota_rate_id: BR-3456
                 Failure:
                   summary: Invalid credentials
                   value:
@@ -3217,8 +3231,35 @@ paths:
                       - id: 1001
                         msg: The login details you provided are incorrect
               schema:
-                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
-                  a"
+                oneOf:
+                  - type: object
+                    title: Success
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      room_mappings:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            mya_rate_id:
+                              type: integer
+                              minimum: 0
+                              description: Rate plan ID on the Cloudbeds channel manager
+                            ota_room_id:
+                              type: string
+                              description: OTA room ID
+                            ota_rate_id:
+                              type: string
+                              description: OTA rate plan ID
+                          required:
+                            - ota_room_id
+                    required:
+                      - success
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
           description: UpdateRoom
       summary: UpdateRoom
   /UpdateTaxes:
@@ -3423,7 +3464,7 @@ paths:
                   shared_secret: s3cr3ts4uc3
                   ota_cid: ota
                   rateplan:
-                    mya_rateplan_id: 115326
+                    mya_rate_id: 115326
             schema:
               allOf:
                 - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
@@ -3434,12 +3475,12 @@ paths:
                       type: object
                       description: Rate plan to delete
                       properties:
-                        mya_rateplan_id:
+                        mya_rate_id:
                           type: integer
                           minimum: 1
                           description: Rate plan ID on the Cloudbeds channel manager.
                       required:
-                        - mya_rateplan_id
+                        - mya_rate_id
                     verb:
                       type: string
                       enum:
@@ -3491,7 +3532,7 @@ paths:
                   shared_secret: s3cr3ts4uc3
                   ota_cid: ota
                   rateplan:
-                    mya_rateplan_id: 115629
+                    mya_rate_id: 115629
                     label_private: NR
                     label_public: Non-refundable
                     max_occupancy: 3
@@ -3501,7 +3542,7 @@ paths:
                       - 19
                       - 21
                       - 22
-                    ota_rateplan_id: "3456"
+                    ota_rate_id: "3456"
             schema:
               allOf:
                 - $ref: "#/paths/~1GetRoomTypes/post/requestBody/content/application~1json/schema\
@@ -3511,11 +3552,11 @@ paths:
                     rateplan:
                       type: object
                       properties:
-                        mya_rateplan_id:
+                        mya_rate_id:
                           type: integer
                           minimum: 1
                           description: Rate plan ID on the Cloudbeds channel manager.
-                        ota_rateplan_id:
+                        ota_rate_id:
                           type: string
                           description: Channel rate plan ID.
                         label_private:
@@ -3544,7 +3585,7 @@ paths:
                             minimum: 1
                             maximum: 24
                       required:
-                        - mya_rateplan_id
+                        - mya_rate_id
                         - label_public
                         - label_private
                     verb:
@@ -3564,6 +3605,14 @@ paths:
                   summary: Success
                   value:
                     success: true
+                Success with mapping:
+                  summary: Success with mapping
+                  value:
+                    success: true
+                    room_mappings:
+                      - ota_room_id: "11111"
+                        mya_room_id: 45829
+                        ota_rate_id: "3456"
                 Failure:
                   summary: Invalid credentials
                   value:
@@ -3572,8 +3621,37 @@ paths:
                       - id: 1001
                         msg: The login details you provided are incorrect
               schema:
-                $ref: "#/paths/~1HealthCheck/post/responses/200/content/application~1json/schem\
-                  a"
+                oneOf:
+                  - type: object
+                    title: Success
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      room_mappings:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            mya_room_id:
+                              type: integer
+                              minimum: 1
+                              description: Room ID on the Cloudbeds channel manager
+                            ota_room_id:
+                              type: string
+                              description: OTA room ID
+                            ota_rate_id:
+                              type: string
+                              description: OTA rate plan ID
+                          required:
+                            - mya_room_id
+                            - ota_room_id
+                            - ota_rate_id
+                    required:
+                      - success
+                  - $ref: "#/paths/~1GetRoomTypes/post/responses/200/content/application~1json/sche\
+                      ma/oneOf/1"
           description: UpdateRatePlan
       summary: UpdateRatePlan
   /ARIFullRefresh:
