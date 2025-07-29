@@ -16,11 +16,11 @@ post:
                 rateplan:
                   type: object
                   properties:
-                    mya_rateplan_id:
+                    mya_rate_id:
                       type: integer
                       minimum: 1
                       description: Rate plan ID on the Cloudbeds channel manager.
-                    ota_rateplan_id:
+                    ota_rate_id:
                       type: string
                       description: Channel rate plan ID.
                     label_private:
@@ -47,7 +47,7 @@ post:
                         minimum: 1
                         maximum: 24
                   required:
-                    - mya_rateplan_id
+                    - mya_rate_id
                     - label_public
                     - label_private
                 verb:
