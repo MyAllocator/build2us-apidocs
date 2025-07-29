@@ -170,6 +170,8 @@ paths:
     $ref: methods/GetBookingList.yaml
   /GetBookingId:
     $ref: methods/GetBookingId.yaml
+  /AckBooking:
+    $ref: ./methods/AckBooking.yaml
   /CancelBooking:
     $ref: ./methods/CancelBooking.yaml
   /CreateProperty:
