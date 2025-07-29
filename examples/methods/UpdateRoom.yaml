@@ -44,6 +44,20 @@ rs:
     summary: Success
     value:
       success: true
+  Success with mapping:
+    summary: Success with mapping
+    value:
+      success: true
+      room_mappings:
+      - ota_room_id: '11111'
+        mya_rate_id: 0
+        ota_rate_id: "DEF-3456"
+      - ota_room_id: '11111'
+        mya_rate_id: 850
+        ota_rate_id: "NR-3456"
+      - ota_room_id: '11111'
+        mya_rate_id: 851
+        ota_rate_id: "BR-3456"
   Failure:
     summary: Invalid credentials
     value:
