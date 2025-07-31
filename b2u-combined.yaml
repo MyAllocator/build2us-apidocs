@@ -371,7 +371,7 @@ paths:
                           description: >
                             Optional error string to give more details about the
                             error. Myallocator localises errors into different
-                            langauges, so this field is generally ignored and
+                            languages, so this field is generally ignored and
                             only useful for debugging.
                       required:
                         - id
