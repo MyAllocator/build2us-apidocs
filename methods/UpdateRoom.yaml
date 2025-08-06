@@ -132,6 +132,30 @@ post:
           examples:
             $ref: ../examples/methods/UpdateRoom.yaml#/rs
           schema:
-            $ref: ../schemas.d/response_simple.yaml
+            oneOf:
+              - type: object
+                title: Success
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  room_mappings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        mya_rate_id:
+                          type: integer
+                          minimum: 0
+                          description: Rate plan ID on the Cloudbeds channel manager
+                        ota_room_id:
+                          type: string
+                          description: OTA room ID
+                        ota_rate_id:
+                          type: string
+                          description: OTA rate plan ID
+                      required:
+                        - ota_room_id
+                required:
+                  - success
+              - $ref: ../schemas.d/response_error.yaml
       description: UpdateRoom
   summary: UpdateRoom

@@ -12,7 +12,7 @@ rq:
       shared_secret : s3cr3ts4uc3
       ota_cid: ota
       rateplan:
-        mya_rateplan_id: 115629
+        mya_rate_id: 115629
         label_private: NR
         label_public: Non-refundable
         max_occupancy: 3
@@ -22,12 +22,20 @@ rq:
           - 19
           - 21
           - 22
-        ota_rateplan_id: "3456"
+        ota_rate_id: "3456"
 rs:
   Success:
     summary: Success
     value:
       success: true
+  Success with mapping:
+    summary: Success with mapping
+    value:
+      success: true
+      room_mappings:
+      - ota_room_id: '11111'
+        mya_room_id: 45829
+        ota_rate_id: "3456"
   Failure:
     summary: Invalid credentials
     value:
