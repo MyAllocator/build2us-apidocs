@@ -1,0 +1,94 @@
+---
+post:
+  operationId: check_availability
+  description: |-
+    *Note that the endpoint for this API call is on Cloudbeds!*
+
+    Use this callback to check if a room (rateplan) is available for booking.
+
+    Although information about specific room (rateplan) availability is supposed to be present locally on a channel side,
+    we would like to provide an opportunity to double check if a room (rateplan) is available prior to creating a
+    reservation. Using this callback ensures that due to a possible technical issue leading to a room (rateplan)
+    availability numbers not having been (or having been incorectly / not in time) delivered to a channel, the room
+    is not overbooked and therefore helps avoid both host ad guest frustration when such an over-booking has to be canceled by a host
+    due to physical inability to accomodate.
+  servers:
+    - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+      variables:
+        ota:
+          description: OTA channel ID as assigned by Cloudbeds
+          default: replace_with_ota_id
+  requestBody:
+    content:
+      application/x-www-form-urlencoded:
+        examples:
+          $ref: ../examples/methods/CheckAvailability.yaml#/rq
+        schema:
+          type: object
+          properties:
+            ota_property_id:
+              description: Username, login or property ID on the OTA
+              type: string
+            ota_room_id:
+              type: string
+              description: Room ID on the OTA
+            ota_rateplan_id:
+              type: string
+              description: Room rateplan ID on the OTA (In case OTA supports rateplans)
+            start_date:
+              type: string
+              format: date
+              description: Desired check in date
+            end_date:
+              type: string
+              format: date
+              description: Desired check out date
+            unit_type:
+              type: string
+              enum:
+                - room
+                - bed
+              description: Room availability can be checked by number if rooms or number of guests (beds) to stay. We reccomend using `bed` in case a room is a dormitory/shared room and is sold by beds.
+            number_of_units:
+              type: integer
+              description: Number of rooms or beds to check availability for
+            shared_secret:
+              description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+              type: string
+          required:
+            - shared_secret
+            - ota_property_id
+            - ota_room_id
+            - ota_rateplan_id
+            - start_date
+            - end_date
+            - unit_type
+            - number_of_units
+        encoding:
+          booking_json:
+            contentType: application/json
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/CheckAvailability.yaml#/rs
+          schema:
+            oneOf:
+              - title: Successful Request
+                type: object
+                properties:
+                  Success:
+                    type: boolean
+                    enum:
+                      - true
+                    description: This field indicates that a request has been processed successfully. The value of this field does NOT indicate room availability.
+                  is_available:
+                    description: This field indicates whether or not the requested room(s) (rateplan) is(are) available for booking
+                    type: boolean
+              - $ref: ../schemas.d/response_callback_error.yaml
+      description: CheckAvailability
+  summary: CheckAvailability
+  tags:
+    - Callbacks
