@@ -87,6 +87,21 @@ post:
                   is_available:
                     description: This field indicates whether or not the requested room(s) (rateplan) is(are) available for booking
                     type: boolean
+                  reasons_unavailable:
+                    description: If room(s) (rateplan) is(are) is not available for booking, this field contains explanations as to why
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        text:
+                          type: string
+                          description: Reason text
+                        related_dates:
+                          description: Related dates
+                          type: array
+                          items:
+                            type: string
+                            format: date
               - $ref: ../schemas.d/response_callback_error.yaml
       description: CheckAvailability
   summary: CheckAvailability
