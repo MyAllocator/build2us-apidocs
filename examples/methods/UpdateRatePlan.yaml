@@ -18,7 +18,6 @@ rq:
         max_occupancy: 3
         min_occupancy: 1
         meal_codes:
-          - 1
           - 19
           - 21
           - 22

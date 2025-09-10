@@ -82,12 +82,20 @@ rq:
           - mya_rate_id: 0
             label_public: Default Rate Plan
             label_private: Default Rate Plan
+            meal_codes:
+              - 21
           - label_public: Non-refundable
             label_private: NR
             mya_rate_id: 850
+            meal_codes:
+              - 19
+              - 21
+              - 22
           - label_public: With Breakfast
             label_private: BR
             mya_rate_id: 851
+            meal_codes:
+              - 19
         - mya_room_id: 290
           units: 25
           beds: 4
