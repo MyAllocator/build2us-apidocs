@@ -367,6 +367,18 @@ post:
                                     be shown just to the property. This could for
                                     example be a code like `NF` for "Non-refundable".
                                     The label is chosen by the property.
+                                meal_codes:
+                                  type: array
+                                  description: >
+                                    Combination (list) of meal codes that are available for this rate plan.
+                                    `1` for All-Inclusive, `19` for Breakfast, `21` for Lunch, `22` for Dinner
+                                  items:
+                                    type: integer
+                                    enum:
+                                      - 1
+                                      - 19
+                                      - 21
+                                      - 22
                               required:
                                 - mya_rate_id
                                 - label_public
