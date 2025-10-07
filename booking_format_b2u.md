@@ -15,6 +15,7 @@
 | OrderModifDate | Yes* | YYYY-MM-DD | Date of booking modification, in UTC. Do not pass if booking has not been modified. |
 | OrderModifTime | Yes* | HH:MM:SS | Time of booking modification, in UTC. Do not pass if booking has not been modified. If seconds are not provided, set value to ":00". |
 | OrderTime | Yes | HH:MM:SS | Time of booking creation, in UTC. If seconds are not provided, set value to ":00".  Presence of `OrderTime` requires presence of `OrderDate`. |
+| PaymentCollect | Yes | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
 | Rooms | Yes | Room[] | See below in the Room section |
 | TotalCurrency | Yes | CurrencyCode | Currency code for the `TotalPrice` field. |
 | TotalPrice | Yes | Currency | Total price of the booking, including taxes, commission and deposit, after discounts. It should reflect the price the guest will have to pay in total (or has already paid). |
@@ -47,7 +48,6 @@
 | OrderSource | | String | Originating source of guest booking, usually a website. For example, Expedia passes bookings from multiple websites (hotels.com, Travelocity, Orbtiz, etc.). May also refer to travel agent/agency who created the booking. Do NOT provide this field if the value is the same as your channel name. This field is informational only. |
 | OrderSourceId | | String | This field is used by build-to-us channel brokers (channels that pass us reservations made on one of their partner channels). This field should contain the channel ID you use to identify the third party or the Cloudbeds Channel Manager channel ID (e.g., `exp` for `Expedia`). If you plan to use your channel's third-party channel ids, please provide us with your list of identifiers and their associated channel names so we can internalize them. Cloudbeds will use or translate this to an internal ID so that the end user knows the reservation origin source. For example, if `OrderSource` is `Expedia`, then `OrderSourceId` is the ID used by your channel (or ours) to identify `Expedia`. To use Cloudbeds' channel IDs directly please reach out to us for a current list. **Important**: It is required to use the `ExternalReferences` section to provide us with the corresponding reservation origin `OrderId` when brokering reservations. Make sure `Type` is set to `OTA`. |
 | Payments | | Payment[] | See below in the Payment section |
-| PaymentCollect | | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
 | PaymentTransactions | | PaymentTransaction[] | See below in the PaymentTransaction section |
 | Policy | | String | Terms and conditions that apply to this booking. For example it could contain the cancellation terms. |
 | SourceTree | | SourceTree[] | A list of reservation sources for brokered reservations. This list always includes an intermediary, such as a channel, CRS, or GDS, and can contain a guest-facing entity, such as a travel agency or rewards program. See more below in SourceTree section |
@@ -279,7 +279,7 @@ This object holds information about involved travel agencies.
 | Phones | | Phone[] | Phone numbers of the travel agency. |
 | PostCode | | String | Postcode (ZIP) of the travel agency. |
 | ProfileId | | String | Travel agency ID. The ID may come from different sources, see ProfileIdType |
-| ProfileIdType | | Enum('ABTA','CLIA','IATA','TIDS','TRUE') | Organization to which the travel agency profile ID belongs. |
+| ProfileIdType | | String | Source of the profile ID belongs. e.g. 'ABTA','CLIA','IATA','TIDS','TRUE', 'TRAVEL', 'PRIVE' |
 | State | | String | State (province, etc.) of the travel agency. |
 
 
@@ -447,14 +447,14 @@ has stored on their profile but not which loyalty program is selected for the bo
 
 Some properties have "frequent guest" programs that allow for guests to
 accrue points or get perks. Each membership will contain a `ProgramCode`
-(membership program name) and `AccountID` (guest's membership ID).
+(membership program name) and optionally an `AccountId` (guest's membership ID).
 
 ### Provided by channel module
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
-| AccountId | Yes | String | Guest's membership ID for this program |
 | ProgramCode | Yes | String | Name of the membership program |
+| AccountId | | String | Guest's membership ID for this program |
 | BonusCode | | String | The code or name of the bonus program. |
 
 ## Voucher

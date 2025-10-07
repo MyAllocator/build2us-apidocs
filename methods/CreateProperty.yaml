@@ -150,24 +150,19 @@ post:
                       description: Address of the property.
                       properties:
                         address_line_1:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: First address line of the property (usually the street name and house number)
                         address_line_2:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Second address line of the property (if applicable)
                         city:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: City or locality the property is located in
                         zip:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Post Code (ZIP) of the property
                         state:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: State of the property (if applicable)
                         country:
                           type: string
@@ -177,32 +172,27 @@ post:
                             country the property is located in. Same as `country` on
                             the top level.
                         website:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Homepage of the property
                         lon:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: >
                             Geographic longitude of the property, given as decimal
                             degrees. Positive for east, negative for west.
                             Example: `-117.15292`
                         lat:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: >
                             Geographic latitude of the property, given as decimal
                             degrees. Positive for north, negative for south.
                             Example: `32.70954`
                         phone:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: >
                             Phone number for the property with international country
                             code (eg. `+44 350 5697864`)
                         fax:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: >
                             Fax number for the property with international country
                             code (eg. `+44 350 5697864`)
@@ -213,40 +203,31 @@ post:
                       description: Contact information for invoicing
                       properties:
                         main_contact_name:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Name of the main contact for the property
                         company_name:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Name of the company owning the property
                         account_manager_name:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Name of the account manager responsible for the property
                         vat_id:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Tax ID for the property
                         address_line_1:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: First address line of the company or property owner (usually the street name and house number)
                         address_line_2:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Second address line of the company or property owner (if applicable)
                         state:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: State of the company or property owner (if applicable)
                         zip:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: Post Code (ZIP) of the company or property owner
                         city:
-                          type: string
-                          nullable: true
+                          type: [string, "null"]
                           description: City or locality the company or property owner is located in
                         country:
                           type: string
@@ -310,8 +291,7 @@ post:
                               Short string that describes the room for displaying
                               purposes.
                           description:
-                            type: string
-                            nullable: true
+                            type: [string, "null"]
                             description: >
                               Longer description of the room which describes a room
                               to a potential guest.
@@ -325,8 +305,7 @@ post:
                                   type: string
                                   description: Publicly accessible URL to the full resolution image
                                 description:
-                                  type: string
-                                  nullable: true
+                                  type: [string, "null"]
                                   description: Description of the image to show on a channel (max. 2000 characters)
                                 sort_order:
                                   type: integer
@@ -353,15 +332,13 @@ post:
                                     different rooms) is always `0`. Any non-default
                                     rate plans have a higher ID.
                                 label_public:
-                                  type: string
-                                  nullable: true
+                                  type: [string, "null"]
                                   description: >
                                     Name or short summary of the rate plan, suitable
                                     for display to guests. The label is chosen by the
                                     property.
                                 label_private:
-                                  type: string
-                                  nullable: true
+                                  type: [string, "null"]
                                   description: >
                                     Name or short summary of the rate plan, aimed to
                                     be shown just to the property. This could for

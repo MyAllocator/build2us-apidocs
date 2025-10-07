@@ -28,7 +28,19 @@ rq:
         firstname: John
         lastname: Smith
         taxes:
-          $ref: ../taxes.yaml
+        - amount: 10.567
+          applies_per: booking
+          calculation_basis: rate
+          category: vat
+          code: IVA
+          description: Impuesto
+          id: 4761
+          is_fee: false
+          is_inclusive: true
+          is_per_night: false
+          is_percent: true
+          is_refundable: false
+          name: IVA
         timezone: Asia/Thimphu
         address:
           address_line_1: Main St

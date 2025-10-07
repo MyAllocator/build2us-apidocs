@@ -27,8 +27,7 @@ post:
                   enum:
                     - GetBookingList
                 ota_booking_version:
-                  type: string
-                  nullable: true
+                  type: [string, "null"]
                   description: |-
                     With each request we send along `ota_booking_version`, which
                     has the format `YYYY-MM-DD HH:MM:SS` and indicates the time

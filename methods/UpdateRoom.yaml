@@ -49,8 +49,7 @@ post:
                         Short string that describes the room for displaying
                         purposes.
                     description:
-                      type: string
-                      nullable: true
+                      type: [string, "null"]
                       description: >
                         Longer description of the room which describes a room
                         to a potential guest.
@@ -91,15 +90,13 @@ post:
                               different rooms) is always `0`. Any non-default
                               rate plans have a higher ID.
                           label_public:
-                            type: string
-                            nullable: true
+                            type: [string, "null"]
                             description: >
                               Name or short summary of the rate plan, suitable
                               for display to guests. The label is chosen by the
                               property.
                           label_private:
-                            type: string
-                            nullable: true
+                            type: [string, "null"]
                             description: >
                               Name or short summary of the rate plan, aimed to
                               be shown just to the property. This could for

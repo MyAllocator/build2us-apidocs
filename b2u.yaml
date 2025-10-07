@@ -4,6 +4,9 @@ info:
   version: "5.1"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
+  license:
+    name: Cloudbeds API Terms
+    url: https://www.cloudbeds.com/terms/api/
   description: |
     # Introduction
 
@@ -150,10 +153,21 @@ info:
     on how to use these fields. We also recommend implementing the `SourceTree` field if multiple
     sources can be involved in a booking.
 
-openapi: 3.0.0
+openapi: 3.2.0
 servers:
   - url: https://api.your-ota.com/cloudbeds
     description: OTA endpoint
+
+security:
+  - shared_secret: []
+
+components:
+  securitySchemes:
+    shared_secret:
+      type: apiKey
+      in: query
+      name: shared_secret
+      description: Authentication between the OTA and the channel manager. Identical for all requests. Not to be shared with customers.
 
 paths:
   /HealthCheck:
