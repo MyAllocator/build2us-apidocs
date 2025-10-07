@@ -6,7 +6,7 @@ post:
     We will combine the updates into as few date ranges as possible, and we
     split bigger updates into several API requests. We also cache data and will
     not send ARI updates if the ARI data has not changed within a certain
-    timeframe. You can ask us to alter the numer of `Inventory` objects we send
+    timeframe. You can ask us to alter the number of `Inventory` objects we send
     per request. It's also possible to ask us to restrict maximum number of days
     per date range.
 
@@ -64,7 +64,7 @@ post:
                         type: integer
                         minimum: 0
                         description: >
-                          Number or rooms bookable (available) for private
+                          Number of rooms bookable (available) for private
                           rooms, or for the number of beds for shared/dorm rooms.
                       rate:
                         type: string

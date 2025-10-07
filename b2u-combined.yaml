@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.1.2
 info:
   title: Cloudbeds OTA Build-To-Us API
   version: '5.2'
@@ -105,8 +105,8 @@ info:
     ## Terminology
 
     * OTA: Online travel agency (ex: booking.com, or competitor)
-    * cid: Channel ID - a two to four character code used by Cloudbeds uniquely identify a OTA.
-    * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.f
+    * cid: Channel ID - a two to four character code used by Cloudbeds uniquely identify an OTA.
+    * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.
 
     ## Requests
 
@@ -618,7 +618,7 @@ paths:
         We will combine the updates into as few date ranges as possible, and we
         split bigger updates into several API requests. We also cache data and will
         not send ARI updates if the ARI data has not changed within a certain
-        timeframe. You can ask us to alter the numer of `Inventory` objects we send
+        timeframe. You can ask us to alter the number of `Inventory` objects we send
         per request. It's also possible to ask us to restrict maximum number of days
         per date range.
 
@@ -705,7 +705,7 @@ paths:
                             type: integer
                             minimum: 0
                             description: |
-                              Number or rooms bookable (available) for private rooms, or for the number of beds for shared/dorm rooms.
+                              Number of rooms bookable (available) for private rooms, or for the number of beds for shared/dorm rooms.
                           rate:
                             type: string
                             pattern: ^\d+(\.\d+)?$
@@ -864,7 +864,7 @@ paths:
                         booking are skipped due to a time-offset between your and
                         our servers make sure to always reduce 5 or more minutes
                         from the time given. Example: we provide 2017-06-22
-                        12:09:19, then please return all new/modified/cancalled
+                        12:09:19, then please return all new/modified/cancelled
                         bookings since 2017-06-22 12:04:19 (5 minutes before the
                         time sent).
 
@@ -937,7 +937,7 @@ paths:
         [here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
 
         Most fields are optional. This specification lists only the minimum required
-        fields to be eligable for a successful Build-To-Us integration.
+        fields to be eligible for a successful Build-To-Us integration.
 
         Prices: Send us sell rates (rates including taxes and fees). The sum of all
         room prices should equal the `TotalPrice` field. Day rates should be per
@@ -2076,7 +2076,7 @@ paths:
     post:
       operationId: update_room
       description: |
-        Create of update room after it has been changed on the Cloudbeds channel manager.
+        Create or update room after it has been changed on the Cloudbeds channel manager.
       requestBody:
         content:
           application/json:
@@ -2694,7 +2694,7 @@ paths:
       description: |
         *Note that the endpoint for this API call is on Cloudbeds!*
         This is for technical support on the remote OTA to enqueue a full refresh of the property. You may use either `ota_property_id` (it may be resolved into a number of Cloudbeds channel manager IDs) or `mya_property_id`.
-        Note that full refreshes are heavy operations, so only call this when absolutely neccessary. Under no circumstances use this callback on a scheduled basis.
+        Note that full refreshes are heavy operations, so only call this when absolutely necessary. Under no circumstances use this callback on a scheduled basis.
       servers:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
           variables:
@@ -2769,10 +2769,10 @@ paths:
         Use this callback to send us new bookings. Using this callback ensures that
         there is no delay between the creation of the booking and import on
         Cloudbeds. Therefore it's strongly recommend to implement this callback.
-        Even when implemented it's still neccessary to also implement the
+        Even when implemented it's still necessary to also implement the
         `GetBookingList` and `GetBookingId` calls, which act as fallbacks if
         the `CreateBooking` notification fails, when a reimport due to processing
-        issues on Cloudbeds is neccessary, or when a specific booking needs to be
+        issues on Cloudbeds is necessary, or when a specific booking needs to be
         debugged.
 
         The booking format is identical to what is being returned in the

@@ -119,7 +119,7 @@ Price = sum of day rates + room-specific extra taxes
 ## Customer
 
 The first entry in the `Customers` array should refer
-to the person that has made the booking, who may not neccessarily be the
+to the person that has made the booking, who may not necessarily be the
 person staying at the property.
 
 | Field | Required | Type | Description |
@@ -201,7 +201,7 @@ service booked.
 
 Lists additional taxes that do not fit into the general `Tax` field in the day
 rates, because the tax is not related to per-night rates. Per-person rates for
-example to do not well into the Room section.
+example do not fit well into the Room section.
 
 If a tax is specific to a specific room put it in the `Rooms` section.
 

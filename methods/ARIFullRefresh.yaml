@@ -9,7 +9,7 @@ post:
     a number of Cloudbeds channel manager IDs) or `mya_property_id`.
 
     Note that full refreshes are heavy operations, so only call this when
-    absolutely neccessary. Under no circumstances use this callback on a
+    absolutely necessary. Under no circumstances use this callback on a
     scheduled basis.
   servers:
     - url: https://api.myallocator.com/callback/ota/{ota}/v202203
