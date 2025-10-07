@@ -40,12 +40,15 @@ post:
                     meal_codes:
                       type: array
                       description: >
-                        List of meal codes that are available for this rate plan.
-                        OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                        Combination (list) of meal codes that are available for this rate plan.
+                        `1` for All-Inclusive, `19` for Breakfast, `21` for Lunch, `22` for Dinner
                       items:
                         type: integer
-                        minimum: 1
-                        maximum: 24
+                        enum:
+                          - 1
+                          - 19
+                          - 21
+                          - 22
                   required:
                     - mya_rate_id
                     - label_public

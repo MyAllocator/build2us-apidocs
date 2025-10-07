@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Cloudbeds OTA Build-To-Us API
-  version: '5.1'
+  version: '5.2'
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
   license:
@@ -1336,12 +1336,20 @@ paths:
                           - mya_rate_id: 0
                             label_public: Default Rate Plan
                             label_private: Default Rate Plan
+                            meal_codes:
+                              - 21
                           - label_public: Non-refundable
                             label_private: NR
                             mya_rate_id: 850
+                            meal_codes:
+                              - 19
+                              - 21
+                              - 22
                           - label_public: With Breakfast
                             label_private: BR
                             mya_rate_id: 851
+                            meal_codes:
+                              - 19
                       - mya_room_id: 290
                         units: 25
                         beds: 4
@@ -1720,6 +1728,17 @@ paths:
                                         - 'null'
                                       description: |
                                         Name or short summary of the rate plan, aimed to be shown just to the property. This could for example be a code like `NF` for "Non-refundable". The label is chosen by the property.
+                                    meal_codes:
+                                      type: array
+                                      description: |
+                                        Combination (list) of meal codes that are available for this rate plan. `1` for All-Inclusive, `19` for Breakfast, `21` for Lunch, `22` for Dinner
+                                      items:
+                                        type: integer
+                                        enum:
+                                          - 1
+                                          - 19
+                                          - 21
+                                          - 22
                                   required:
                                     - mya_rate_id
                                     - label_public
@@ -2095,12 +2114,20 @@ paths:
                       - mya_rate_id: 0
                         label_public: Default Rate Plan
                         label_private: Default Rate Plan
+                        meal_codes:
+                          - 21
                       - label_public: Non-refundable
                         label_private: NR
                         mya_rate_id: 850
+                        meal_codes:
+                          - 19
+                          - 21
+                          - 22
                       - label_public: With Breakfast
                         label_private: BR
                         mya_rate_id: 851
+                        meal_codes:
+                          - 19
             schema:
               allOf:
                 - $ref: '#/components/schemas/auth'
@@ -2189,6 +2216,17 @@ paths:
                                   - 'null'
                                 description: |
                                   Name or short summary of the rate plan, aimed to be shown just to the property. This could for example be a code like `NF` for "Non-refundable". The label is chosen by the property.
+                              meal_codes:
+                                type: array
+                                description: |
+                                  Combination (list) of meal codes that are available for this rate plan. `1` for All-Inclusive, `19` for Breakfast, `21` for Lunch, `22` for Dinner
+                                items:
+                                  type: integer
+                                  enum:
+                                    - 1
+                                    - 19
+                                    - 21
+                                    - 22
                             required:
                               - mya_rate_id
                               - label_public
@@ -2537,7 +2575,6 @@ paths:
                     max_occupancy: 3
                     min_occupancy: 1
                     meal_codes:
-                      - 1
                       - 19
                       - 21
                       - 22
@@ -2574,11 +2611,14 @@ paths:
                         meal_codes:
                           type: array
                           description: |
-                            List of meal codes that are available for this rate plan. OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                            Combination (list) of meal codes that are available for this rate plan. `1` for All-Inclusive, `19` for Breakfast, `21` for Lunch, `22` for Dinner
                           items:
                             type: integer
-                            minimum: 1
-                            maximum: 24
+                            enum:
+                              - 1
+                              - 19
+                              - 21
+                              - 22
                       required:
                         - mya_rate_id
                         - label_public
