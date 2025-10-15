@@ -15,6 +15,8 @@ rq:
         mya_room_id: 45829
         units: 5
         beds: 2
+        max_adults: 2
+        max_children: 1
         dormitory: false
         label: Double Room
         description: A potentially long description about the room

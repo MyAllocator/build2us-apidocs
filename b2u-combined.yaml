@@ -1318,6 +1318,8 @@ paths:
                       - mya_room_id: 45829
                         units: 5
                         beds: 2
+                        max_adults: 2
+                        max_children: 1
                         dormitory: false
                         gender: MIXED
                         label: Double Room
@@ -1353,6 +1355,8 @@ paths:
                       - mya_room_id: 290
                         units: 25
                         beds: 4
+                        max_adults: 4
+                        max_children: 2
                         dormitory: false
                         label: 4-person private
                         description: null
@@ -1364,6 +1368,8 @@ paths:
                       - mya_room_id: 329
                         units: 7
                         beds: 3
+                        max_adults: 3
+                        max_children: 1
                         dormitory: false
                         label: 3-person private
                         description: Best three bed room in town
@@ -1381,6 +1387,8 @@ paths:
                       - mya_room_id: 52
                         units: 3
                         beds: 30
+                        max_adults: 1
+                        max_children: 0
                         dormitory: true
                         gender: MIXED
                         label: 30-person mixed shared
@@ -1652,7 +1660,7 @@ paths:
                               mya_room_id:
                                 type: integer
                                 minimum: 1
-                                description: Room ID on the Cloudbeds channel manager
+                                description: Room ID on the Cloudbeds channel manager.
                               units:
                                 type: integer
                                 minimum: 1
@@ -1661,13 +1669,21 @@ paths:
                                 type: integer
                                 minimum: 1
                                 description: Number of people that can stay in this room.
+                              max_adults:
+                                type: integer
+                                minimum: 1
+                                description: Maximum number of adults that can stay in this room.
+                              max_children:
+                                type: integer
+                                minimum: 0
+                                description: Maximum number of children that can stay in this room.
                               dormitory:
                                 type: boolean
                                 description: |
-                                  `true` if it's a dormitory (shared room), `false` for private rooms.
+                                  If `true` it's a dormitory (shared room), `false` for private rooms.
                               gender:
                                 type: string
-                                description: Required for dormitory
+                                description: Gender. Required for dormitory
                                 enum:
                                   - MALE
                                   - FEMALE
@@ -2096,6 +2112,8 @@ paths:
                     mya_room_id: 45829
                     units: 5
                     beds: 2
+                    max_adults: 2
+                    max_children: 1
                     dormitory: false
                     label: Double Room
                     description: A potentially long description about the room
@@ -2150,7 +2168,15 @@ paths:
                         beds:
                           type: integer
                           minimum: 1
-                          description: Number people that can stay in this room.
+                          description: Number of people that can stay in this room.
+                        max_adults:
+                          type: integer
+                          minimum: 1
+                          description: Maximum number of adults that can stay in this room.
+                        max_children:
+                          type: integer
+                          minimum: 0
+                          description: Maximum number of children that can stay in this room.
                         dormitory:
                           type: boolean
                           description: |
@@ -2174,7 +2200,7 @@ paths:
                             Longer description of the room which describes a room to a potential guest.
                         images:
                           type: array
-                          description: List of property-level images
+                          description: List of room-level images.
                           items:
                             type: object
                             properties:
@@ -2182,7 +2208,9 @@ paths:
                                 type: string
                                 description: Publicly accessible URL to the full resolution image
                               description:
-                                type: string
+                                type:
+                                  - string
+                                  - 'null'
                                 description: Description of the image to show on a channel (max. 2000 characters)
                               sort_order:
                                 type: integer
