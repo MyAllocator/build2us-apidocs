@@ -263,6 +263,8 @@ paths:
     $ref: ./methods/CancelBooking.yaml
   /CreateProperty:
     $ref: methods/CreateProperty.yaml
+  /UpdateProperty:
+    $ref: methods/UpdateProperty.yaml
   /GetSubProperties:
     $ref: methods/GetSubProperties.yaml
   /DeleteRoom:

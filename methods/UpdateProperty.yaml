@@ -1,0 +1,251 @@
+---
+post:
+  operationId: update_property
+  description: >
+    Update general data of property after it has been changed on the Cloudbeds channel manager.
+    This call needs to be activated explicitly from our side before you can use it. Please talk
+    to your Cloudbeds contact before implementing this call! We cannot guarantee that all of
+    the following request fields will always be filled in, as many are optional within Cloudbeds.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/UpdateProperty.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                mya_property_id:
+                  description: Property ID on the Cloudbeds channel manager
+                  type: integer
+                  minimum: 1
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: '^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by Cloudbeds
+                  type: string
+                  pattern: '^[a-z0-9]+$'
+                verb:
+                  type: string
+                  enum:
+                    - UpdateProperty
+                Property:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Property name
+                    country:
+                      type: string
+                      pattern: '^[A-Z]{2}$'
+                      description: >
+                        2-letter ISO 3166-1 alpha-2 country code. This is the
+                        country the property is located in.
+                    currency:
+                      type: string
+                      pattern: '^[A-Z]{3}$'
+                      description: >
+                        3-letter ISO 4217 currency code. This is the default
+                        currency of the property.
+                    timezone:
+                      type: string
+                      description: >
+                        Timezone the property is located in. Check
+                        (this document)[https://apidocs.myallocator.com/timezone-list.html]
+                        for valid values.
+                    email_default:
+                      type: string
+                      format: email
+                      description: >
+                        The default property email address. Defaults to default user
+                        email.
+                    email_channel_booking:
+                      type: string
+                      format: email
+                      description: >
+                        The email address used when forwarding channel booking
+                        emails. Defaults to default user email.
+                    email_contact:
+                      type: string
+                      format: email
+                      description: >
+                        The email address of the contact person responsible for
+                        the property creation.
+                    default_min_los:
+                      type: integer
+                      minimum: 1
+                      description: >
+                        Default minimum length of stay setting for this property.
+                        See the description for `min_los` in the `ARIUpdate` call
+                        for more details on this restriction.
+                    default_max_los:
+                      type: integer
+                      minimum: 0
+                      description: |-
+                        Default maximum length of stay setting for this property.
+                        See the description for `max_los` in the `ARIUpdate` call
+                        for more details on this restriction.
+
+                        `0` means there is no restriction.
+                    breakfast:
+                      type: string
+                      enum:
+                        - ''
+                        - IN
+                        - EX
+                      description: |-
+                        Default breakfast setting for the property. Empty string
+                        means no breakfast is available, `IN` means breakfast is
+                        included in the day rates and `EX` means breakfast is
+                        excluded from day rates.
+
+                        Note that this setting is likely not very useful and too
+                        broad.
+                    weekend:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                          - monday
+                          - tuesday
+                          - wednesday
+                          - thursday
+                          - friday
+                          - saturday
+                          - sunday
+                      description: |-
+                        List of weekdays that the property considers to be their
+                        weekend.
+
+                        Note that this setting is likely not very useful.
+                    firstname:
+                      type: string
+                      description: >
+                        First name of property owner/manager.
+                    lastname:
+                      type: string
+                      description: >
+                        First name of property owner/manager.
+                    address:
+                      type: object
+                      description: Address of the property.
+                      properties:
+                        address_line_1:
+                          type: [string, "null"]
+                          description: First address line of the property (usually the street name and house number)
+                        address_line_2:
+                          type: [string, "null"]
+                          description: Second address line of the property (if applicable)
+                        city:
+                          type: [string, "null"]
+                          description: City or locality the property is located in
+                        zip:
+                          type: [string, "null"]
+                          description: Post Code (ZIP) of the property
+                        state:
+                          type: [string, "null"]
+                          description: State of the property (if applicable)
+                        country:
+                          type: string
+                          pattern: '^[A-Z]{2}$'
+                          description: >
+                            2-letter ISO 3166-1 alpha-2 country code. This is the
+                            country the property is located in. Same as `country` on
+                            the top level.
+                        website:
+                          type: [string, "null"]
+                          description: Homepage of the property
+                        lon:
+                          type: [string, "null"]
+                          description: >
+                            Geographic longitude of the property, given as decimal
+                            degrees. Positive for east, negative for west.
+                            Example: `-117.15292`
+                        lat:
+                          type: [string, "null"]
+                          description: >
+                            Geographic latitude of the property, given as decimal
+                            degrees. Positive for north, negative for south.
+                            Example: `32.70954`
+                        phone:
+                          type: [string, "null"]
+                          description: >
+                            Phone number for the property with international country
+                            code (eg. `+44 350 5697864`)
+                        fax:
+                          type: [string, "null"]
+                          description: >
+                            Fax number for the property with international country
+                            code (eg. `+44 350 5697864`)
+                      required:
+                        - country
+                    business_contact:
+                      type: object
+                      description: Contact information for invoicing
+                      properties:
+                        main_contact_name:
+                          type: [string, "null"]
+                          description: Name of the main contact for the property
+                        company_name:
+                          type: [string, "null"]
+                          description: Name of the company owning the property
+                        account_manager_name:
+                          type: [string, "null"]
+                          description: Name of the account manager responsible for the property
+                        vat_id:
+                          type: [string, "null"]
+                          description: Tax ID for the property
+                        address_line_1:
+                          type: [string, "null"]
+                          description: First address line of the company or property owner (usually the street name and house number)
+                        address_line_2:
+                          type: [string, "null"]
+                          description: Second address line of the company or property owner (if applicable)
+                        state:
+                          type: [string, "null"]
+                          description: State of the company or property owner (if applicable)
+                        zip:
+                          type: [string, "null"]
+                          description: Post Code (ZIP) of the company or property owner
+                        city:
+                          type: [string, "null"]
+                          description: City or locality the company or property owner is located in
+                        country:
+                          type: string
+                          pattern: '^[A-Z]{2}$'
+                          description: >
+                            2-letter ISO 3166-1 alpha-2 country code. This is the
+                            country the the company or property owner is located in.
+                      required:
+                        - country
+          required:
+            - guid
+            - mya_property_id
+            - shared_secret
+            - ota_cid
+            - verb
+            - Property
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/UpdateProperty.yaml#/rs
+          schema:
+            oneOf:
+              - type: object
+                title: Success
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                required:
+                  - success
+              - $ref: ../schemas.d/response_error.yaml
+      description: UpdateProperty
+  summary: UpdateProperty
