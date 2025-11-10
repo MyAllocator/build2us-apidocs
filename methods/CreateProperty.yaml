@@ -421,6 +421,12 @@ post:
                       If the OTA uses passwords this will authenticate the
                       property on the OTA. We'll automatically save the
                       password.
+                  ota_property_sub_id:
+                    type: string
+                    description: >
+                      If the channel supports multiple properties under one
+                      account, this sub-property ID will be saved
+                      and included in future API calls for this property.
                   instruction_text:
                     type: string
                     description: >
