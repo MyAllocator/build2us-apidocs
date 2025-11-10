@@ -76,6 +76,8 @@ rq:
         - mya_room_id: 45829
           units: 5
           beds: 2
+          max_adults: 2
+          max_children: 1
           dormitory: false
           gender: MIXED
           label: Double Room
@@ -111,6 +113,8 @@ rq:
         - mya_room_id: 290
           units: 25
           beds: 4
+          max_adults: 4
+          max_children: 2
           dormitory: false
           label: 4-person private
           description:
@@ -122,6 +126,8 @@ rq:
         - mya_room_id: 329
           units: 7
           beds: 3
+          max_adults: 3
+          max_children: 1
           dormitory: false
           label: 3-person private
           description: Best three bed room in town
@@ -139,6 +145,8 @@ rq:
         - mya_room_id: 52
           units: 3
           beds: 30
+          max_adults: 1
+          max_children: 0
           dormitory: true
           gender: MIXED
           label: 30-person mixed shared

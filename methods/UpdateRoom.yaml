@@ -30,7 +30,15 @@ post:
                     beds:
                       type: integer
                       minimum: 1
-                      description: Number people that can stay in this room.
+                      description: Number of people that can stay in this room.
+                    max_adults:
+                      type: integer
+                      minimum: 1
+                      description: Maximum number of adults that can stay in this room.
+                    max_children:
+                      type: integer
+                      minimum: 0
+                      description: Maximum number of children that can stay in this room.
                     dormitory:
                       type: boolean
                       description: >
@@ -55,7 +63,7 @@ post:
                         to a potential guest.
                     images:
                       type: array
-                      description: List of property-level images
+                      description: List of room-level images.
                       items:
                         type: object
                         properties:
@@ -63,7 +71,7 @@ post:
                             type: string
                             description: Publicly accessible URL to the full resolution image
                           description:
-                            type: string
+                            type: [string, "null"]
                             description: Description of the image to show on a channel (max. 2000 characters)
                           sort_order:
                             type: integer
