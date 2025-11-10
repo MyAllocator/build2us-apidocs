@@ -160,6 +160,9 @@ info:
     ### 2025-11-10
     * **CreateProperty**: Added optional `ota_property_sub_id` response parameter. For channels that support multiple properties under one account, this sub-property ID will be saved by Cloudbeds and included in future API calls for the property.
 
+    ### 2025-10-15
+    * **CreateProperty, UpdateRoom**: Added `max_adults` and `max_children` fields
+
     ## Version 5.2
 
     ### 2025-10-07
