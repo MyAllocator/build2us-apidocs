@@ -1,7 +1,7 @@
 ---
 info:
   title: Cloudbeds OTA Build-To-Us API
-  version: "5.2"
+  version: "5.3"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
   license:
@@ -152,6 +152,79 @@ info:
     Please check [booking format](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md)
     on how to use these fields. We also recommend implementing the `SourceTree` field if multiple
     sources can be involved in a booking.
+
+    # Changelog
+
+    ## Version 5.3
+
+    ### 2025-11-10
+    * **CreateProperty**: Added optional `ota_property_sub_id` response parameter. For channels that support multiple properties under one account, this sub-property ID will be saved by Cloudbeds and included in future API calls for the property.
+
+    ### 2025-10-15
+    * **CreateProperty, UpdateRoom**: Added `max_adults` and `max_children` fields
+
+    ## Version 5.2
+
+    ### 2025-10-07
+    * **Documentation**: Improved OpenAPI documentation structure and added new required fields to booking format
+    * **Booking Format**: Added new mandatory fields to booking schema
+
+    ### 2025-09-02
+    * **CreateProperty, UpdateRoom, UpdateRatePlan**: Added `meal_codes` field to support meal plan information (All-Inclusive, Breakfast, Lunch, Dinner)
+
+    ### 2025-08-06
+    * **UpdateRoom, UpdateRatePlan**: Added mapping return fields in responses to automatically map OTA IDs to Cloudbeds IDs
+
+    ### 2025-07-16
+    * **Groups**: Added group booking support with new methods: `CreateGroup`, `UpdateGroup`, `DeleteGroup`, `CreateGroupBlock`, `UpdateGroupBlock`, `DeleteGroupBlock`
+
+    ### 2025-07-15
+    * **Booking Format**: Enhanced broker/CRS support with detailed documentation for `OrderSource`, `OrderSourceId`, `ExternalReferences`, and `SourceTree` fields
+
+    ### 2025-06-16
+    * **AckBooking**: Added new method to acknowledge successful booking receipt
+
+    ## Version 5.1
+
+    ### 2024-04-16
+    * **UpdateTaxes**: Added new method to manage property taxes and fees
+    * **CreateProperty**: Added taxes and fees support in property creation
+
+    ### 2024-07-18
+    * **Booking Format**: Extended booking format with additional fields
+
+    ### 2024-08-01
+    * **Booking Format**: Added `DepositType` field
+
+    ### 2024-06-12
+    * **UpdateRoom, DeleteRoom**: Added new methods for room management
+
+    ### 2024-06-16
+    * **UpdateRatePlan, DeleteRatePlan**: Added new methods for rate plan management
+    * **Room Data**: Added gender field to room data for dormitory support
+
+    ### 2024-09-16
+    * **UpdateRoom**: Added missing `ota_room_id` field
+
+    ### 2025-03-27
+    * **Payment**: Added support for new card types: Cabal, ItalCred, Naranja, and Nativa
+
+    ## Version 5.0
+
+    ### 2022-08-31
+    * **Endpoints**: Moved to single endpoint URLs (all methods can use the same base URL)
+
+    ## Version 4.0
+
+    * **CreateProperty**: Added `rateplans` field for rooms
+
+    ## Version 3.0
+
+    * **CreateProperty**: Added new fields: `images`, `description`, `check_in_time`, `check_out_time`
+
+    ## Version 1.0
+
+    * Initial release
 
 openapi: 3.1.2
 servers:

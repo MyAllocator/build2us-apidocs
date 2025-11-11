@@ -362,7 +362,7 @@ Contact person information.
 | LoyaltyMemberships |                | LoyaltyMembership[] | Loyalty program memberships assigned to the contact person. |
 | Phone              |                | String              | Phone number.                                               |
 | PostCode           |                | String              | Postcode (ZIP).                                             |
-| State              |                | String              | State (province, etc.). 
+| State              |                | String              | State (province, etc.).                                     | 
 
 ## CreditCardAddress
 
@@ -441,7 +441,7 @@ has stored on their profile but not which loyalty program is selected for the bo
 | MembershipId  |          | String     | Unique identifier of the member in the program.                      |
 | ProgramId     |          | String     | The company of the loyalty program.                                  |
 | SignupDate    |          | YYYY-MM-DD | The date that the member signed up for the loyalty program.          |
-| VendorCode    |          | String     | The identifier for the vendor in the program.
+| VendorCode    |          | String     | The identifier for the vendor in the program.                        |
 
 ## Membership
 
