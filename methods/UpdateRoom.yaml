@@ -122,6 +122,13 @@ post:
                                 - 19
                                 - 21
                                 - 22
+                          refundable:
+                            type: boolean
+                            description: If present specifies if rate plan is refundable
+                          refundable_until_days:
+                            type: integer
+                            description: >
+                              Minimal number of days before check-in required for a rate plan to be refundable
                         required:
                           - mya_rate_id
                           - label_public
