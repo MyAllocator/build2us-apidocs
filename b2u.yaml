@@ -283,7 +283,6 @@ paths:
     $ref: methods/DeleteRatePlan.yaml
   /UpdateRatePlan:
     $ref: methods/UpdateRatePlan.yaml
-
   /ARIFullRefresh:
     $ref: methods/ARIFullRefresh.yaml
   /BookingCreate:
@@ -292,3 +291,5 @@ paths:
     $ref: methods/NotifyBooking.yaml
   /RoomInfo:
     $ref: methods/RoomInfo.yaml
+  /ChannelList:
+    $ref: methods/ChannelList.yaml
