@@ -113,7 +113,9 @@ info:
     Cloudbeds will send requests to the OTA with content-type
     `application/json`, with the payload being in the body of the request. Gzip
     compression and keep-alives will be used if supported. HTTPS
-    (SSL encryption) is required for the OTA's endpoint.
+    (SSL encryption) is required for the OTA's endpoint. If an endpoint with
+    a port other than 443 is to be used Cloudbeds will need to allow-list
+    this port first.
 
     HTTP response codes from Cloudbeds should always be 200. They have the
     content-type `application/json`.
