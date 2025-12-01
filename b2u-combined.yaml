@@ -155,6 +155,11 @@ info:
 
     # Changelog
 
+    ## Version 5.5
+
+    ### 2025-12-01
+    * **ChannelList**: Added new method to get a list of Cloudbeds channels with their IDs and names
+
     ## Version 5.4
 
     ### 2025-11-18
