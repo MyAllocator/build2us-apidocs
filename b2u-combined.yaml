@@ -3520,6 +3520,97 @@ paths:
       summary: RoomInfo
       tags:
         - Callbacks
+  /ChannelList:
+    post:
+      operationId: channel_list
+      description: |
+        Returns a list of all channels known to Cloudbeds, including their names and corresponding IDs.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ChannelList:
+                summary: ChannelList
+                value:
+                  verb: ChannelList
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              type: object
+              properties:
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by Cloudbeds
+                  type: string
+                  pattern: ^[a-z0-9]+$
+                verb:
+                  type: string
+                  enum:
+                    - ChannelList
+              required:
+                - guid
+                - shared_secret
+                - ota_cid
+                - verb
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Something went wrong
+                  value:
+                    success: false
+                    errors:
+                      - id: 666
+                        msg: Internal server error
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                    channels:
+                      - channel_id: boo
+                        name: Booking.com
+                      - channel_id: exp
+                        name: Expedia
+              schema:
+                oneOf:
+                  - type: object
+                    title: Success
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      channels:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            channel_id:
+                              type: string
+                              pattern: ^[a-z0-9]+$
+                              description: Unique channel ID (2-4 characters)
+                            name:
+                              type: string
+                              description: Name for the channel
+                          required:
+                            - channel_id
+                            - name
+                    required:
+                      - success
+                      - channels
+                  - $ref: '#/components/schemas/response_error'
+          description: ChannelList
+      summary: ChannelList
 components:
   securitySchemes:
     shared_secret:
