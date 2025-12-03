@@ -1,0 +1,26 @@
+---
+rq:
+  ChannelList:
+    summary: ChannelList
+    value:
+      verb: ChannelList
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+rs:
+  Failure:
+    summary: Something went wrong
+    value:
+      success: false
+      errors:
+        - id: 666
+          msg: Internal server error
+  Success:
+    summary: Success
+    value:
+      success: true
+      channels:
+        - channel_id: boo
+          name: Booking.com
+        - channel_id: exp
+          name: Expedia
