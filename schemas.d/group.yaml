@@ -5,6 +5,8 @@ properties:
     type: string
   group_name:
     type: string
+  group_legal_name:
+    type: string
   group_status:
     type: string
     enum:
@@ -33,6 +35,8 @@ properties:
       address_line1:
         type: string
       address_line2:
+        type: string
+      country_code:
         type: string
   contacts:
     type: array
@@ -70,4 +74,18 @@ properties:
               value:
                 type: string
         role:
+          type: string
+        legal_name:
+          type: string
+        city:
+          type: string
+        zip:
+          type: string
+        state:
+          type: string
+        address_line1:
+          type: string
+        address_line2:
+          type: string
+        country_code:
           type: string
