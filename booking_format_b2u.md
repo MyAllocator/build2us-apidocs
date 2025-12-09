@@ -12,7 +12,10 @@
 | OrderCustomers | Yes | Int >= 0 | Total number of unique customers. Should equal sum of `Occupancy` in each room if this breakdown is given. Should also equal the sum of `OrderAdults` and `OrderChildren` if those fields are present. |
 | OrderDate | Yes | YYYY-MM-DD | Date of booking creation, in UTC (not date when modified!). |
 | OrderId | Yes | String | Unique booking ID on your channel. Maximum of 64 characters. |
+| OrderModifDate | Yes* | YYYY-MM-DD | Date of booking modification, in UTC. Do not pass if booking has not been modified. |
+| OrderModifTime | Yes* | HH:MM:SS | Time of booking modification, in UTC. Do not pass if booking has not been modified. If seconds are not provided, set value to ":00". |
 | OrderTime | Yes | HH:MM:SS | Time of booking creation, in UTC. If seconds are not provided, set value to ":00".  Presence of `OrderTime` requires presence of `OrderDate`. |
+| PaymentCollect | Yes | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
 | Rooms | Yes | Room[] | See below in the Room section |
 | TotalCurrency | Yes | CurrencyCode | Currency code for the `TotalPrice` field. |
 | TotalPrice | Yes | Currency | Total price of the booking, including taxes, commission and deposit, after discounts. It should reflect the price the guest will have to pay in total (or has already paid). |
@@ -41,13 +44,10 @@
 | Memberships | | Membership[] | See below in the Membership section |
 | OrderFemales | | Int >= 0 | Total number of unique female guests. |
 | OrderMales | | Int >= 0 | Total number of unique male guests. |
-| OrderModifDate | | YYYY-MM-DD | Date of booking modification, in UTC. Do not pass if booking has not been modified. |
-| OrderModifTime | | HH:MM:SS | Time of booking creation, in UTC. Do not pass if booking has NOT been modified. If seconds are not provided, set value to ":00". Presence of `OrderModifTime` requires presence of `OrderModifDate`. |
 | OrderPets | | Int >= 0 | Number of pets (animals) the guest will bring. |
 | OrderSource | | String | Originating source of guest booking, usually a website. For example, Expedia passes bookings from multiple websites (hotels.com, Travelocity, Orbtiz, etc.). May also refer to travel agent/agency who created the booking. Do NOT provide this field if the value is the same as your channel name. This field is informational only. |
 | OrderSourceId | | String | This field is used by build-to-us channel brokers (channels that pass us reservations made on one of their partner channels). This field should contain the channel ID you use to identify the third party or the Cloudbeds Channel Manager channel ID (e.g., `exp` for `Expedia`). If you plan to use your channel's third-party channel ids, please provide us with your list of identifiers and their associated channel names so we can internalize them. Cloudbeds will use or translate this to an internal ID so that the end user knows the reservation origin source. For example, if `OrderSource` is `Expedia`, then `OrderSourceId` is the ID used by your channel (or ours) to identify `Expedia`. To use Cloudbeds' channel IDs directly please reach out to us for a current list. **Important**: It is required to use the `ExternalReferences` section to provide us with the corresponding reservation origin `OrderId` when brokering reservations. Make sure `Type` is set to `OTA`. |
 | Payments | | Payment[] | See below in the Payment section |
-| PaymentCollect | | Enum('Property', 'Channel') | Who collects outstanding balance from the guest? `Property` means that the property takes the payment, either by charging the credit card, or on arrival. `Channel` means that the channel will take the payment, and the property is paid by the channel. Do not set this to `Channel` if you are only collecting the commission/deposit. |
 | PaymentTransactions | | PaymentTransaction[] | See below in the PaymentTransaction section |
 | Policy | | String | Terms and conditions that apply to this booking. For example it could contain the cancellation terms. |
 | SourceTree | | SourceTree[] | A list of reservation sources for brokered reservations. This list always includes an intermediary, such as a channel, CRS, or GDS, and can contain a guest-facing entity, such as a travel agency or rewards program. See more below in SourceTree section |
@@ -119,7 +119,7 @@ Price = sum of day rates + room-specific extra taxes
 ## Customer
 
 The first entry in the `Customers` array should refer
-to the person that has made the booking, who may not neccessarily be the
+to the person that has made the booking, who may not necessarily be the
 person staying at the property.
 
 | Field | Required | Type | Description |
@@ -201,7 +201,7 @@ service booked.
 
 Lists additional taxes that do not fit into the general `Tax` field in the day
 rates, because the tax is not related to per-night rates. Per-person rates for
-example to do not well into the Room section.
+example do not fit well into the Room section.
 
 If a tax is specific to a specific room put it in the `Rooms` section.
 
@@ -279,7 +279,7 @@ This object holds information about involved travel agencies.
 | Phones | | Phone[] | Phone numbers of the travel agency. |
 | PostCode | | String | Postcode (ZIP) of the travel agency. |
 | ProfileId | | String | Travel agency ID. The ID may come from different sources, see ProfileIdType |
-| ProfileIdType | | Enum('ABTA','CLIA','IATA','TIDS','TRUE') | Organization to which the travel agency profile ID belongs. |
+| ProfileIdType | | String | Source of the profile ID belongs. e.g. 'ABTA','CLIA','IATA','TIDS','TRUE', 'TRAVEL', 'PRIVE' |
 | State | | String | State (province, etc.) of the travel agency. |
 
 
@@ -362,7 +362,7 @@ Contact person information.
 | LoyaltyMemberships |                | LoyaltyMembership[] | Loyalty program memberships assigned to the contact person. |
 | Phone              |                | String              | Phone number.                                               |
 | PostCode           |                | String              | Postcode (ZIP).                                             |
-| State              |                | String              | State (province, etc.). 
+| State              |                | String              | State (province, etc.).                                     | 
 
 ## CreditCardAddress
 
@@ -441,20 +441,20 @@ has stored on their profile but not which loyalty program is selected for the bo
 | MembershipId  |          | String     | Unique identifier of the member in the program.                      |
 | ProgramId     |          | String     | The company of the loyalty program.                                  |
 | SignupDate    |          | YYYY-MM-DD | The date that the member signed up for the loyalty program.          |
-| VendorCode    |          | String     | The identifier for the vendor in the program.
+| VendorCode    |          | String     | The identifier for the vendor in the program.                        |
 
 ## Membership
 
 Some properties have "frequent guest" programs that allow for guests to
 accrue points or get perks. Each membership will contain a `ProgramCode`
-(membership program name) and `AccountID` (guest's membership ID).
+(membership program name) and optionally an `AccountId` (guest's membership ID).
 
 ### Provided by channel module
 
 | Field | Required | Type | Description |
 | ----- | -------- | ---- | ----------- |
-| AccountId | Yes | String | Guest's membership ID for this program |
 | ProgramCode | Yes | String | Name of the membership program |
+| AccountId | | String | Guest's membership ID for this program |
 | BonusCode | | String | The code or name of the bonus program. |
 
 ## Voucher

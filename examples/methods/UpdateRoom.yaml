@@ -15,6 +15,8 @@ rq:
         mya_room_id: 45829
         units: 5
         beds: 2
+        max_adults: 2
+        max_children: 1
         dormitory: false
         label: Double Room
         description: A potentially long description about the room
@@ -33,17 +35,39 @@ rq:
         - mya_rate_id: 0
           label_public: Default Rate Plan
           label_private: Default Rate Plan
+          meal_codes:
+            - 21
         - label_public: Non-refundable
           label_private: NR
           mya_rate_id: 850
+          meal_codes:
+            - 19
+            - 21
+            - 22
         - label_public: With Breakfast
           label_private: BR
           mya_rate_id: 851
+          meal_codes:
+            - 19
 rs:
   Success:
     summary: Success
     value:
       success: true
+  Success with mapping:
+    summary: Success with mapping
+    value:
+      success: true
+      room_mappings:
+      - ota_room_id: '11111'
+        mya_rate_id: 0
+        ota_rate_id: "DEF-3456"
+      - ota_room_id: '11111'
+        mya_rate_id: 850
+        ota_rate_id: "NR-3456"
+      - ota_room_id: '11111'
+        mya_rate_id: 851
+        ota_rate_id: "BR-3456"
   Failure:
     summary: Invalid credentials
     value:

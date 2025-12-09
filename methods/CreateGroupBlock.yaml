@@ -55,14 +55,17 @@ post:
                         release_type:
                           type: string
                           enum:
+                            - all_dates
+                            - by_day
+                            - by_interval
                         release_days:
                           type: integer
                         release_time:
                           type: string
-                          format: time
+                          description: HH:MM
                     group_block_ari:
                       type: object
-                      descriptions: 'keys of this object - OTA room type IDs'
+                      description: 'keys of this object - OTA room type IDs'
                       patternProperties:
                         '^.+$':
                           type: object

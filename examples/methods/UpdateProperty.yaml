@@ -1,0 +1,65 @@
+---
+rq:
+  UpdateProperty:
+    summary: UpdateProperty
+    value:
+      verb: UpdateProperty
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      shared_secret : s3cr3ts4uc3
+      ota_cid: ota
+      Property:
+        name: Sample Hostel
+        country: US
+        currency: EUR
+        email_default: someone@example.com
+        email_channel_booking: bookings@example.com
+        email_contact: person@example.com
+        default_min_los: 3
+        default_max_los: 0
+        breakfast: ''
+        weekend:
+        - tuesday
+        - saturday
+        - sunday
+        firstname: John
+        lastname: Smith
+        timezone: Asia/Thimphu
+        address:
+          address_line_1: Main St
+          address_line_2: Annex
+          city: San Diego
+          zip: '92120'
+          state: CA
+          country: US
+          website: http://example.com
+          lon: '32.715736'
+          lat: "-117.161087"
+          phone: "+1 123123123 "
+          fax: "+1 123123123"
+        business_contact:
+          main_contact_name: Jeff Johnson
+          company_name: Hostels Inc.
+          account_manager_name: Hillary Jackson
+          vat_id: US2345678
+          address_line_1: Office Street
+          address_line_2: 3rd floor
+          state: Office State
+          zip: '22222'
+          city: Office City
+          country: DE
+rs:
+  Success:
+    summary: Success
+    value:
+      success: true
+  Failure:
+    summary: Invalid credentials
+    value:
+      success: false
+      errors:
+        - id: 1001
+          msg: The login details you provided are incorrect

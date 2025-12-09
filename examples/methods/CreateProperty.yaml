@@ -28,7 +28,19 @@ rq:
         firstname: John
         lastname: Smith
         taxes:
-          $ref: ../taxes.yaml
+        - amount: 10.567
+          applies_per: booking
+          calculation_basis: rate
+          category: vat
+          code: IVA
+          description: Impuesto
+          id: 4761
+          is_fee: false
+          is_inclusive: true
+          is_per_night: false
+          is_percent: true
+          is_refundable: false
+          name: IVA
         timezone: Asia/Thimphu
         address:
           address_line_1: Main St
@@ -64,6 +76,8 @@ rq:
         - mya_room_id: 45829
           units: 5
           beds: 2
+          max_adults: 2
+          max_children: 1
           dormitory: false
           gender: MIXED
           label: Double Room
@@ -82,15 +96,25 @@ rq:
           - mya_rate_id: 0
             label_public: Default Rate Plan
             label_private: Default Rate Plan
+            meal_codes:
+              - 21
           - label_public: Non-refundable
             label_private: NR
             mya_rate_id: 850
+            meal_codes:
+              - 19
+              - 21
+              - 22
           - label_public: With Breakfast
             label_private: BR
             mya_rate_id: 851
+            meal_codes:
+              - 19
         - mya_room_id: 290
           units: 25
           beds: 4
+          max_adults: 4
+          max_children: 2
           dormitory: false
           label: 4-person private
           description:
@@ -102,6 +126,8 @@ rq:
         - mya_room_id: 329
           units: 7
           beds: 3
+          max_adults: 3
+          max_children: 1
           dormitory: false
           label: 3-person private
           description: Best three bed room in town
@@ -119,6 +145,8 @@ rq:
         - mya_room_id: 52
           units: 3
           beds: 30
+          max_adults: 1
+          max_children: 0
           dormitory: true
           gender: MIXED
           label: 30-person mixed shared

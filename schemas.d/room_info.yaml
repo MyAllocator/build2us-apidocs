@@ -24,8 +24,7 @@ properties:
       Short string that describes the room for displaying
       purposes.
   description:
-    type: string
-    nullable: true
+    type: [string, "null"]
     description: >
       Longer description of the room which describes a room
       to a potential guest.

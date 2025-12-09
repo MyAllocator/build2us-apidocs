@@ -1,9 +1,12 @@
 ---
 info:
   title: Cloudbeds OTA Build-To-Us API
-  version: "5.2"
+  version: "5.3"
   contact:
     url: https://www.cloudbeds.com/partner-with-cloudbeds/
+  license:
+    name: Cloudbeds API Terms
+    url: https://www.cloudbeds.com/terms/api/
   description: |
     # Introduction
 
@@ -102,15 +105,17 @@ info:
     ## Terminology
 
     * OTA: Online travel agency (ex: booking.com, or competitor)
-    * cid: Channel ID - a two to four character code used by Cloudbeds uniquely identify a OTA.
-    * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.f
+    * cid: Channel ID - a two to four character code used by Cloudbeds uniquely identify an OTA.
+    * guid: Globally unique identifier, a unique 36 character code which identifies a request. Useful for seeing if a request is a retry and for debugging.
 
     ## Requests
 
     Cloudbeds will send requests to the OTA with content-type
     `application/json`, with the payload being in the body of the request. Gzip
     compression and keep-alives will be used if supported. HTTPS
-    (SSL encryption) is required for the OTA's endpoint.
+    (SSL encryption) is required for the OTA's endpoint. If an endpoint with
+    a port other than 443 is to be used Cloudbeds will need to allow-list
+    this port first.
 
     HTTP response codes from Cloudbeds should always be 200. They have the
     content-type `application/json`.
@@ -150,10 +155,105 @@ info:
     on how to use these fields. We also recommend implementing the `SourceTree` field if multiple
     sources can be involved in a booking.
 
-openapi: 3.0.0
+    # Changelog
+
+    ## Version 5.5
+
+    ### 2025-12-01
+    * **ChannelList**: Added new method to get a list of Cloudbeds channels with their IDs and names
+
+    ## Version 5.4
+
+    ### 2025-11-18
+    * **CreateProperty, UpdateRoom, UpdateRatePlan**: Added optional `refundable` and `refundable_until_days` fields for a rate plan.
+
+    ## Version 5.3
+
+    ### 2025-11-10
+    * **CreateProperty**: Added optional `ota_property_sub_id` response parameter. For channels that support multiple properties under one account, this sub-property ID will be saved by Cloudbeds and included in future API calls for the property.
+    * **UpdateProperty**: Added new method to update general property data
+
+    ### 2025-10-15
+    * **CreateProperty, UpdateRoom**: Added `max_adults` and `max_children` fields
+
+    ## Version 5.2
+
+    ### 2025-10-07
+    * **Documentation**: Improved OpenAPI documentation structure and added new required fields to booking format
+    * **Booking Format**: Added new mandatory fields to booking schema
+
+    ### 2025-09-02
+    * **CreateProperty, UpdateRoom, UpdateRatePlan**: Added `meal_codes` field to support meal plan information (All-Inclusive, Breakfast, Lunch, Dinner)
+
+    ### 2025-08-06
+    * **UpdateRoom, UpdateRatePlan**: Added mapping return fields in responses to automatically map OTA IDs to Cloudbeds IDs
+
+    ### 2025-07-16
+    * **Groups**: Added group booking support with new methods: `CreateGroup`, `UpdateGroup`, `DeleteGroup`, `CreateGroupBlock`, `UpdateGroupBlock`, `DeleteGroupBlock`
+
+    ### 2025-07-15
+    * **Booking Format**: Enhanced broker/CRS support with detailed documentation for `OrderSource`, `OrderSourceId`, `ExternalReferences`, and `SourceTree` fields
+
+    ### 2025-06-16
+    * **AckBooking**: Added new method to acknowledge successful booking receipt
+
+    ## Version 5.1
+
+    ### 2024-04-16
+    * **UpdateTaxes**: Added new method to manage property taxes and fees
+    * **CreateProperty**: Added taxes and fees support in property creation
+
+    ### 2024-07-18
+    * **Booking Format**: Extended booking format with additional fields
+
+    ### 2024-08-01
+    * **Booking Format**: Added `DepositType` field
+
+    ### 2024-06-12
+    * **UpdateRoom, DeleteRoom**: Added new methods for room management
+
+    ### 2024-06-16
+    * **UpdateRatePlan, DeleteRatePlan**: Added new methods for rate plan management
+    * **Room Data**: Added gender field to room data for dormitory support
+
+    ### 2024-09-16
+    * **UpdateRoom**: Added missing `ota_room_id` field
+
+    ### 2025-03-27
+    * **Payment**: Added support for new card types: Cabal, ItalCred, Naranja, and Nativa
+
+    ## Version 5.0
+
+    ### 2022-08-31
+    * **Endpoints**: Moved to single endpoint URLs (all methods can use the same base URL)
+
+    ## Version 4.0
+
+    * **CreateProperty**: Added `rateplans` field for rooms
+
+    ## Version 3.0
+
+    * **CreateProperty**: Added new fields: `images`, `description`, `check_in_time`, `check_out_time`
+
+    ## Version 1.0
+
+    * Initial release
+
+openapi: 3.1.2
 servers:
   - url: https://api.your-ota.com/cloudbeds
     description: OTA endpoint
+
+security:
+  - shared_secret: []
+
+components:
+  securitySchemes:
+    shared_secret:
+      type: apiKey
+      in: query
+      name: shared_secret
+      description: Authentication between the OTA and the channel manager. Identical for all requests. Not to be shared with customers.
 
 paths:
   /HealthCheck:
@@ -170,10 +270,14 @@ paths:
     $ref: methods/GetBookingList.yaml
   /GetBookingId:
     $ref: methods/GetBookingId.yaml
+  /AckBooking:
+    $ref: ./methods/AckBooking.yaml
   /CancelBooking:
     $ref: ./methods/CancelBooking.yaml
   /CreateProperty:
     $ref: methods/CreateProperty.yaml
+  /UpdateProperty:
+    $ref: methods/UpdateProperty.yaml
   /GetSubProperties:
     $ref: methods/GetSubProperties.yaml
   /DeleteRoom:
@@ -186,7 +290,6 @@ paths:
     $ref: methods/DeleteRatePlan.yaml
   /UpdateRatePlan:
     $ref: methods/UpdateRatePlan.yaml
-
   /ARIFullRefresh:
     $ref: methods/ARIFullRefresh.yaml
   /BookingCreate:
@@ -195,7 +298,6 @@ paths:
     $ref: methods/NotifyBooking.yaml
   /RoomInfo:
     $ref: methods/RoomInfo.yaml
-
   /CreateGroup:
     $ref: methods/CreateGroup.yaml
   /UpdateGroup:
@@ -208,3 +310,6 @@ paths:
     $ref: methods/UpdateGroupBlock.yaml
   /DeleteGroupBlock:
     $ref: methods/DeleteGroupBlock.yaml
+  /ChannelList:
+    $ref: methods/ChannelList.yaml
+

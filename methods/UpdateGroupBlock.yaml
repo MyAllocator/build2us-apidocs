@@ -1,6 +1,6 @@
 ---
 post:
-  operationId: create_group_block
+  operationId: update_group_block
   description: |-
     This call is used to update an inventory block for a group on your OTA based on the latest details that we have in Cloudbeds
     (eg. related group block name, status, group block inventory, rates, restrictions, notes, release schedule).
@@ -55,17 +55,17 @@ post:
                         release_type:
                           type: string
                           enum:
-                            - all_days
+                            - all_dates
                             - by_day
                             - by_interval
                         release_days:
                           type: integer
                         release_time:
                           type: string
-                          format: time
+                          description: HH:MM
                     group_block_ari:
                       type: object
-                      descriptions: 'keys of this object - OTA room type IDs'
+                      description: 'keys of this object - OTA room type IDs'
                       patternProperties:
                         '^.+$':
                           type: object

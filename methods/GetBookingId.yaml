@@ -8,7 +8,7 @@ post:
     [here in full detail](https://github.com/MyAllocator/build2us-apidocs/blob/gh-pages/booking_format_b2u.md).
 
     Most fields are optional. This specification lists only the minimum required
-    fields to be eligable for a successful Build-To-Us integration.
+    fields to be eligible for a successful Build-To-Us integration.
 
     Prices: Send us sell rates (rates including taxes and fees). The sum of all
     room prices should equal the `TotalPrice` field. Day rates should be per
@@ -21,7 +21,7 @@ post:
 
     Currency codes: Make sure they are valid ISO-4217 (uppercase).
 
-    Make sure to provide `OrderDate` and `OrderTime`. They have be provided in
+    Make sure to provide `OrderDate` and `OrderTime`. They have to be provided in
     UTC.
 
     Guest's credit/debit card details can be provided with the `Payments` field.

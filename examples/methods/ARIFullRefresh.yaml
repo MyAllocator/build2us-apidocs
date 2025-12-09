@@ -13,5 +13,5 @@ rs:
   Failure:
     summary: Failure
     value:
-      Error: 1031
-      ErrorMsg: Channel not enabled for property
+      ErrorCode: 1031
+      Error: Channel not enabled for property

@@ -27,8 +27,7 @@ post:
                   enum:
                     - GetBookingList
                 ota_booking_version:
-                  type: string
-                  nullable: true
+                  type: [string, "null"]
                   description: |-
                     With each request we send along `ota_booking_version`, which
                     has the format `YYYY-MM-DD HH:MM:SS` and indicates the time
@@ -39,7 +38,7 @@ post:
                     booking are skipped due to a time-offset between your and
                     our servers make sure to always reduce 5 or more minutes
                     from the time given. Example: we provide 2017-06-22
-                    12:09:19, then please return all new/modified/cancalled
+                    12:09:19, then please return all new/modified/cancelled
                     bookings since 2017-06-22 12:04:19 (5 minutes before the
                     time sent).
 
