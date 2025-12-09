@@ -1,0 +1,37 @@
+---
+post:
+  operationId: delete_group_block
+  description: |-
+    This call is used to delete an inventory block previously created using CreateGroupBlock call.
+    This call needs to be activated explicitly from our side before you can use it. Please talk to your Cloudbeds contact before
+    implementing this call!
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/DeleteGroupBlock.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - DeleteGroupBlock
+                group_block_code:
+                  type: string
+          required:
+            - verb
+            - group_block_code
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/DeleteGroupBlock.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: DeleteGroupBlock
+  summary: DeleteGroupBlock
