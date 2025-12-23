@@ -21,6 +21,7 @@ rq:
           - 19
           - 21
           - 22
+        refundable: false
         ota_rate_id: "3456"
 rs:
   Success:
