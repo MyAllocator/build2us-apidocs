@@ -98,6 +98,8 @@ rq:
             label_private: Default Rate Plan
             meal_codes:
               - 21
+            refundable: true
+            refundable_until_days: 7
           - label_public: Non-refundable
             label_private: NR
             mya_rate_id: 850
@@ -105,11 +107,14 @@ rq:
               - 19
               - 21
               - 22
+            refundable: false
           - label_public: With Breakfast
             label_private: BR
             mya_rate_id: 851
             meal_codes:
               - 19
+            refundable: true
+            refundable_until_days: 7
         - mya_room_id: 290
           units: 25
           beds: 4
@@ -139,9 +144,11 @@ rq:
           - label_public: Default Rate Plan
             label_private: Default Rate Plan
             mya_rate_id: 0
+            refundable: false
           - mya_rate_id: 853
             label_private: NR
             label_public: Non-refundable
+            refundable: false
         - mya_room_id: 52
           units: 3
           beds: 30
@@ -156,9 +163,11 @@ rq:
           - mya_rate_id: 0
             label_public: Default Rate Plan
             label_private: Default Rate Plan
+            refundable: false
           - mya_rate_id: 852
             label_public: Non-refundable
             label_private: NR
+            refundable: false
 
 rs:
   Failure:

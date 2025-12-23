@@ -37,6 +37,8 @@ rq:
           label_private: Default Rate Plan
           meal_codes:
             - 21
+          refundable: true
+          refundable_until_days: 7
         - label_public: Non-refundable
           label_private: NR
           mya_rate_id: 850
@@ -49,6 +51,8 @@ rq:
           mya_rate_id: 851
           meal_codes:
             - 19
+          refundable: true
+          refundable_until_days: 7
 rs:
   Success:
     summary: Success
