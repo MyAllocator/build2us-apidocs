@@ -7,10 +7,10 @@ post:
     Use this callback to send us new bookings. Using this callback ensures that
     there is no delay between the creation of the booking and import on
     Cloudbeds. Therefore it's strongly recommend to implement this callback.
-    Even when implemented it's still neccessary to also implement the
+    Even when implemented it's still necessary to also implement the
     `GetBookingList` and `GetBookingId` calls, which act as fallbacks if
     the `CreateBooking` notification fails, when a reimport due to processing
-    issues on Cloudbeds is neccessary, or when a specific booking needs to be
+    issues on Cloudbeds is necessary, or when a specific booking needs to be
     debugged.
 
     The booking format is identical to what is being returned in the

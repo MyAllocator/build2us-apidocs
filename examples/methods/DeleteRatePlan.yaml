@@ -12,7 +12,7 @@ rq:
       shared_secret: s3cr3ts4uc3
       ota_cid: ota
       rateplan:
-        mya_rateplan_id: 115326
+        mya_rate_id: 115326
 rs:
   Success:
     summary: Success

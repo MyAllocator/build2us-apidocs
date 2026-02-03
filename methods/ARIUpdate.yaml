@@ -6,7 +6,7 @@ post:
     We will combine the updates into as few date ranges as possible, and we
     split bigger updates into several API requests. We also cache data and will
     not send ARI updates if the ARI data has not changed within a certain
-    timeframe. You can ask us to alter the numer of `Inventory` objects we send
+    timeframe. You can ask us to alter the number of `Inventory` objects we send
     per request. It's also possible to ask us to restrict maximum number of days
     per date range.
 
@@ -64,7 +64,7 @@ post:
                         type: integer
                         minimum: 0
                         description: >
-                          Number or rooms bookable (available) for private
+                          Number of rooms bookable (available) for private
                           rooms, or for the number of beds for shared/dorm rooms.
                       rate:
                         type: string
@@ -91,19 +91,6 @@ post:
                         minimum: 0
                         description: >
                           Number of children included in base rate. Sent for OBP enabled channels.
-                      adult_N:
-                        type: string
-                        pattern: '^\d+(\.\d+)?$'
-                        description: >
-                          Extra price for the Nth adult. Sent for OBP enabled channels. Note that
-                          the prices are cumulative. Eg. for a room with `num_adults_included=2`
-                          we calculate the price for 4 adults like this: `rate + adult_3 + adult_4`.
-                      child_N:
-                        type: string
-                        pattern: '^\d+(\.\d+)?$'
-                        description: >
-                          Extra price for the Nth child. Sent for OBP enabled channels. Note that
-                          the prices are cumulative. See above for `adult_N`.
                       max_los:
                         type: integer
                         minimum: 0
@@ -169,7 +156,15 @@ post:
                           before the arrival date guests can book.
                           The value of 0 resets to no restriction, which is the default.
                           This restriction is mainly used to boost last-minute reservations.
-
+                    patternProperties:
+                      '^adult_\d+$':
+                        type: string
+                        pattern: '^\d+(\.\d+)?$'
+                        description: Extra price for the Nth adult (e.g., adult_3, adult_4). Sent for OBP enabled channels.
+                      '^child_\d+$':
+                        type: string
+                        pattern: '^\d+(\.\d+)?$'
+                        description: Extra price for the Nth child (e.g., child_3, child_4). Sent for OBP enabled channels.
                     required:
                       - ota_room_id
                       - ota_rate_id

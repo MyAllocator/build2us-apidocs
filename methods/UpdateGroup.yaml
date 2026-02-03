@@ -1,0 +1,38 @@
+---
+post:
+  operationId: update_group
+  description: |-
+    This call is used to update group profile on your OTA based on the latest details that we have in Cloudbeds
+    (eg. group name, address, notes, status, contacts). This call needs to be activated explicitly from our side
+    before you can use it. Please talk to your Cloudbeds contact before
+    implementing this call!
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/UpdateGroup.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - UpdateGroup
+                group_data:
+                  $ref: ../schemas.d/group.yaml
+          required:
+            - verb
+            - group_data
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/UpdateGroup.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: UpdateGroup
+  summary: UpdateGroup

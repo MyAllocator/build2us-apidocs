@@ -17,12 +17,12 @@ post:
                   type: object
                   description: Rate plan to delete
                   properties:
-                    mya_rateplan_id:
+                    mya_rate_id:
                       type: integer
                       minimum: 1
                       description: Rate plan ID on the Cloudbeds channel manager.
                   required:
-                    - mya_rateplan_id
+                    - mya_rate_id
                 verb:
                   type: string
                   enum:

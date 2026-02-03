@@ -1,0 +1,45 @@
+---
+post:
+  operationId: ack_booking
+  description: |-
+    Allows Cloudbeds to acknowledge a booking on your OTA from the Cloudbeds side.
+
+    *IMPORTANT*: Please contact us to enable this capability for your channel. It
+    is NOT enabled by default.
+
+    If the booking cannot be acknowledged the error code should be provided. Here
+    are possible error codes:
+
+    * 4004 - booking cannot be acknowledged. The reason is provided in the `msg` field.
+  requestBody:
+    content:
+      application/json:
+        examples:
+          $ref: ../examples/methods/AckBooking.yaml#/rq
+        schema:
+          allOf:
+            - $ref: ../schemas.yaml#/auth
+            - type: object
+              properties:
+                verb:
+                  type: string
+                  enum:
+                    - AckBooking
+                booking_id:
+                  type: string
+                  description: >
+                    OTA booking ID of the booking to be acknowledged.
+          required:
+            - verb
+            - booking_id
+    required: true
+  responses:
+    "200":
+      content:
+        application/json:
+          examples:
+            $ref: ../examples/methods/AckBooking.yaml#/rs
+          schema:
+            $ref: ../schemas.d/response_simple.yaml
+      description: AckBooking
+  summary: AckBooking

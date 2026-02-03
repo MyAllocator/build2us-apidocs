@@ -16,11 +16,11 @@ post:
                 rateplan:
                   type: object
                   properties:
-                    mya_rateplan_id:
+                    mya_rate_id:
                       type: integer
                       minimum: 1
                       description: Rate plan ID on the Cloudbeds channel manager.
-                    ota_rateplan_id:
+                    ota_rate_id:
                       type: string
                       description: Channel rate plan ID.
                     label_private:
@@ -40,14 +40,24 @@ post:
                     meal_codes:
                       type: array
                       description: >
-                        List of meal codes that are available for this rate plan.
-                        OTA meal code. `1` - all inclusive, `2` - american/full board, `3` - bed & breakfast etc.
+                        Combination (list) of meal codes that are available for this rate plan.
+                        `1` for All-Inclusive, `19` for Breakfast, `21` for Lunch, `22` for Dinner
                       items:
                         type: integer
-                        minimum: 1
-                        maximum: 24
+                        enum:
+                          - 1
+                          - 19
+                          - 21
+                          - 22
+                    refundable:
+                      type: boolean
+                      description: If present specifies if rate plan is refundable
+                    refundable_until_days:
+                      type: integer
+                      description: >
+                        Minimal number of days before check-in required for a rate plan to be refundable
                   required:
-                    - mya_rateplan_id
+                    - mya_rate_id
                     - label_public
                     - label_private
                 verb:
@@ -65,6 +75,32 @@ post:
           examples:
             $ref: ../examples/methods/UpdateRatePlan.yaml#/rs
           schema:
-            $ref: ../schemas.d/response_simple.yaml
+            oneOf:
+              - type: object
+                title: Success
+                properties:
+                  success: { type: boolean, enum: [ true ] }
+                  room_mappings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        mya_room_id:
+                          type: integer
+                          minimum: 1
+                          description: Room ID on the Cloudbeds channel manager
+                        ota_room_id:
+                          type: string
+                          description: OTA room ID
+                        ota_rate_id:
+                          type: string
+                          description: OTA rate plan ID
+                      required:
+                        - mya_room_id
+                        - ota_room_id
+                        - ota_rate_id
+                required:
+                  - success
+              - $ref: ../schemas.d/response_error.yaml
       description: UpdateRatePlan
   summary: UpdateRatePlan

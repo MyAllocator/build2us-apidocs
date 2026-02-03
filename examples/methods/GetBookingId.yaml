@@ -23,8 +23,13 @@ rs:
         OrderDate: '2018-04-22'
         OrderTime: '18:02:58'
         IsCancellation: 0
+        IsModification: 0
+        OrderAdults: 2
+        OrderChildren: 0
+        OrderCustomers: 2
         TotalCurrency: USD
         TotalPrice: 134
+        PaymentCollect: Property
         Customers:
         - CustomerCountry: US
           CustomerEmail: test@test.com
@@ -33,6 +38,12 @@ rs:
         Rooms:
         - ChannelRoomType: abcdef
           Currency: USD
+          Adults: 2
+          Babies: 0
+          Children: 0
+          Occupancy: 2
+          RateDesc: Refundable Rate
+          RateId: '13649'
           DayRates:
           - Date: '2017-11-08'
             Description: Refundable Rate
