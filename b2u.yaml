@@ -292,6 +292,8 @@ paths:
     $ref: methods/UpdateRatePlan.yaml
   /ARIFullRefresh:
     $ref: methods/ARIFullRefresh.yaml
+  /CheckAvailability:
+    $ref: methods/CheckAvailability.yaml
   /BookingCreate:
     $ref: methods/BookingCreate.yaml
   /NotifyBooking:
