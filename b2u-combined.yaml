@@ -3255,8 +3255,8 @@ paths:
         Although information about specific room (rateplan) availability is supposed to be present locally on a channel side,
         we would like to provide an opportunity to double check if a room (rateplan) is available prior to creating a
         reservation. Using this callback ensures that due to a possible technical issue leading to a room (rateplan)
-        availability numbers not having been (or having been incorectly / not in time) delivered to a channel, the room
-        is not overbooked and therefore helps avoid both host ad guest frustration when such an over-booking has to be canceled by a host
+        availability numbers not having been (or having been incorrectly / not in time) delivered to a channel, the room
+        is not overbooked and therefore helps avoid both host and guest frustration when such an over-booking has to be canceled by a host
         due to physical inability to accomodate.
       servers:
         - url: https://api.myallocator.com/callback/ota/{ota}/v202203
@@ -3304,7 +3304,7 @@ paths:
                   enum:
                     - room
                     - bed
-                  description: Room availability can be checked by number if rooms or number of guests (beds) to stay. We reccomend using `bed` in case a room is a dormitory/shared room and is sold by beds.
+                  description: Room availability can be checked by number of rooms or by number of guests (beds) to stay. We recommend using `bed` in case a room is a dormitory/shared room and is sold by beds.
                 number_of_units:
                   type: integer
                   description: Number of rooms or beds to check availability for
