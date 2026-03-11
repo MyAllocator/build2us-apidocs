@@ -44,6 +44,10 @@ post:
               - title: Successful Request
                 type: object
                 properties:
+                  Success:
+                    type: boolean
+                    enum: [true]
+                    description: Always `true` on success.
                   RoomInfo:
                     type: array
                     description: >
@@ -51,6 +55,7 @@ post:
                     items:
                       $ref: ../schemas.d/room_info.yaml
                 required:
+                  - Success
                   - RoomInfo
               - $ref: ../schemas.d/response_callback_error.yaml
       description: RoomInfo

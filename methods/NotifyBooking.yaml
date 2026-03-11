@@ -60,8 +60,14 @@ post:
                 type: object
                 description: >
                   No returned error means the notification has been enqueued into
-                  Cloudbeds for import. The response will be an empty
-                  JSON object.
+                  Cloudbeds for import.
+                properties:
+                  Success:
+                    type: boolean
+                    enum: [true]
+                    description: Always `true` on success.
+                required:
+                  - Success
               - $ref: ../schemas.d/response_callback_error.yaml
       description: NotifyBooking
   summary: NotifyBooking

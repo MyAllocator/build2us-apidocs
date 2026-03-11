@@ -9,6 +9,7 @@ rs:
   Success:
     summary: Success
     value:
+      Success: true
       RoomInfo:
         - mya_room_id: 45829
           units: 5
@@ -25,5 +26,6 @@ rs:
   Failure:
     summary: Failure
     value:
+      Success: false
       ErrorCode: 9203
       Error: mya_property_id is invalid

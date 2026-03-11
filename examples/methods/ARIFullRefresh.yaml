@@ -9,9 +9,11 @@ rs:
   Success:
     summary: Success
     value:
+      Success: true
       UpdateId: 99277138491
   Failure:
     summary: Failure
     value:
+      Success: false
       ErrorCode: 1031
       Error: Channel not enabled for property

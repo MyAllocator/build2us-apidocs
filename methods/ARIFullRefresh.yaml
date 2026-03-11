@@ -57,12 +57,18 @@ post:
               - title: Successful request
                 type: object
                 properties:
+                  Success:
+                    type: boolean
+                    enum: [true]
+                    description: Always `true` on success.
                   UpdateId:
                     type: integer
                     minimum: 1
                     description: >
                       If present indicates that at least one full refresh was
                       enqueued into Cloudbeds to be sent to the OTA.
+                required:
+                  - Success
               - $ref: ../schemas.d/response_callback_error.yaml
       description: ARIFullRefresh
   summary: ARIFullRefresh

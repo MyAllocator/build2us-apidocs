@@ -155,6 +155,21 @@ info:
     on how to use these fields. We also recommend implementing the `SourceTree` field if multiple
     sources can be involved in a booking.
 
+    Following is an example of a booking that originally came through Expedia:
+
+    ```
+    {
+      "OrderSource": "Expedia",
+      "OrderSourceId" : "exp",
+      "ExternalReferences" : [
+         {
+            "Type" : "OTA",
+            "Reference" : "2280949650"
+         }
+      ],
+    }
+    ```
+
     # Changelog
 
     ## Version 5.4
@@ -3204,10 +3219,12 @@ paths:
                 Success:
                   summary: Success
                   value:
+                    Success: true
                     UpdateId: 99277138491
                 Failure:
                   summary: Failure
                   value:
+                    Success: false
                     ErrorCode: 1031
                     Error: Channel not enabled for property
               schema:
@@ -3215,11 +3232,18 @@ paths:
                   - title: Successful request
                     type: object
                     properties:
+                      Success:
+                        type: boolean
+                        enum:
+                          - true
+                        description: Always `true` on success.
                       UpdateId:
                         type: integer
                         minimum: 1
                         description: |
                           If present indicates that at least one full refresh was enqueued into Cloudbeds to be sent to the OTA.
+                    required:
+                      - Success
                   - $ref: '#/components/schemas/response_callback_error'
           description: ARIFullRefresh
       summary: ARIFullRefresh
@@ -3345,18 +3369,28 @@ paths:
               examples:
                 Success:
                   summary: Success
-                  value: {}
+                  value:
+                    Success: true
                 Failure:
                   summary: Failure
                   value:
-                    Error: 1031
-                    ErrorMsg: Channel not enabled for property
+                    Success: false
+                    ErrorCode: 1031
+                    Error: Channel not enabled for property
               schema:
                 oneOf:
                   - title: Successful Request
                     type: object
                     description: |
-                      No returned error means the booking has been enqueued into Cloudbeds for import. The response will be an empty JSON object.
+                      No returned error means the booking has been enqueued into Cloudbeds for import.
+                    properties:
+                      Success:
+                        type: boolean
+                        enum:
+                          - true
+                        description: Always `true` on success.
+                    required:
+                      - Success
                   - $ref: '#/components/schemas/response_callback_error'
           description: BookingCreate
       summary: BookingCreate
@@ -3422,18 +3456,28 @@ paths:
               examples:
                 Success:
                   summary: Success
-                  value: {}
+                  value:
+                    Success: true
                 Failure:
                   summary: Failure
                   value:
-                    Error: 1031
-                    ErrorMsg: Channel not enabled for property
+                    Success: false
+                    ErrorCode: 1031
+                    Error: Channel not enabled for property
               schema:
                 oneOf:
                   - title: Successful Request
                     type: object
                     description: |
-                      No returned error means the notification has been enqueued into Cloudbeds for import. The response will be an empty JSON object.
+                      No returned error means the notification has been enqueued into Cloudbeds for import.
+                    properties:
+                      Success:
+                        type: boolean
+                        enum:
+                          - true
+                        description: Always `true` on success.
+                    required:
+                      - Success
                   - $ref: '#/components/schemas/response_callback_error'
           description: NotifyBooking
       summary: NotifyBooking
@@ -3486,6 +3530,7 @@ paths:
                 Success:
                   summary: Success
                   value:
+                    Success: true
                     RoomInfo:
                       - mya_room_id: 45829
                         units: 5
@@ -3502,6 +3547,7 @@ paths:
                 Failure:
                   summary: Failure
                   value:
+                    Success: false
                     ErrorCode: 9203
                     Error: mya_property_id is invalid
               schema:
@@ -3509,6 +3555,11 @@ paths:
                   - title: Successful Request
                     type: object
                     properties:
+                      Success:
+                        type: boolean
+                        enum:
+                          - true
+                        description: Always `true` on success.
                       RoomInfo:
                         type: array
                         description: |
@@ -3516,6 +3567,7 @@ paths:
                         items:
                           $ref: '#/components/schemas/room_info'
                     required:
+                      - Success
                       - RoomInfo
                   - $ref: '#/components/schemas/response_callback_error'
           description: RoomInfo
@@ -4060,6 +4112,11 @@ components:
       type: object
       title: Error Response
       properties:
+        Success:
+          type: boolean
+          enum:
+            - false
+          description: Always `false` when the response contains an error.
         ErrorCode:
           type: integer
           minimum: 1
@@ -4069,5 +4126,6 @@ components:
           type: string
           description: Human-readable error message.
       required:
+        - Success
         - ErrorCode
         - Error

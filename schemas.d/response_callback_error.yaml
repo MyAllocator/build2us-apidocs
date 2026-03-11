@@ -2,6 +2,10 @@
 type: object
 title: Error Response
 properties:
+  Success:
+    type: boolean
+    enum: [false]
+    description: Always `false` when the response contains an error.
   ErrorCode:
     type: integer
     minimum: 1
@@ -12,5 +16,6 @@ properties:
     type: string
     description: Human-readable error message.
 required:
+  - Success
   - ErrorCode
   - Error

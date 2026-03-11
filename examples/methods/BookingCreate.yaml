@@ -51,10 +51,12 @@ rq:
 rs:
   Success:
     summary: Success
-    value: {}
+    value:
+      Success: true
   Failure:
     summary: Failure
     value:
-      Error: 1031
-      ErrorMsg: Channel not enabled for property
+      Success: false
+      ErrorCode: 1031
+      Error: Channel not enabled for property
 

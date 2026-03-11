@@ -155,6 +155,21 @@ info:
     on how to use these fields. We also recommend implementing the `SourceTree` field if multiple
     sources can be involved in a booking.
 
+    Following is an example of a booking that originally came through Expedia:
+
+    ```
+    {
+      "OrderSource": "Expedia",
+      "OrderSourceId" : "exp",
+      "ExternalReferences" : [
+         {
+            "Type" : "OTA",
+            "Reference" : "2280949650"
+         }
+      ],
+    }
+    ```
+
     # Changelog
 
     ## Version 5.4
