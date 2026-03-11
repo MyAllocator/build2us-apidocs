@@ -172,6 +172,11 @@ info:
 
     # Changelog
 
+    ## Version 5.5
+
+    ### 2025-12-01
+    * **ChannelList**: Added new method to get a list of Cloudbeds channels with their IDs and names
+
     ## Version 5.4
 
     ### 2025-11-18
@@ -1436,6 +1441,8 @@ paths:
                             label_private: Default Rate Plan
                             meal_codes:
                               - 21
+                            refundable: true
+                            refundable_until_days: 7
                           - label_public: Non-refundable
                             label_private: NR
                             mya_rate_id: 850
@@ -1443,11 +1450,14 @@ paths:
                               - 19
                               - 21
                               - 22
+                            refundable: false
                           - label_public: With Breakfast
                             label_private: BR
                             mya_rate_id: 851
                             meal_codes:
                               - 19
+                            refundable: true
+                            refundable_until_days: 7
                       - mya_room_id: 290
                         units: 25
                         beds: 4
@@ -1477,9 +1487,11 @@ paths:
                           - label_public: Default Rate Plan
                             label_private: Default Rate Plan
                             mya_rate_id: 0
+                            refundable: false
                           - mya_rate_id: 853
                             label_private: NR
                             label_public: Non-refundable
+                            refundable: false
                       - mya_room_id: 52
                         units: 3
                         beds: 30
@@ -1494,9 +1506,11 @@ paths:
                           - mya_rate_id: 0
                             label_public: Default Rate Plan
                             label_private: Default Rate Plan
+                            refundable: false
                           - mya_rate_id: 852
                             label_public: Non-refundable
                             label_private: NR
+                            refundable: false
             schema:
               allOf:
                 - $ref: '#/components/schemas/auth'
@@ -2572,6 +2586,8 @@ paths:
                         label_private: Default Rate Plan
                         meal_codes:
                           - 21
+                        refundable: true
+                        refundable_until_days: 7
                       - label_public: Non-refundable
                         label_private: NR
                         mya_rate_id: 850
@@ -2584,6 +2600,8 @@ paths:
                         mya_rate_id: 851
                         meal_codes:
                           - 19
+                        refundable: true
+                        refundable_until_days: 7
             schema:
               allOf:
                 - $ref: '#/components/schemas/auth'
@@ -3051,6 +3069,7 @@ paths:
                       - 19
                       - 21
                       - 22
+                    refundable: false
                     ota_rate_id: '3456'
             schema:
               allOf:
@@ -3247,6 +3266,134 @@ paths:
                   - $ref: '#/components/schemas/response_callback_error'
           description: ARIFullRefresh
       summary: ARIFullRefresh
+      tags:
+        - Callbacks
+  /CheckAvailability:
+    post:
+      operationId: check_availability
+      description: |-
+        *Note that the endpoint for this API call is on Cloudbeds!*
+
+        Use this callback to check if a room (rateplan) is available for booking.
+
+        Although information about specific room (rateplan) availability is supposed to be present locally on a channel side,
+        we would like to provide an opportunity to double check if a room (rateplan) is available prior to creating a
+        reservation. Using this callback ensures that due to a possible technical issue leading to a room (rateplan)
+        availability numbers not having been (or having been incorrectly / not in time) delivered to a channel, the room
+        is not overbooked and therefore helps avoid both host and guest frustration when such an over-booking has to be canceled by a host
+        due to physical inability to accomodate.
+      servers:
+        - url: https://api.myallocator.com/callback/ota/{ota}/v202203
+          variables:
+            ota:
+              description: OTA channel ID as assigned by Cloudbeds
+              default: replace_with_ota_id
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            examples:
+              CheckAvailbility:
+                summary: CheckAvailbility
+                value:
+                  shared_secret: s3cr3ts4uc3
+                  ota_property_id: 998201
+                  ota_room_id: 12345
+                  ota_rateplan_id: 11
+                  start_date: '2027-01-01'
+                  end_date: '2027-01-02'
+                  unit_type: room
+                  number_of_units: 1
+            schema:
+              type: object
+              properties:
+                ota_property_id:
+                  description: Username, login or property ID on the OTA
+                  type: string
+                ota_room_id:
+                  type: string
+                  description: Room ID on the OTA
+                ota_rateplan_id:
+                  type: string
+                  description: Room rateplan ID on the OTA (In case OTA supports rateplans)
+                start_date:
+                  type: string
+                  format: date
+                  description: Desired check in date
+                end_date:
+                  type: string
+                  format: date
+                  description: Desired check out date
+                unit_type:
+                  type: string
+                  enum:
+                    - room
+                    - bed
+                  description: Room availability can be checked by number of rooms or by number of guests (beds) to stay. We recommend using `bed` in case a room is a dormitory/shared room and is sold by beds.
+                number_of_units:
+                  type: integer
+                  description: Number of rooms or beds to check availability for
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+                  type: string
+              required:
+                - shared_secret
+                - ota_property_id
+                - ota_room_id
+                - ota_rateplan_id
+                - start_date
+                - end_date
+                - unit_type
+                - number_of_units
+            encoding:
+              booking_json:
+                contentType: application/json
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  summary: Success
+                  value:
+                    Success: true
+                    is_available: true
+                Failure:
+                  summary: Failure
+                  value:
+                    Error: 1031
+                    ErrorMsg: Channel not enabled for property
+              schema:
+                oneOf:
+                  - title: Successful Request
+                    type: object
+                    properties:
+                      Success:
+                        type: boolean
+                        enum:
+                          - true
+                        description: This field indicates that a request has been processed successfully. The value of this field does NOT indicate room availability.
+                      is_available:
+                        description: This field indicates whether or not the requested room(s) (rateplan) is(are) available for booking
+                        type: boolean
+                      reasons_unavailable:
+                        description: If room(s) (rateplan) is(are) is not available for booking, this field contains explanations as to why
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            text:
+                              type: string
+                              description: Reason text
+                            related_dates:
+                              description: Related dates
+                              type: array
+                              items:
+                                type: string
+                                format: date
+                  - $ref: '#/components/schemas/response_callback_error'
+          description: CheckAvailability
+      summary: CheckAvailability
       tags:
         - Callbacks
   /BookingCreate:
@@ -3574,6 +3721,827 @@ paths:
       summary: RoomInfo
       tags:
         - Callbacks
+  /CreateGroup:
+    post:
+      operationId: create_group
+      description: |-
+        This call is used to create new group profile on your OTA based on the details that we have in Cloudbeds
+        (eg. group name, address, notes, status, contacts). This call needs to be activated explicitly from our side
+        before you can use it. Please talk to your Cloudbeds contact before
+        implementing this call!
+      requestBody:
+        content:
+          application/json:
+            examples:
+              CreateGroup:
+                summary: CreateGroup
+                value:
+                  verb: CreateGroup
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: '10034818'
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  group_data:
+                    group_name: Medical Phizer conference
+                    group_status: open
+                    group_notes:
+                      - text: This
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                      - text: is
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                      - text: Sparta
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                    group_legal_name: Phizer Inc.
+                    address:
+                      city: Krakow
+                      zip: '12345'
+                      state: Krkw
+                      address_line1: Gavela street
+                      address_line2: 25/57
+                      country_code: PL
+                    contacts:
+                      - first_name: Ivan
+                        last_name: Petrov
+                        emails:
+                          - type: business
+                            value: breadley.p@phizer.com
+                        phones:
+                          - type: work
+                            value: '+44321142177'
+                        role: organizer
+                        city: Krakow
+                        zip: '12345'
+                        state: Krkw
+                        address_line1: Gavela street
+                        address_line2: 25/57
+                        country_code: PL
+                        legal_name: Phizer Inc.
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/auth'
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - CreateGroup
+                    group_data:
+                      $ref: '#/components/schemas/group'
+              required:
+                - verb
+                - group_data
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Group has already been created
+                  value:
+                    success: false
+                    errors:
+                      - id: 2
+                        msg: Group has already been created
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: '#/components/schemas/response_simple'
+          description: CreateGroup
+      summary: CreateGroup
+  /UpdateGroup:
+    post:
+      operationId: update_group
+      description: |-
+        This call is used to update group profile on your OTA based on the latest details that we have in Cloudbeds
+        (eg. group name, address, notes, status, contacts). This call needs to be activated explicitly from our side
+        before you can use it. Please talk to your Cloudbeds contact before
+        implementing this call!
+      requestBody:
+        content:
+          application/json:
+            examples:
+              UpdateGroup:
+                summary: UpdateGroup
+                value:
+                  verb: UpdateGroup
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: '10034818'
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  group_data:
+                    group_code: g12345
+                    group_name: Medical Phizer conference
+                    group_status: open
+                    group_notes:
+                      - text: This
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                      - text: is
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                      - text: Sparta
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                    group_legal_name: Phizer Inc.
+                    address:
+                      city: Krakow
+                      zip: '12345'
+                      state: Krkw
+                      address_line1: Gavela street
+                      address_line2: 25/57
+                      country_code: PL
+                    contacts:
+                      - first_name: Ivan
+                        last_name: Petrov
+                        emails:
+                          - type: business
+                            value: breadley.p@phizer.com
+                        phones:
+                          - type: work
+                            value: '+44321142177'
+                        role: organizer
+                        city: Krakow
+                        zip: '12345'
+                        state: Krkw
+                        address_line1: Gavela street
+                        address_line2: 25/57
+                        country_code: PL
+                        legal_name: Phizer Inc.
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/auth'
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - UpdateGroup
+                    group_data:
+                      $ref: '#/components/schemas/group'
+              required:
+                - verb
+                - group_data
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Error updating
+                  value:
+                    success: false
+                    errors:
+                      - id: 2
+                        msg: Error updating
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: '#/components/schemas/response_simple'
+          description: UpdateGroup
+      summary: UpdateGroup
+  /DeleteGroup:
+    post:
+      operationId: delete_group
+      description: |-
+        This call is used to update delete group profile on your OTA previously created by CreateGroup call.
+        This call needs to be activated explicitly from our side
+        before you can use it. Please talk to your Cloudbeds contact before
+        implementing this call!
+      requestBody:
+        content:
+          application/json:
+            examples:
+              DeleteGroup:
+                summary: DeleteGroup
+                value:
+                  verb: DeleteGroup
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: '10034818'
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  group_code: g12345
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/auth'
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - DeleteGroup
+                    group_code:
+                      type: string
+              required:
+                - verb
+                - group_code
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: No such group
+                  value:
+                    success: false
+                    errors:
+                      - id: 2
+                        msg: No such group
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: '#/components/schemas/response_simple'
+          description: DeleteGroup
+      summary: DeleteGroup
+  /CreateGroupBlock:
+    post:
+      operationId: create_group_block
+      description: |-
+        This call is used to create a new inventory block for a group on your OTA based on the details that we have in Cloudbeds
+        (eg. related group code, group block code, group block name, status, group block inventory, rates, restrictions, notes, release schedule).
+        This call needs to be activated explicitly from our side before you can use it. Please talk to your Cloudbeds contact before
+        implementing this call!
+      requestBody:
+        content:
+          application/json:
+            examples:
+              CreateGroupBlock:
+                summary: CreateGroupBlock
+                value:
+                  verb: CreateGroupBlock
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: '10034818'
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  group_block_data:
+                    group_code: g12345
+                    group_block_code: b123332
+                    group_block_status: definite
+                    group_data:
+                      group_code: g12345
+                      group_name: Medical Phizer conference
+                      group_status: open
+                      group_notes:
+                        - text: This
+                          created_at: '2025-01-01T00:05:01Z'
+                          updated_at: '2025-01-01T00:05:01Z'
+                        - text: is
+                          created_at: '2025-01-01T00:05:01Z'
+                          updated_at: '2025-01-01T00:05:01Z'
+                        - text: Sparta
+                          created_at: '2025-01-01T00:05:01Z'
+                          updated_at: '2025-01-01T00:05:01Z'
+                      group_legal_name: Phizer Inc.
+                      address:
+                        city: Krakow
+                        zip: '12345'
+                        state: Krkw
+                        address_line1: Gavela street
+                        address_line2: 25/57
+                        country_code: PL
+                      contacts:
+                        - first_name: Ivan
+                          last_name: Petrov
+                          emails:
+                            - type: business
+                              value: breadley.p@phizer.com
+                          phones:
+                            - type: work
+                              value: '+44321142177'
+                          role: organizer
+                          city: Krakow
+                          zip: '12345'
+                          state: Krkw
+                          address_line1: Gavela street
+                          address_line2: 25/57
+                          country_code: PL
+                          legal_name: Phizer Inc.
+                    group_block_notes:
+                      - text: This
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                      - text: is it
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                    group_block_auto_release:
+                      release_type: all_dates
+                      release_days: 2
+                      release_time: '02:00'
+                    group_block_ari:
+                      '12345':
+                        ota_rate_id: '54321'
+                        data:
+                          - start_date: '2025-03-03'
+                            end_date: '2025-03-04'
+                            units_allotted: 2
+                            units_remaining: 2
+                            units_confirmed: 0
+                            rate: 233
+                          - start_date: '2025-03-05'
+                            end_date: '2025-03-07'
+                            units_allotted: 2
+                            units_remaining: 1
+                            units_confirmed: 1
+                            rate: 234
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/auth'
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - CreateGroupBlock
+                    group_block_data:
+                      type: object
+                      properties:
+                        group_code:
+                          type: string
+                          description: Group code that was previously passed in CreateGroup call
+                        group_data:
+                          $ref: '#/components/schemas/group'
+                        group_block_code:
+                          type: string
+                        group_block_name:
+                          type: string
+                        group_block_status:
+                          type: string
+                          enum:
+                            - tentative
+                            - lead
+                            - definite
+                        group_block_notes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              text:
+                                type: string
+                              created_at:
+                                type: string
+                              updated_at:
+                                type: string
+                        group_block_auto_release:
+                          type: object
+                          properties:
+                            release_type:
+                              type: string
+                              enum:
+                                - all_dates
+                                - by_day
+                                - by_interval
+                            release_days:
+                              type: integer
+                            release_time:
+                              type: string
+                              description: HH:MM
+                        group_block_ari:
+                          type: object
+                          description: keys of this object - OTA room type IDs
+                          patternProperties:
+                            ^.+$:
+                              type: object
+                              properties:
+                                ota_rate_id:
+                                  type: string
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    patternProperties:
+                                      ^rate_adult_\d+$:
+                                        type: number
+                                      ^rate_child_\d+$:
+                                        type: number
+                                    properties:
+                                      start_date:
+                                        type: string
+                                        format: date
+                                      end_date:
+                                        type: string
+                                        format: date
+                                      units_allotted:
+                                        type: integer
+                                      units_remaining:
+                                        type: integer
+                                      units_confirmed:
+                                        type: integer
+                                      mins:
+                                        type: integer
+                                      maxs:
+                                        type: integer
+                                      min_advanced_offset:
+                                        type: integer
+                                      max_advanced_offset:
+                                        type: integer
+                                      rate:
+                                        type: number
+              required:
+                - verb
+                - group_block_data
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Block with such code already exists
+                  value:
+                    success: false
+                    errors:
+                      - id: 2
+                        msg: Block with such code already exists
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: '#/components/schemas/response_simple'
+          description: CreateGroupBlock
+      summary: CreateGroupBlock
+  /UpdateGroupBlock:
+    post:
+      operationId: update_group_block
+      description: |-
+        This call is used to update an inventory block for a group on your OTA based on the latest details that we have in Cloudbeds
+        (eg. related group block name, status, group block inventory, rates, restrictions, notes, release schedule).
+        This call needs to be activated explicitly from our side before you can use it. Please talk to your Cloudbeds contact before
+        implementing this call!
+      requestBody:
+        content:
+          application/json:
+            examples:
+              UpdateGroupBlock:
+                summary: UpdateGroupBlock
+                value:
+                  verb: UpdateGroupBlock
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: '10034818'
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  group_block_data:
+                    group_code: g12345
+                    group_block_code: b123332
+                    group_block_status: definite
+                    group_data:
+                      group_code: g12345
+                      group_name: Medical Phizer conference
+                      group_status: open
+                      group_notes:
+                        - text: This
+                          created_at: '2025-01-01T00:05:01Z'
+                          updated_at: '2025-01-01T00:05:01Z'
+                        - text: is
+                          created_at: '2025-01-01T00:05:01Z'
+                          updated_at: '2025-01-01T00:05:01Z'
+                        - text: Sparta
+                          created_at: '2025-01-01T00:05:01Z'
+                          updated_at: '2025-01-01T00:05:01Z'
+                      group_legal_name: Phizer Inc.
+                      address:
+                        city: Krakow
+                        zip: '12345'
+                        state: Krkw
+                        address_line1: Gavela street
+                        address_line2: 25/57
+                        country_code: PL
+                      contacts:
+                        - first_name: Ivan
+                          last_name: Petrov
+                          emails:
+                            - type: business
+                              value: breadley.p@phizer.com
+                          phones:
+                            - type: work
+                              value: '+44321142177'
+                          role: organizer
+                          city: Krakow
+                          zip: '12345'
+                          state: Krkw
+                          address_line1: Gavela street
+                          address_line2: 25/57
+                          country_code: PL
+                          legal_name: Phizer Inc.
+                    group_block_notes:
+                      - text: This
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                      - text: is it
+                        created_at: '2025-01-01T00:05:01Z'
+                        updated_at: '2025-01-01T00:05:01Z'
+                    group_block_auto_release:
+                      release_type: all_dates
+                      release_days: 2
+                      release_time: '02:00'
+                    group_block_ari:
+                      '12345':
+                        ota_rate_id: '54321'
+                        data:
+                          - start_date: '2025-03-03'
+                            end_date: '2025-03-04'
+                            units_allotted: 2
+                            units_remaining: 2
+                            units_confirmed: 0
+                            rate: 233
+                          - start_date: '2025-03-05'
+                            end_date: '2025-03-07'
+                            units_allotted: 2
+                            units_remaining: 1
+                            units_confirmed: 1
+                            rate: 234
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/auth'
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - UpdateGroupBlock
+                    group_block_data:
+                      type: object
+                      properties:
+                        group_code:
+                          type: string
+                          description: Group code that was previously passed in CreateGroup call
+                        group_data:
+                          $ref: '#/components/schemas/group'
+                        group_block_code:
+                          type: string
+                        group_block_name:
+                          type: string
+                        group_block_status:
+                          type: string
+                          enum:
+                            - tentative
+                            - lead
+                            - definite
+                        group_block_notes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              text:
+                                type: string
+                              created_at:
+                                type: string
+                              updated_at:
+                                type: string
+                        group_block_auto_release:
+                          type: object
+                          properties:
+                            release_type:
+                              type: string
+                              enum:
+                                - all_dates
+                                - by_day
+                                - by_interval
+                            release_days:
+                              type: integer
+                            release_time:
+                              type: string
+                              description: HH:MM
+                        group_block_ari:
+                          type: object
+                          description: keys of this object - OTA room type IDs
+                          patternProperties:
+                            ^.+$:
+                              type: object
+                              properties:
+                                ota_rate_id:
+                                  type: string
+                                data:
+                                  type: array
+                                  items:
+                                    type: object
+                                    patternProperties:
+                                      ^rate_adult_\d+$:
+                                        type: number
+                                      ^rate_child_\d+$:
+                                        type: number
+                                    properties:
+                                      start_date:
+                                        type: string
+                                        format: date
+                                      end_date:
+                                        type: string
+                                        format: date
+                                      units_allotted:
+                                        type: integer
+                                      units_remaining:
+                                        type: integer
+                                      units_confirmed:
+                                        type: integer
+                                      mins:
+                                        type: integer
+                                      maxs:
+                                        type: integer
+                                      min_advanced_offset:
+                                        type: integer
+                                      max_advanced_offset:
+                                        type: integer
+                                      rate:
+                                        type: number
+              required:
+                - verb
+                - group_block_data
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Block with such code does not exists
+                  value:
+                    success: false
+                    errors:
+                      - id: 2
+                        msg: Block with such code does not exists
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: '#/components/schemas/response_simple'
+          description: UpdateGroupBlock
+      summary: UpdateGroupBlock
+  /DeleteGroupBlock:
+    post:
+      operationId: delete_group_block
+      description: |-
+        This call is used to delete an inventory block previously created using CreateGroupBlock call.
+        This call needs to be activated explicitly from our side before you can use it. Please talk to your Cloudbeds contact before
+        implementing this call!
+      requestBody:
+        content:
+          application/json:
+            examples:
+              DeleteGroupBlock:
+                summary: DeleteGroupBlock
+                value:
+                  verb: DeleteGroupBlock
+                  ota_property_id: lake_view_hotel
+                  ota_property_password: very-secret-password
+                  ota_property_sub_id: '10034818'
+                  mya_property_id: 25678
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+                  group_block_code: b123332
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/auth'
+                - type: object
+                  properties:
+                    verb:
+                      type: string
+                      enum:
+                        - DeleteGroupBlock
+                    group_block_code:
+                      type: string
+              required:
+                - verb
+                - group_block_code
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Block with such code does not exists
+                  value:
+                    success: false
+                    errors:
+                      - id: 2
+                        msg: Block with such code does not exists
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+              schema:
+                $ref: '#/components/schemas/response_simple'
+          description: DeleteGroupBlock
+      summary: DeleteGroupBlock
+  /ChannelList:
+    post:
+      operationId: channel_list
+      description: |
+        Returns a list of all channels known to Cloudbeds, including their names and corresponding IDs.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ChannelList:
+                summary: ChannelList
+                value:
+                  verb: ChannelList
+                  guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+                  ota_cid: ota
+                  shared_secret: s3cr3ts4uc3
+            schema:
+              type: object
+              properties:
+                guid:
+                  description: Request reference ID, used for debugging and support requests.
+                  type: string
+                  pattern: ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$
+                shared_secret:
+                  description: Authentication between the OTA and the channel. Identical for all requests. Not to be shared with customers.
+                  type: string
+                ota_cid:
+                  description: OTA ID as given by Cloudbeds
+                  type: string
+                  pattern: ^[a-z0-9]+$
+                verb:
+                  type: string
+                  enum:
+                    - ChannelList
+              required:
+                - guid
+                - shared_secret
+                - ota_cid
+                - verb
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Failure:
+                  summary: Something went wrong
+                  value:
+                    success: false
+                    errors:
+                      - id: 666
+                        msg: Internal server error
+                Success:
+                  summary: Success
+                  value:
+                    success: true
+                    channels:
+                      - channel_id: boo
+                        name: Booking.com
+                      - channel_id: exp
+                        name: Expedia
+              schema:
+                oneOf:
+                  - type: object
+                    title: Success
+                    properties:
+                      success:
+                        type: boolean
+                        enum:
+                          - true
+                      channels:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            channel_id:
+                              type: string
+                              pattern: ^[a-z0-9]+$
+                              description: Unique channel ID (2-4 characters)
+                            name:
+                              type: string
+                              description: Name for the channel
+                          required:
+                            - channel_id
+                            - name
+                    required:
+                      - success
+                      - channels
+                  - $ref: '#/components/schemas/response_error'
+          description: ChannelList
+      summary: ChannelList
 components:
   securitySchemes:
     shared_secret:
@@ -4129,3 +5097,94 @@ components:
         - Success
         - ErrorCode
         - Error
+    group:
+      type: object
+      properties:
+        group_code:
+          type: string
+        group_name:
+          type: string
+        group_legal_name:
+          type: string
+        group_status:
+          type: string
+          enum:
+            - open
+            - close
+        group_notes:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+              created_at:
+                type: string
+              updated_at:
+                type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+            zip:
+              type: string
+            state:
+              type: string
+            address_line1:
+              type: string
+            address_line2:
+              type: string
+            country_code:
+              type: string
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              emails:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - personal
+                        - business
+                    value:
+                      type: string
+              phones:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - home
+                        - work
+                        - mobile
+                        - fax
+                    value:
+                      type: string
+              role:
+                type: string
+              legal_name:
+                type: string
+              city:
+                type: string
+              zip:
+                type: string
+              state:
+                type: string
+              address_line1:
+                type: string
+              address_line2:
+                type: string
+              country_code:
+                type: string

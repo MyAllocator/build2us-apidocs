@@ -1,0 +1,26 @@
+---
+rq:
+  DeleteGroupBlock:
+    summary: DeleteGroupBlock
+    value:
+      verb: DeleteGroupBlock
+      ota_property_id: lake_view_hotel
+      ota_property_password: very-secret-password
+      ota_property_sub_id: '10034818'
+      mya_property_id: 25678
+      guid: 6C08B96E-450D-4E6A-9933-7D0305730305
+      ota_cid: ota
+      shared_secret : s3cr3ts4uc3
+      group_block_code: b123332
+rs:
+  Failure:
+    summary: Block with such code does not exists
+    value:
+      success: false
+      errors:
+        - id: 2
+          msg: Block with such code does not exists
+  Success:
+    summary: Success
+    value:
+      success: true
