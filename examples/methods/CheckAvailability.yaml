@@ -3,12 +3,12 @@ rq:
   CheckAvailbility:
     summary: CheckAvailbility
     value:
-      shared_secret : "s3cr3ts4uc3"
-      ota_property_id: 998201
-      ota_room_id: 12345
-      ota_rateplan_id: 11
-      start_date: 2027-01-01
-      end_date: 2027-01-02
+      shared_secret: "s3cr3ts4uc3"
+      ota_property_id: "998201"
+      ota_room_id: "12345"
+      ota_rateplan_id: "11"
+      start_date: "2027-01-01"
+      end_date: "2027-01-02"
       unit_type: room
       number_of_units: 1
 rs:
@@ -20,6 +20,7 @@ rs:
   Failure:
     summary: Failure
     value:
-      Error: 1031
-      ErrorMsg: Channel not enabled for property
+      Success: false
+      ErrorCode: 1031
+      Error: Channel not enabled for property
 
