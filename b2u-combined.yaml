@@ -1408,6 +1408,9 @@ paths:
                       zip: '22222'
                       city: Office City
                       country: DE
+                    property_description: A charming hostel in the heart of the city, walking distance to all major attractions.
+                    check_in_time: '14:00'
+                    check_out_time: '11:00'
                     images:
                       - url: https://inbox.myallocator.com/n/user_image.xt?pid=1&img=97f471e5-5898-4e9a-ab94-da0751e19c37.jpg
                         description: Outside View
@@ -1884,6 +1887,26 @@ paths:
                               - label
                               - description
                               - images
+                        property_description:
+                          type:
+                            - string
+                            - 'null'
+                          description: |
+                            A description of the property to display to potential guests. Only transmitted for API version 3 and above.
+                        check_in_time:
+                          type:
+                            - string
+                            - 'null'
+                          pattern: ^\d{2}:\d{2}$
+                          description: |
+                            Standard check-in time of the property in `HH:MM` format (e.g. `14:00`). Only transmitted for API version 3 and above.
+                        check_out_time:
+                          type:
+                            - string
+                            - 'null'
+                          pattern: ^\d{2}:\d{2}$
+                          description: |
+                            Standard check-out time of the property in `HH:MM` format (e.g. `11:00`). Only transmitted for API version 3 and above.
                         taxes:
                           type: array
                           description: |
