@@ -402,6 +402,22 @@ post:
                         Standard check-out time of the property in `HH:MM`
                         format (e.g. `11:00`). Only transmitted for API
                         version 3 and above.
+                    i18n:
+                      type: object
+                      description: >
+                        Localized values for supported fields. Keys are IETF
+                        locale codes (e.g. `en_US`, `pt_BR`). Each locale
+                        maps to an object containing translated field values.
+                        Only present if localized data exists for the property.
+                      additionalProperties:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: Localized property name
+                          booking_cancellation_policy:
+                            type: string
+                            description: Localized cancellation policy text
                     taxes:
                       type: array
                       description: >

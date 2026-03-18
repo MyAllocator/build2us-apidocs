@@ -66,6 +66,10 @@ rq:
           city: Office City
           country: DE
         property_description: A charming hostel in the heart of the city, walking distance to all major attractions.
+        i18n:
+          pt_BR:
+            name: Sample Hostel (Brasil)
+            booking_cancellation_policy: Cancelamento gratuito até 24 horas antes do check-in.
         check_in_time: '14:00'
         check_out_time: '11:00'
         images:
