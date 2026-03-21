@@ -13,6 +13,8 @@ rq:
       ota_cid: ota
       rateplan:
         mya_rate_id: 115629
+        mya_room_id: 45829
+        ota_room_id: "11111"
         label_private: NR
         label_public: Non-refundable
         max_occupancy: 3
