@@ -3101,6 +3101,8 @@ paths:
                   ota_cid: ota
                   rateplan:
                     mya_rate_id: 115629
+                    mya_room_id: 45829
+                    ota_room_id: '11111'
                     label_private: NR
                     label_public: Non-refundable
                     max_occupancy: 3
@@ -3126,6 +3128,13 @@ paths:
                         ota_rate_id:
                           type: string
                           description: Channel rate plan ID.
+                        mya_room_id:
+                          type: integer
+                          minimum: 1
+                          description: Room ID on the Cloudbeds channel manager.
+                        ota_room_id:
+                          type: string
+                          description: Channel room ID.
                         label_private:
                           type: string
                           description: The private name of the rate plan, only shown to the property.
