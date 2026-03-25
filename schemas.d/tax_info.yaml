@@ -64,9 +64,6 @@ properties:
     type: string
     description: >
       Optional custom field to store an external system ID. Not guaranteed to be unique.
-  description:
-    type: string
-    description: Tax/fee description.
   name:
     type: string
     description: Tax/fee name.

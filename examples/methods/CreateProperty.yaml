@@ -33,7 +33,6 @@ rq:
           calculation_basis: rate
           category: vat
           code: IVA
-          description: Impuesto
           id: 4761
           is_fee: false
           is_inclusive: true

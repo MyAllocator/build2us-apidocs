@@ -4,7 +4,6 @@
   calculation_basis: rate
   category: vat
   code: IVA
-  description: Impuesto
   id: 4761
   is_fee: false
   is_inclusive: true
@@ -17,7 +16,6 @@
 - amount: 5
   applies_per: pet
   category: other_fee
-  description: Pet fee applies for each pet when total number of pets is more than one.
   id: 4762
   is_fee: true
   is_inclusive: false
@@ -33,7 +31,6 @@
   applies_per: adult
   calculation_basis: rate
   category: tourism_tax
-  description: Per person per night when number of nights are greater than 2
   id: 4763
   is_fee: false
   is_inclusive: false
@@ -79,7 +76,6 @@
   applies_per: booking
   calculation_basis: rate
   category: other_fee
-  description: Weekend service fee
   id: 4765
   is_fee: true
   is_inclusive: false
