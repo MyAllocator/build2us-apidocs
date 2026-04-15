@@ -1,7 +1,3 @@
-# build2us-apidocs
+# Cloudbeds OTA Build-To-Us API
 
-Myallocator Build2Us API Documentation (OTA Facing)
-
-This documentation is automatically generated and is hosted by github pages. Please send suggestions to support@cloudbeds.com.
-
-To view this please visit: http://myallocator.github.io/build2us-apidocs/index.html
+This documentation has moved to: https://developers.cloudbeds.com/reference/ota-build-to-us-introduction
